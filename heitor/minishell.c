@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/28 20:17:22 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/03/28 21:05:13 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,9 @@ void	cd(char *path)
 }
 
 
-char *get_username(char **env)
+void	get_prompt()
 {
-	char *user;
-
-	user = NULL;
-	while(*env)
-	{
-		if (ft_strncmp(*env, "USER=", 5) == 0)
-		{
-			user = *env;
-			break ;
-		}
-		env++;
-	}
-	return (user + 5);
-}
-
-
-void	get_prompt(char **env)
-{
-	char cwd[100];
-	char	*user;
-	printf("\033[1m\033[32m%s@miniteam:\033[1m\033[34m%s$", get_username(env), getcwd(cwd, 100));
+	printf("\033[1m\033[32m%s@miniteam:\033[1m\033[34m%s$", getenv("USER"), getenv("PWD"));
 	printf("\033[0m"); //reset
 }
 
@@ -75,7 +55,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	while(1)
 	{
-		get_prompt(envp);
+		get_prompt();
 		line = readline(" ");
 		if (ft_strncmp(line, "cd ", 3) == 0)
 			cd(line + 3);
