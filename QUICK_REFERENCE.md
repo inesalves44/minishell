@@ -1,5 +1,5 @@
 
-# Function allowed 
+# Allowed functions
 - readline
 
        readline will read a line from the terminal and return it, using
