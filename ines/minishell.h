@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/28 17:08:05 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/03/28 19:39:54 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,23 @@
 # include "libft/incs/ft_printf.h"
 # include "libft/incs/get_next_line.h"
 
-typedef enum
+typedef enum types
 {
-    pipe,
+    pipem,
     red_in,
     red_out,
     command,
-    file
-};
+    file,
+} check;
+
+typedef struct ast_tree
+{
+	int	node;
+	int type;
+	char *command;
+	char *file;
+	struct ast_tree *left;
+	struct ast_tree *rigth;
+} t_ast;
 
 #endif
