@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: idias-al <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/24 18:04:26 by idias-al         ###   ########.fr       */
+/*   Created: 2022/08/24 14:50:17 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/03 15:17:37 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "libft.h"
 
-int	main()
+int	ft_isdigit(int c)
 {
-	char *line;
-
-	line = readline("prompt: ");
-	add_history(line);
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
 }
