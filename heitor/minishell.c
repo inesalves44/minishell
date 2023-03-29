@@ -6,20 +6,12 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/28 21:05:13 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/03/29 10:38:42 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "./libft/includes/libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <unistd.h>
 
-
-
+#include "temp.h"
 
 
 /*void sig_interruption(int sig, siginfo_t *info, void *context) {
@@ -27,22 +19,12 @@
  }*/
 
 
-void	cd(char *path)
-{
-	chdir(path);
-}
-
-
-void	get_prompt()
-{
-	printf("\033[1m\033[32m%s@miniteam:\033[1m\033[34m%s$", getenv("USER"), getenv("PWD"));
-	printf("\033[0m"); //reset
-}
-
-
 int	main(int argc, char *argv[], char *envp[])
 {
-	char *line;
+	t_root	root;
+	(void)argc;
+	(void)argv;
+	(void)envp;
 /*
 	struct sigaction	sa;
 	sigemptyset(&sa.sa_mask);
@@ -53,12 +35,36 @@ int	main(int argc, char *argv[], char *envp[])
 //	char *command_args[] = { "ls", NULL};
 //	execve("/usr/bin/ls", command_args, envp);
 
+
 	while(1)
 	{
 		get_prompt();
-		line = readline(" ");
-		if (ft_strncmp(line, "cd ", 3) == 0)
-			cd(line + 3);
-		add_history(line);
+		root.line = readline(" ");
+		root.command = ft_split(root.line, ' ');
+		if (ft_strncmp(root.line, "cd", 2) == 0 || ft_strncmp(root.line, "cd ", 3) == 0)
+		{
+			cd(&root);
+		}
+		if (ft_strncmp(root.line, "echo", 4) == 0 || ft_strncmp(root.line, "echo ", 5) == 0)
+		{
+			echo(&root);
+		}
+		if (ft_strncmp(root.line, "pwd", 3) == 0 || ft_strncmp(root.line, "pwd ", 4) == 0)
+		{
+			pwd();
+		}
+		if (ft_strncmp(root.line, "env", 3) == 0 || ft_strncmp(root.line, "env ", 4) == 0)
+		{
+			env(envp);
+		}
+		if (ft_strncmp(root.line, "exit", 4) == 0 || ft_strncmp(root.line, "exit ", 5) == 0)
+		{
+			ft_exit(&root);
+		}
+		add_history(root.line);
+		free(root.command[0]);
+		free(root.command);
+		free(root.line);
+		//free(root.command);
 	}
 }

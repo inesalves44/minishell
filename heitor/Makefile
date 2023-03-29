@@ -1,21 +1,15 @@
 
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -lreadline -g -fsanitize=address
 MLXFLAGS	= -lmlx -lXext -lX11 -lm -lbsd
 
-LIBFT		=	./libft/libft.a
-LIBFT_DIR	=	./libft
+SRCS = minishell.c utils.c built_cd.c built_echo.c built_pwd.c built_env.c built_exit.c get_prompt.c
 
 all: $(LIBFT)
-	cc minishell.c $(LIBFT) -o mini -lreadline 
+	cc $(SRCS) $(LIBFT) $(CFLAGS) libft.a -o mini
 
-
-$(LIBFT):
-	@ $(MAKE) -C $(LIBFT_DIR)
-
-
-fclean: clean
+fclean:
 	rm -rf minishell
 	$(MAKE) fclean -C $(LIBFT_DIR)
 
