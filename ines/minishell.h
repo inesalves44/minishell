@@ -34,10 +34,11 @@ typedef struct ast_tree
 {
 	int	node;
 	int type;
-	char *command;
+	char **command;
 	char *file;
 	struct ast_tree *left;
 	struct ast_tree *rigth;
+	struct ast_tree *prev;
 } t_ast;
 
 #endif
