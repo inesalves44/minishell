@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/29 10:38:42 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/03/29 22:06:52 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_root	root;
+	t_env	*envs;
 	(void)argc;
 	(void)argv;
-	(void)envp;
+
+	init_envs(&envs, envp);
 /*
 	struct sigaction	sa;
 	sigemptyset(&sa.sa_mask);
@@ -55,11 +57,15 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		if (ft_strncmp(root.line, "env", 3) == 0 || ft_strncmp(root.line, "env ", 4) == 0)
 		{
-			env(envp);
+			env(envs);
 		}
 		if (ft_strncmp(root.line, "exit", 4) == 0 || ft_strncmp(root.line, "exit ", 5) == 0)
 		{
 			ft_exit(&root);
+		}
+		if (ft_strncmp(root.line, "export", 6) == 0 || ft_strncmp(root.line, "export ", 7) == 0)
+		{
+			export(&root, &envs);
 		}
 		add_history(root.line);
 		free(root.command[0]);

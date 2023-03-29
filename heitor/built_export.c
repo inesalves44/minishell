@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:57:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/03/29 21:47:29 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/03/29 22:07:38 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "temp.h"
 
-void    env(t_env *env)
+void	export(t_root *root, t_env **envs)
 {
-    print_envs(env);
+	t_env	*var;
+
+	var = ft_lstnew_env(root->command[1]);
+	ft_lstadd_back_env(envs, var);
 }
