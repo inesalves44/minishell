@@ -6,13 +6,49 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/28 19:54:20 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/03/29 18:18:41 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast	*create_treenode(char **str, int check, int i)
+char	**treat_string(char **str, t_ast *aux, int i)
+{
+	char	**new;
+	int		words;
+	int		j;
+
+	j = 0;
+	if (!aux)
+		return (str);
+	if (i < aux->node)
+	{
+		new = (char **)malloc(sizeof(char **) * (aux->node - i));
+		while (i < aux->node)
+		{	
+			new[j] = ft_strdup(str[i]);
+			i++;
+			j++;
+		}
+	}
+	else if (i > aux->node)
+	{
+		if (!aux->rigth)
+		{
+			new = (char **)malloc(sizeof(char **) * (i - aux->node + 1));
+			i = aux->node + 1; 
+			while (str[i])
+			{
+				new[j] = ft_strdup(str[i]);
+				i++;
+				j++;
+			}
+		}
+	}
+	return (new);
+}
+
+t_ast	*create_treenode(char **str, int check, int i, t_ast *aux)
 {
 	t_ast	*node;
 
@@ -22,11 +58,11 @@ t_ast	*create_treenode(char **str, int check, int i)
 		node->node = i;
 		node->type = check;
 		if (check == 3)
-			node->command = str;
+			node->command = treat_string(str, aux, i);
 		else
 			node->command = NULL;
 		if (check == 4)
-			node->file = str[0];
+			node->file = str[i];
 		else
 			node->file = NULL;
 		node->left = NULL;
@@ -36,18 +72,32 @@ t_ast	*create_treenode(char **str, int check, int i)
 	return (node);
 }
 
-void	print_tree(t_ast *node, int i)
+void	print_tree(t_ast *node, int i, char **str)
 {
 	int j;
+	int	a;
 
 	j = i;
+	a = 0;
 	while (j > 0)
 	{
 		printf("\t");
 		j--;
 	}
 	j = 0;
-	printf("node_check: %d, node_id: %d\n", node->type, node->node);
+	if (node->command)
+	{
+		printf("node_check: %d, ", node->type);
+		printf("node->command:");
+		while (node->command[a])
+		{
+			printf(" %s", node->command[a]);
+			a++;
+		}
+		printf("\n");
+	}
+	else
+		printf("node_check: %d, node->str: %s\n", node->type, str[node->node]);		
 	i++;
 	if (node->left)
 	{
@@ -58,7 +108,7 @@ void	print_tree(t_ast *node, int i)
 		}
 		j = 0;
 		printf("left node\n");
-		print_tree(node->left, i);
+		print_tree(node->left, i, str);
 	}
 	if (node->rigth)
 	{
@@ -69,7 +119,7 @@ void	print_tree(t_ast *node, int i)
 		}
 		j = 0;
 		printf("rigth node\n");
-		print_tree(node->rigth, i);
+		print_tree(node->rigth, i, str);
 	}
 }
 
@@ -86,23 +136,23 @@ void	parsing_str(char **str)
 		if (!ft_strncmp(str[i], "|", 1))
 		{
 			if (!node)
-				node = create_treenode(NULL, pipem, i);
+				node = create_treenode(NULL, pipem, i, NULL);
 			else
-				node->rigth = create_treenode(NULL, pipem, i);
+				node->rigth = create_treenode(NULL, pipem, i, node);
 		}
 		else if (!ft_strncmp(str[i], ">", 1))
 		{
 			if (!node)
-				node = create_treenode(NULL, red_out, i);
+				node = create_treenode(NULL, red_out, i, NULL);
 			else
-				node->rigth = create_treenode(NULL, red_out, i);
+				node->rigth = create_treenode(NULL, red_out, i, node);
 		}
 		else if (!ft_strncmp(str[i], "<", 1))
 		{
 			if (!node)
-				node = create_treenode(NULL, red_in, i);
+				node = create_treenode(NULL, red_in, i, NULL);
 			else
-				node->rigth = create_treenode(NULL, red_in, i);
+				node->rigth = create_treenode(NULL, red_in, i, node);
 		}
 		if (node && node->rigth)
 		{
@@ -118,21 +168,46 @@ void	parsing_str(char **str)
 	while (str[i])
 	{
 		if (!node)
-			node = create_treenode(str, command, i);
-		else if (node->type == pipem)
+		{
+			node = create_treenode(str, command, i, NULL);
+			break ;
+		}
+		if (node->type == pipem)
 		{
 			if (i < node->node)
-				node->left = create_treenode(str, command, i);
-			else if (i > node->node && !node->rigth)
-				node->rigth = create_treenode(str, command, i);
-			if (node->left)
-				node->left->prev = node;
-			if (node->rigth)
-				node->rigth->prev = node;
+			{
+				node->left = create_treenode(str, command, i, node);
+				i = node->node;
+			}
+			else if (i > node->node)
+			{
+				if (!node->rigth)
+				{
+					while (str[i])
+						i++;
+					i--;
+					node->rigth = create_treenode(str, command, i, node);
+				}
+				else
+				{
+					node = node->rigth;
+					node->left = create_treenode(str, command, i, node);
+					i = node->node;
+				}
+			}
+		}
+		else if (node->type == red_in && i != node->node)
+		{
+			if (!node->left)
+				node->left = create_treenode(str, file, i + 1, node);
+			else
+				node->rigth = create_treenode(str, command, i, node);
 		}
 		i++;
 	}
-	print_tree(node, 0);
+	while (node->prev)
+		node = node->prev;
+	print_tree(node, 0, str);
 }
 
 int	main(int argc, char *argv[], char *envp[])
