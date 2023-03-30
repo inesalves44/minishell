@@ -12,15 +12,25 @@
 
 #include "temp.h"
 
-void	get_prompt()
+void	get_prompt(t_root *root)
 {
-	char cwd[BUFFER_PATH];
-	char *home;
+	char 	*home;
+	char	*path;
 
+	path = get_pwd();
 	home = getenv("HOME");
-	if (ft_strncmp(getcwd(cwd, 100), home, ft_strlen(home)) == 0)
-		printf("\033[1m\033[32m%s@miniteam:\033[1m\033[34m~%s$", getenv("USER"), getcwd(cwd, BUFFER_PATH) + ft_strlen(home));
+	if (ft_strncmp(path, home, ft_strlen(home)) == 0)
+	{
+		root->prompt = ft_strjoin("\033[1m\033[32m", getenv("USER"));
+		root->prompt = ft_strjoin(root->prompt, "@miniteam:\033[1m\033[34m~");
+		root->prompt = ft_strjoin(root->prompt, path + ft_strlen(home));
+		root->prompt = ft_strjoin(root->prompt, "$ \033[0m");
+	}
 	else
-		printf("\033[1m\033[32m%s@miniteam:\033[1m\033[34m%s$", getenv("USER"), getcwd(cwd, BUFFER_PATH));
-	printf("\033[0m"); //reset
+	{
+		root->prompt = ft_strjoin("\033[1m\033[32m", getenv("USER"));
+		root->prompt = ft_strjoin(root->prompt, "@miniteam:\033[1m\033[34m~");
+		root->prompt = ft_strjoin(root->prompt, path);
+		root->prompt = ft_strjoin(root->prompt, "$ \033[0m");
+	}
 }

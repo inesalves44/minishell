@@ -26,7 +26,11 @@ void	cd(t_root *root)
 	else
 	{
 		err = ft_strjoin("minishell: cd: ", root->command[1]);
-		if (chdir(root->command[1]) != 0)
+		if (chdir(root->command[1]) == 0)
+		{
+			change_value(root, "PWD", get_pwd());
+		}
+		else
 		{
 			perror(err);
 		}

@@ -12,8 +12,13 @@
 
 #include "temp.h"
 
-void    pwd()
+char    *get_pwd()
 {
     char cwd[BUFFER_PATH];
-    printf("%s\n", getcwd(cwd, BUFFER_PATH));
+    return (getcwd(cwd, BUFFER_PATH));
+}
+
+void   pwd()
+{
+    printf("%s\n", get_pwd());
 }

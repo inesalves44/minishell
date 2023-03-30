@@ -12,10 +12,37 @@
 
 #include "temp.h"
 
-void	export(t_root *root, t_env **envs)
+int	change_value(t_root *root, char *key, char *new_value)
+{
+	t_env	*head;
+
+	head = root->envs;
+	while(root->envs)
+	{
+
+		if (ft_strncmp(key, root->envs->key, ft_strlen(key)) == 0)
+		{
+			root->envs->value = ft_strdup(new_value);
+			root->envs = head;
+			return (1);
+		}
+		root->envs = root->envs->next;
+	}
+	root->envs = head;
+	return (0);
+}
+
+void	export(t_root *root)
 {
 	t_env	*var;
+	char	*key;
+	char	*value;
 
-	var = ft_lstnew_env(root->command[1]);
-	ft_lstadd_back_env(envs, var);
+	key = extract_key(root->command[1]);
+	value = extract_value(root->command[1]);
+	if (!change_value(root, key, value))
+	{
+		var = ft_lstnew_env(key, value);
+		ft_lstadd_back_env(&root->envs, var);
+	}
 }

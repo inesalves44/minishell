@@ -12,7 +12,7 @@
 
 #include "temp.h"
 
-void    env(t_env *env)
+void    env(t_root *root)
 {
-    print_envs(env);
+    print_envs(root);
 }

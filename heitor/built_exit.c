@@ -12,16 +12,22 @@
 
 #include "temp.h"
 
-void	free_array1(t_root *root)
+void	free_array(t_root *root)
 {
-	free(root->command[0]);
+	int	i = 0;
+	while(root->command[i])
+	{
+        printf("%s",root->command[i]);
+		free(root->command[i]);
+		i++;
+	}
 	free(root->command);
 	free(root->line);
+	free(root->prompt);
 }
 
 void    ft_exit(t_root *root)
 {
-    // funciton to free everything later!!!!
-    free_array1(root);
+    free_array(root);
     exit(0);
 }

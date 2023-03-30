@@ -12,14 +12,62 @@
 
 #include "../temp.h"
 
-void	init_envs(t_env **envs, char **envp)
+int	ft_keylen(char *env)
 {
-	t_env	*node;
+	int	i;
 
+	i = 0;
+	while(env[i])
+	{
+		if (env[i] == '=')
+			break ;
+		i++;
+	}
+	return (i + 1);
+}
+
+char	*extract_key(char *env)
+{
+	char	*temp_key;
+	int		i;
+	int		size;
+
+	i = 0;
+	size = ft_keylen(env);
+
+	temp_key = ft_calloc(sizeof(char), size + 1);
+	ft_memcpy(temp_key, env, size);
+	return (temp_key);
+}
+
+char	*extract_value(char *env)
+{
+	char	*temp_value;
+	int		i;
+	int		size;
+
+	i = 0;
+	size = ft_keylen(env);
+
+	temp_value = ft_calloc(sizeof(char), (ft_strlen(env) - size) + 1);
+	ft_memcpy(temp_value, env + size, ft_strlen(env) - size);
+	return (temp_value);
+}
+
+
+void	init_envs(t_root *root, char **envp)
+{
+	char	*key;
+	char	*value;
+
+	root->envs = NULL;
 	while(*envp)
 	{
-		node = ft_lstnew_env(*envp);
-		ft_lstadd_back_env(envs, node);
+		key = extract_key(*envp);
+		value = extract_value(*envp);
+		ft_lstadd_back_env(&root->envs, ft_lstnew_env(key, value));
+		free(key);
+		free(value);
 		envp++;
 	}
 }
