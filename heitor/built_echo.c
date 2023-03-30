@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/03/29 15:25:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/03/30 20:42:13 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void    echo(t_root *root)
 {
     int     element;
 
+	// TODO if init with $ check if the env var exist.
     element = 1;
     while(root->command[element])
     {

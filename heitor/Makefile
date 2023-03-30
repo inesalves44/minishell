@@ -1,7 +1,7 @@
 
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -lreadline -g -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -lreadline -g #-fsanitize=address
 MLXFLAGS	= -lmlx -lXext -lX11 -lm -lbsd
 
 SRCS = minishell.c utils.c built_cd.c built_echo.c built_pwd.c built_env.c built_exit.c get_prompt.c \

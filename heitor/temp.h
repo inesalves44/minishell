@@ -9,6 +9,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
 # define BUFFER_PATH 4000
 
@@ -24,6 +25,7 @@ typedef struct s_root
     char    *line;
     char    *prompt;
     char    **command;
+	char	**path;
     t_env   *envs;
 } t_root;
 
