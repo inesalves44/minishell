@@ -6,11 +6,16 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/29 18:18:41 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/03/30 08:29:35 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**array_string(char **new)
+{
+	
+}
 
 char	**treat_string(char **str, t_ast *aux, int i)
 {
@@ -21,7 +26,7 @@ char	**treat_string(char **str, t_ast *aux, int i)
 	j = 0;
 	if (!aux)
 		return (str);
-	if (i < aux->node)
+	if (i < aux->node && aux->type == pipem)
 	{
 		new = (char **)malloc(sizeof(char **) * (aux->node - i));
 		while (i < aux->node)
@@ -31,7 +36,7 @@ char	**treat_string(char **str, t_ast *aux, int i)
 			j++;
 		}
 	}
-	else if (i > aux->node)
+	else if (i > aux->node && aux->type == pipem)
 	{
 		if (!aux->rigth)
 		{
@@ -43,6 +48,27 @@ char	**treat_string(char **str, t_ast *aux, int i)
 				i++;
 				j++;
 			}
+		}
+	}
+	else if (aux->type == red_in && i > aux->node)
+	{
+		new = (char **)malloc(sizeof(char **) * (i - aux->node));
+		i = aux->node + 2;
+		while (str[i])
+		{
+			new[j] = ft_strdup(str[i]);
+			i++;
+			j++;
+		}
+	}
+	else if (aux->type == red_out && i < aux->node)
+	{
+		new = (char **)malloc(sizeof(char **) * (aux->node - i));
+		while (str[i])
+		{
+			new[j] = ft_strdup(str[i]);
+			i++;
+			j++;
 		}
 	}
 	return (new);
@@ -172,7 +198,7 @@ void	parsing_str(char **str)
 			node = create_treenode(str, command, i, NULL);
 			break ;
 		}
-		if (node->type == pipem)
+		if (node->type == pipem && node->node != i)
 		{
 			if (i < node->node)
 			{
@@ -199,9 +225,11 @@ void	parsing_str(char **str)
 		else if (node->type == red_in && i != node->node)
 		{
 			if (!node->left)
-				node->left = create_treenode(str, file, i + 1, node);
-			else
+				node->left = create_treenode(str, file, i, node);
+			else if (!node->rigth)
 				node->rigth = create_treenode(str, command, i, node);
+			if (node->rigth)
+				node = node->rigth;
 		}
 		i++;
 	}
