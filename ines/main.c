@@ -12,9 +12,21 @@
 
 #include "minishell.h"
 
-char	**array_string(char **new)
+char	*get_file(char **str, t_ast *node)
 {
-	
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (i == node->node)
+		{
+			i++;
+			return (str[i]);
+		}
+		i++;
+	}
+	return (NULL);
 }
 
 char	**treat_string(char **str, t_ast *aux, int i)
@@ -28,19 +40,20 @@ char	**treat_string(char **str, t_ast *aux, int i)
 		return (str);
 	if (i < aux->node && aux->type == pipem)
 	{
-		new = (char **)malloc(sizeof(char **) * (aux->node - i));
+		new = (char **)malloc(sizeof(char *) * (aux->node - i));
 		while (i < aux->node)
 		{	
 			new[j] = ft_strdup(str[i]);
 			i++;
 			j++;
 		}
+		new[j] = 0;
 	}
 	else if (i > aux->node && aux->type == pipem)
 	{
 		if (!aux->rigth)
 		{
-			new = (char **)malloc(sizeof(char **) * (i - aux->node + 1));
+			new = (char **)malloc(sizeof(char *) * (i - aux->node + 1));
 			i = aux->node + 1; 
 			while (str[i])
 			{
@@ -48,27 +61,36 @@ char	**treat_string(char **str, t_ast *aux, int i)
 				i++;
 				j++;
 			}
+			new[j] = 0;
 		}
 	}
-	else if (aux->type == red_in && i > aux->node)
+	else if (aux->type == red_in || aux->type == red_out)
 	{
-		new = (char **)malloc(sizeof(char **) * (i - aux->node));
-		i = aux->node + 2;
-		while (str[i])
+		if (i < aux->node)
 		{
-			new[j] = ft_strdup(str[i]);
-			i++;
-			j++;
+			new = (char **)malloc(sizeof(char *) * (aux->node + 1));
+			while (i < aux->node)
+			{
+				new[j] = ft_strdup(str[i]);
+				i++;
+				j++;
+			}
+			new[j] = 0;
 		}
-	}
-	else if (aux->type == red_out && i < aux->node)
-	{
-		new = (char **)malloc(sizeof(char **) * (aux->node - i));
-		while (str[i])
+		else
 		{
-			new[j] = ft_strdup(str[i]);
-			i++;
-			j++;
+			while (str[i])
+				i++;
+			i--;
+			new = (char **)malloc(sizeof(char *) * (i - aux->node));
+			i = aux->node + 2;
+			while (str[i])
+			{
+				new[j] = ft_strdup(str[i]);
+				i++;
+				j++;
+			}
+			new[j] = 0;
 		}
 	}
 	return (new);
@@ -88,7 +110,7 @@ t_ast	*create_treenode(char **str, int check, int i, t_ast *aux)
 		else
 			node->command = NULL;
 		if (check == 4)
-			node->file = str[i];
+			node->file = get_file(str, aux);
 		else
 			node->file = NULL;
 		node->left = NULL;
@@ -222,14 +244,26 @@ void	parsing_str(char **str)
 				}
 			}
 		}
-		else if (node->type == red_in && i != node->node)
+		else if ((node->type == red_in || node->type == red_out) && i != node->node)
 		{
-			if (!node->left)
+			if (i == node->node + 1)
 				node->left = create_treenode(str, file, i, node);
-			else if (!node->rigth)
+			else if (i != node->node + 1 && !node->rigth)
+			{
 				node->rigth = create_treenode(str, command, i, node);
-			if (node->rigth)
+				while (str[i] && node->left)
+					i++;
+				if (node->left)
+					i--;
+				if (i < node->node)
+					i = node->node;
+				node->rigth->prev = node; 
+			}
+			else if (i != node->node + 1 && node->rigth)
+			{
 				node = node->rigth;
+				i--;
+			}
 		}
 		i++;
 	}
@@ -255,4 +289,5 @@ int	main(int argc, char *argv[], char *envp[])
 		i = 0;
 		add_history(line);
 	}
+	return (0);
 }
