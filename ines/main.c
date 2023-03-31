@@ -6,287 +6,240 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/30 08:29:35 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/03/31 20:05:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_file(char **str, t_ast *node)
+int	input_file(t_ast *node)
 {
-	int	i;
+	int fd;
 
-	i = 0;
-	while (str[i])
-	{
-		if (i == node->node)
-		{
-			i++;
-			return (str[i]);
-		}
-		i++;
-	}
-	return (NULL);
+	fd = open(node->file, O_RDONLY);
+	if (fd < 0)
+		exit(EXIT_FAILURE);
+	return (fd);
 }
 
-char	**treat_string(char **str, t_ast *aux, int i)
+int	output_file(t_ast *node)
 {
-	char	**new;
-	int		words;
+	int fd;
+
+	fd = open(node->file, O_TRUNC | O_CREAT | O_RDWR, 0000666);
+	if (fd < 0)
+		exit(EXIT_FAILURE);
+	return (fd);
+}
+
+int counting_pipes(t_ast *tree)
+{
+	int	pipes;
+
+	pipes = 0;
+	while (tree->rigth)
+	{
+		if (tree->type == pipem)
+			pipes++;
+		tree = tree->rigth;
+	}
+	while (tree->prev)
+		tree = tree->prev;
+	return (pipes);
+}
+
+int	*creating_pipes(t_ast *tree, int pipes)
+{
+	int *array;
+	int	i;
+
+	array = (int *)malloc(sizeof(int) * 2 * pipes);
+	if (!array)
+		return (NULL);
+	i = 0;
+	while (i < pipes)
+	{
+		if (pipe(array + (2 * i)) < 0)
+			return (NULL);
+		i++;
+	}
+	return (array);
+}
+
+void close_fd(t_ast *tree, int *pipes)
+{
+	int num_pipes;
+	int	i;
+
+	num_pipes = counting_pipes(tree);
+	i = 0;
+	while (i < num_pipes * 2)
+	{
+		close(pipes[i]);
+		i++;
+	}
+}
+
+int	child_in(t_ast *tree, int in, int *pipes, char *envp[])
+{
+	char *envp2;
+	char **paths;
+	char *cmd_path;
+
+	dup2(pipes[1], STDOUT_FILENO);
+	//dup2(in, 0);
+	close_fd(tree, pipes);
+	envp2 = get_path(envp);
+	paths = ft_split(envp2, ':');
+	cmd_path = find_path(tree->command[0], paths);
+	if (!cmd_path)
+		exit(EXIT_FAILURE);
+	if (execve(cmd_path, tree->command, envp) < 0)
+		exit(EXIT_FAILURE);
+	return (0);
+}
+
+int	child_out(t_ast *tree, int out, int *pipes, char *envp[])
+{
+	char	*envp2;
+	char	**paths;
+	char	*cmd_path;
+
+	dup2(pipes[0], STDIN_FILENO);
+	//dup2(out, 1);
+	close_fd(tree, pipes);
+	envp2 = get_path(envp);
+	paths = ft_split(envp2, ':');
+	while (tree->rigth)
+		tree = tree->rigth;
+	cmd_path = find_path(tree->command[0], paths);
+	if (!cmd_path)
+		exit(EXIT_FAILURE);
+	if (execve(cmd_path, tree->command, envp) < 0)
+		exit(EXIT_FAILURE);
+	return(0);
+}
+
+int	child_mid(t_ast *tree, int *pipes, int i, char *envp[])
+{
+	char	*envp2;
+	char	**paths;
+	char	*cmd_path;
 	int		j;
 
+	dup2(pipes[2 * i - 2], 0);
+	dup2(pipes[2 * i + 1], 1);
+	close_fd(tree, pipes);
+	envp2 = get_path(envp);
+	paths = ft_split(envp2, ':');
 	j = 0;
-	if (!aux)
-		return (str);
-	if (i < aux->node && aux->type == pipem)
+	while (j < i)
 	{
-		new = (char **)malloc(sizeof(char *) * (aux->node - i));
-		while (i < aux->node)
-		{	
-			new[j] = ft_strdup(str[i]);
-			i++;
-			j++;
-		}
-		new[j] = 0;
+		tree = tree->rigth;
+		j++;
 	}
-	else if (i > aux->node && aux->type == pipem)
-	{
-		if (!aux->rigth)
-		{
-			new = (char **)malloc(sizeof(char *) * (i - aux->node + 1));
-			i = aux->node + 1; 
-			while (str[i])
-			{
-				new[j] = ft_strdup(str[i]);
-				i++;
-				j++;
-			}
-			new[j] = 0;
-		}
-	}
-	else if (aux->type == red_in || aux->type == red_out)
-	{
-		if (i < aux->node)
-		{
-			new = (char **)malloc(sizeof(char *) * (aux->node + 1));
-			while (i < aux->node)
-			{
-				new[j] = ft_strdup(str[i]);
-				i++;
-				j++;
-			}
-			new[j] = 0;
-		}
-		else
-		{
-			while (str[i])
-				i++;
-			i--;
-			new = (char **)malloc(sizeof(char *) * (i - aux->node));
-			i = aux->node + 2;
-			while (str[i])
-			{
-				new[j] = ft_strdup(str[i]);
-				i++;
-				j++;
-			}
-			new[j] = 0;
-		}
-	}
-	return (new);
+	cmd_path = find_path(tree->left->command[0], paths);
+	if (!cmd_path)
+		exit(EXIT_FAILURE);
+	if (execve(cmd_path, tree->left->command, envp) < 0)
+		exit(EXIT_FAILURE);
+	return (0);
 }
 
-t_ast	*create_treenode(char **str, int check, int i, t_ast *aux)
+int	doing_pipes(t_ast **tree, int in, int out, char *envp[])
 {
-	t_ast	*node;
+	int		*pipes;
+	int		num_pipes;
+	int 	status;
+	int		i;
+	pid_t	pid;
 
-	node = malloc(sizeof(t_ast));
-	if (node)
+	i = 0;
+	num_pipes = counting_pipes(*tree);
+	pipes = creating_pipes(*tree, num_pipes);
+	/*while (i < num_pipes * 2)
 	{
-		node->node = i;
-		node->type = check;
-		if (check == 3)
-			node->command = treat_string(str, aux, i);
-		else
-			node->command = NULL;
-		if (check == 4)
-			node->file = get_file(str, aux);
-		else
-			node->file = NULL;
-		node->left = NULL;
-		node->rigth = NULL;
-		node->prev = NULL;
-	}
-	return (node);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (i == 0)
+				child_in((*tree)->left, in, pipes, envp);
+			else if (i == num_pipes - 1)
+				child_out((*tree), out, pipes, envp);
+			else
+				child_mid((*tree), pipes, i, envp);
+		}
+		i++;
+	}*/
+	pid_t pid1 = fork();
+	if (pid1 == 0)
+		child_in((*tree)->left, in, pipes, envp);
+	pid_t pid2 = fork();
+	if (pid2 == 0)
+		child_out((*tree), out, pipes, envp);
+	close_fd(*tree, pipes);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
+	//waitpid(-1, &status, WNOHANG);
+	//while (i-- > 0)
+	*tree = (*tree)->rigth;
+	while ((*tree)->rigth && (*tree)->rigth->type == pipem)
+		*tree = (*tree)->rigth;
+	return (0);
 }
 
-void	print_tree(t_ast *node, int i, char **str)
+int	checking_processes(t_ast *tree, char *envp[], int in, int out)
 {
-	int j;
-	int	a;
+	int pid;
+	int status;
 
-	j = i;
-	a = 0;
-	while (j > 0)
+	if (tree->type == red_in)
 	{
-		printf("\t");
-		j--;
+		in = input_file(tree->left);
+		free (tree->left);
+		tree->left = NULL;
 	}
-	j = 0;
-	if (node->command)
+	else if (tree->type == red_out)
 	{
-		printf("node_check: %d, ", node->type);
-		printf("node->command:");
-		while (node->command[a])
-		{
-			printf(" %s", node->command[a]);
-			a++;
-		}
-		printf("\n");
+		out = output_file(tree->left);
+		free (tree->left);
+		tree->left = NULL;
 	}
+	else if (tree->type == pipem)
+		status = doing_pipes(&tree, in, out, envp);
 	else
-		printf("node_check: %d, node->str: %s\n", node->type, str[node->node]);		
-	i++;
-	if (node->left)
 	{
-		while (i > j)
-		{
-			printf("\t");
-			j++;
-		}
-		j = 0;
-		printf("left node\n");
-		print_tree(node->left, i, str);
+		pid = fork();
+		if (pid == 0)
+			do_command(tree, in, out, envp);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 	}
-	if (node->rigth)
-	{
-		while (i > j)
-		{
-			printf("\t");
-			j++;
-		}
-		j = 0;
-		printf("rigth node\n");
-		print_tree(node->rigth, i, str);
-	}
-}
-
-void	parsing_str(char **str)
-{
-	t_ast	*node;
-	int	i;
-	int j;
-
-	i = 0;
-	node = NULL;
-	while (str[i])
-	{
-		if (!ft_strncmp(str[i], "|", 1))
-		{
-			if (!node)
-				node = create_treenode(NULL, pipem, i, NULL);
-			else
-				node->rigth = create_treenode(NULL, pipem, i, node);
-		}
-		else if (!ft_strncmp(str[i], ">", 1))
-		{
-			if (!node)
-				node = create_treenode(NULL, red_out, i, NULL);
-			else
-				node->rigth = create_treenode(NULL, red_out, i, node);
-		}
-		else if (!ft_strncmp(str[i], "<", 1))
-		{
-			if (!node)
-				node = create_treenode(NULL, red_in, i, NULL);
-			else
-				node->rigth = create_treenode(NULL, red_in, i, node);
-		}
-		if (node && node->rigth)
-		{
-			node->rigth->prev = node;
-			node = node->rigth;
-		}
-		i++;
-	}
-	if (node)
-		while (node->prev)
-			node = node->prev;
-	i = 0;
-	while (str[i])
-	{
-		if (!node)
-		{
-			node = create_treenode(str, command, i, NULL);
-			break ;
-		}
-		if (node->type == pipem && node->node != i)
-		{
-			if (i < node->node)
-			{
-				node->left = create_treenode(str, command, i, node);
-				i = node->node;
-			}
-			else if (i > node->node)
-			{
-				if (!node->rigth)
-				{
-					while (str[i])
-						i++;
-					i--;
-					node->rigth = create_treenode(str, command, i, node);
-				}
-				else
-				{
-					node = node->rigth;
-					node->left = create_treenode(str, command, i, node);
-					i = node->node;
-				}
-			}
-		}
-		else if ((node->type == red_in || node->type == red_out) && i != node->node)
-		{
-			if (i == node->node + 1)
-				node->left = create_treenode(str, file, i, node);
-			else if (i != node->node + 1 && !node->rigth)
-			{
-				node->rigth = create_treenode(str, command, i, node);
-				while (str[i] && node->left)
-					i++;
-				if (node->left)
-					i--;
-				if (i < node->node)
-					i = node->node;
-				node->rigth->prev = node; 
-			}
-			else if (i != node->node + 1 && node->rigth)
-			{
-				node = node->rigth;
-				i--;
-			}
-		}
-		i++;
-	}
-	while (node->prev)
-		node = node->prev;
-	print_tree(node, 0, str);
+	if (tree->rigth)
+		status = checking_processes(tree->rigth, envp, in, out);
+	return (status);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	char *line;
 	char **str;
-	int i;
+	t_ast *tree;
+	int fd_in;
+	int fd_out;
 
-	i = 0;
+	tree = NULL;
 	while (1)
 	{
 		line = readline("\033[1;31m prompt: \033[0m");
 		str = ft_split(line,' ');
-		if (!ft_strncmp(str[i], "exit", 4))
+		if (!ft_strncmp(str[0], "exit", 4))
 			exit(EXIT_SUCCESS);
-		parsing_str(str);
-		i = 0;
+		tree = parsing_str(str);
+		fd_in = 0;
+		fd_out = 1;
+		checking_processes(tree, envp, fd_in, fd_out);
 		add_history(line);
 	}
 	return (0);
