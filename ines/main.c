@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/31 20:05:05 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:18:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	child_in(t_ast *tree, int in, int *pipes, char *envp[])
 	char **paths;
 	char *cmd_path;
 
-	dup2(pipes[1], STDOUT_FILENO);
-	//dup2(in, 0);
+	dup2(pipes[1], 1);
+	dup2(in, 0);
 	close_fd(tree, pipes);
 	envp2 = get_path(envp);
 	paths = ft_split(envp2, ':');
@@ -105,8 +105,8 @@ int	child_out(t_ast *tree, int out, int *pipes, char *envp[])
 	char	**paths;
 	char	*cmd_path;
 
-	dup2(pipes[0], STDIN_FILENO);
-	//dup2(out, 1);
+	dup2(pipes[counting_pipes(tree) * 2 - 2], 0); 
+	dup2(out, 1);
 	close_fd(tree, pipes);
 	envp2 = get_path(envp);
 	paths = ft_split(envp2, ':');
@@ -156,32 +156,25 @@ int	doing_pipes(t_ast **tree, int in, int out, char *envp[])
 
 	i = 0;
 	num_pipes = counting_pipes(*tree);
+	if (num_pipes == 1)
+		num_pipes++;
 	pipes = creating_pipes(*tree, num_pipes);
-	/*while (i < num_pipes * 2)
+	while (i < num_pipes * 2 - 1)
 	{
 		pid = fork();
 		if (pid == 0)
 		{
 			if (i == 0)
 				child_in((*tree)->left, in, pipes, envp);
-			else if (i == num_pipes - 1)
+			else if (i == num_pipes * 2 - 2)
 				child_out((*tree), out, pipes, envp);
 			else
 				child_mid((*tree), pipes, i, envp);
 		}
 		i++;
-	}*/
-	pid_t pid1 = fork();
-	if (pid1 == 0)
-		child_in((*tree)->left, in, pipes, envp);
-	pid_t pid2 = fork();
-	if (pid2 == 0)
-		child_out((*tree), out, pipes, envp);
+	}
 	close_fd(*tree, pipes);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-	//waitpid(-1, &status, WNOHANG);
-	//while (i-- > 0)
+	wait(NULL);
 	*tree = (*tree)->rigth;
 	while ((*tree)->rigth && (*tree)->rigth->type == pipem)
 		*tree = (*tree)->rigth;
@@ -206,7 +199,10 @@ int	checking_processes(t_ast *tree, char *envp[], int in, int out)
 		tree->left = NULL;
 	}
 	else if (tree->type == pipem)
+	{
 		status = doing_pipes(&tree, in, out, envp);
+		return (status);
+	}
 	else
 	{
 		pid = fork();
@@ -216,7 +212,7 @@ int	checking_processes(t_ast *tree, char *envp[], int in, int out)
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 	}
-	if (tree->rigth)
+	if (tree->rigth && tree->rigth->type != pipem)
 		status = checking_processes(tree->rigth, envp, in, out);
 	return (status);
 }
@@ -234,7 +230,7 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		line = readline("\033[1;31m prompt: \033[0m");
 		str = ft_split(line,' ');
-		if (!ft_strncmp(str[0], "exit", 4))
+		if (str && !ft_strncmp(str[0], "exit", 4))
 			exit(EXIT_SUCCESS);
 		tree = parsing_str(str);
 		fd_in = 0;
