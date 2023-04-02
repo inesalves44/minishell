@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/03/31 15:46:49 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/02 20:43:58 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*find_path(char *final, char **paths)
 	return (NULL);
 }
 
-void	do_command(t_ast *tree, int in, int out, char *envp[])
+int	do_command(t_ast *tree, int in, int out, char *envp[])
 {
 	char **paths;
 	char *envp2;
@@ -56,7 +56,7 @@ void	do_command(t_ast *tree, int in, int out, char *envp[])
 	paths = ft_split(envp2, ':');
 	cmd_path = find_path(tree->command[0], paths);
 	if (!cmd_path)
-		exit(EXIT_FAILURE);
+		return (error_process(" command not found", tree, 127));
 	if (execve(cmd_path, tree->command, envp) < 0)
-		exit(EXIT_FAILURE);
+		return (error_process("execve error", NULL, 1));
 }
