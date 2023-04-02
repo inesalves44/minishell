@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_stritrti.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 20:52:46 by hmaciel-         ###   ########.fr       */
+/*   Created: 2022/11/07 12:35:14 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/08 14:52:29 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void   pwd(t_root *root)
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	printf("%s\n", get_env_value(root, "PWD"));
+	int	i;
+
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i] != '\0')
+	{
+		(f)(i, s + i);
+		i++;
+	}
 }

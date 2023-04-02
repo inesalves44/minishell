@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 20:52:46 by hmaciel-         ###   ########.fr       */
+/*   Created: 2022/11/11 23:18:49 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/12 19:10:29 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void   pwd(t_root *root)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	printf("%s\n", get_env_value(root, "PWD"));
+	t_list	*tmp;
+
+	if (lst)
+	{
+		if (!*lst)
+			*lst = new;
+		else
+		{
+			tmp = ft_lstlast(*(lst));
+			tmp->next = new;
+		}
+	}
 }

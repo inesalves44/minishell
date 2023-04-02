@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 20:52:46 by hmaciel-         ###   ########.fr       */
+/*   Created: 2022/11/12 11:00:40 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/14 11:34:36 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "minishell.h"
-
-void   pwd(t_root *root)
+void	ft_lstiter(t_list *lst, void (*f)(void*))
 {
-	printf("%s\n", get_env_value(root, "PWD"));
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }

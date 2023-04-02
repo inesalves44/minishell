@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 20:52:46 by hmaciel-         ###   ########.fr       */
+/*   Created: 2022/11/07 12:23:18 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/29 09:39:30 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void   pwd(t_root *root)
+void	ft_putstr_fd(char *s, int fd)
 {
-	printf("%s\n", get_env_value(root, "PWD"));
+	int	i;
+
+	if (fd < 0)
+		return ;
+	i = 0;
+	while (s[i] != '\0')
+		write(fd, &s[i++], 1);
 }

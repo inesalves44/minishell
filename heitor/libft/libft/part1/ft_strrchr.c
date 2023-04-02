@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 20:52:46 by hmaciel-         ###   ########.fr       */
+/*   Created: 2022/11/07 11:55:02 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/25 14:02:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void   pwd(t_root *root)
+char	*ft_strrchr(const char *s, int c)
 {
-	printf("%s\n", get_env_value(root, "PWD"));
+	int		i;
+	char	*str;
+
+	i = ft_strlen(s);
+	str = (char *)s;
+	while (i >= 0)
+	{
+		if ((unsigned char)c == str[i])
+			return (&str[i]);
+		i--;
+	}
+	return (NULL);
 }

@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 20:52:46 by hmaciel-         ###   ########.fr       */
+/*   Created: 2022/09/05 18:55:23 by idias-al          #+#    #+#             */
+/*   Updated: 2022/11/08 16:47:48 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void   pwd(t_root *root)
+char	*ft_strdup(const char *s)
 {
-	printf("%s\n", get_env_value(root, "PWD"));
+	char	*test;
+	int		len;
+
+	len = ft_strlen(s);
+	test = (char *)malloc(sizeof(char) * (len + 1));
+	if (!test)
+		return (NULL);
+	ft_strlcpy(test, s, len + 1);
+	return (test);
 }

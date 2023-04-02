@@ -6,24 +6,44 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/03/30 20:42:13 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/02 19:24:18 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "temp.h"
+#include "minishell.h"
 
 void    echo(t_root *root)
 {
-    int     element;
+    int     cmd;
+	char	*key;
+	int		print_space;
 
 	// TODO if init with $ check if the env var exist.
-    element = 1;
-    while(root->command[element])
-    {
-        printf("%s", root->command[element]);
-        if (root->command[element + 1] != NULL)
-            printf(" ");
-        element++;
-    }
-    printf("\n");
+    cmd = 1;
+	key = NULL;
+	print_space = TRUE;
+	while(root->ast_tree.command[cmd])
+	{
+		if (root->ast_tree.command[cmd][0] == '$')
+		{
+			key = extract_key(root->ast_tree.command[cmd]);
+			if (ft_strlen(root->ast_tree.command[cmd]) - 1 == ft_strlen(key+1))
+			{
+				if(!print_env_value(root, key+1))
+					print_space = FALSE;
+				else
+					print_space = TRUE;
+			}
+			free(key);
+		}
+		else
+		{
+			print_space = TRUE;
+			printf("%s", root->ast_tree.command[cmd]);
+		}
+		if (root->ast_tree.command[cmd + 1] != NULL && print_space)
+			printf(" ");
+		cmd++;
+	}
+	printf("\n");
 }
