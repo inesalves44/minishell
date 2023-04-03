@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/03 11:46:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:28:21 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,6 @@ int	doing_pipes(t_ast *tree, int in, int out, char *envp[])
 	}
 
 	close_fd(tree, pipes);
-	waitpid(-1, &status, 0);
+	waitpid(pid, &status, 0);
 	return (0);
 }

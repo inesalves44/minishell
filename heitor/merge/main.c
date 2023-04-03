@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 19:12:52 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/03 12:03:40 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:28:02 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int main(int argc, char const *argv[], char *envp[])
 		if (root.tree)
 		{
 			status = checking_processes(root.tree, envp, fd_in, fd_out);
-			waitpid(-1, &status, 0);
 			free_tree(root.tree, 0);
 		}
 
