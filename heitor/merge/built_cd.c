@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:11:12 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 21:59:35 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:49:43 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	cd(t_root *root)
 	char	*path;
 	char cwd[BUFFER_PATH];
 
-	size = get_array_size(root->ast_tree.command);
+	size = get_array_size(root->tree->command);
 	if(size == 1)
 	{
 		path = get_env_value(root, "HOME");
@@ -45,8 +45,8 @@ void	cd(t_root *root)
 		printf("minishell: cd: too many arguments\n");
 	else
 	{
-		err = ft_strjoin("minishell: cd: ", root->ast_tree.command[1]);
-		if (chdir(root->ast_tree.command[1]) == 0)
+		err = ft_strjoin("minishell: cd: ", root->tree->command[1]);
+		if (chdir(root->tree->command[1]) == 0)
 		{
 			getcwd(cwd, BUFFER_PATH);
 			change_value(root, "PWD", transform(cwd));

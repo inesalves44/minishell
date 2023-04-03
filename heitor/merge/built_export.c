@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/02 21:57:06 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:51:15 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ void	export(t_root *root)
 	int		param;
 
 	param = 1;
-	while (root->ast_tree.command[param])
+	while (root->tree->command[param])
 	{
-		if (has_error(root->ast_tree.command[param]))
+		if (has_error(root->tree->command[param]))
 			break ;
 		else
 		{
-			key = extract_key(root->ast_tree.command[1]);
-			value = extract_value(root->ast_tree.command[1]);
+			key = extract_key(root->tree->command[1]);
+			value = extract_value(root->tree->command[1]);
 			if (!change_value(root, key, value))
 			{
 				ft_lstadd_back_env(&root->my_envp.env_lst, ft_lstnew_env(key,value));

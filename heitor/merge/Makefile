@@ -4,7 +4,8 @@ CC			= cc
 CFLAGS		= -g #-fsanitize=address
 LIBFT = libft.a
 OBJS = main.o parsing.o command.o error_exit.o pipes.o get_prompt.o \
-		env_utils.o get_value.o init_envs.o
+		env_utils.o get_value.o init_envs.o built_cd.o built_echo.o \
+		built_export.o built_pwd.o
 NAME = minishell
 
 all: $(OBJS)

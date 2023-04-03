@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/03 15:28:21 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:27:18 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	child_out(t_ast *tree, int out, int *pipes, char *envp[])
 	while (tree->rigth)
 		tree = tree->rigth;
 	cmd_path = find_path(tree->command[0], paths);
+	rl_redisplay();
 	if (!cmd_path)
 		return (error_process(" command not found", tree, 127));
 	if (execve(cmd_path, tree->command, envp) < 0)
@@ -138,7 +139,6 @@ int	doing_pipes(t_ast *tree, int in, int out, char *envp[])
 		}
 		i++;
 	}
-
 	close_fd(tree, pipes);
 	waitpid(pid, &status, 0);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 19:12:52 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/03 15:28:02 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:46:21 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,25 @@ void	free_command(t_root *root)
 	free(root->tree->command);
 }
 
+
+int	is_built(char **commands)
+{
+	if (ft_strncmp(commands[0],"cd", 2) == 0 && ft_strlen(commands[0]) == 2)
+		return (TRUE);
+	if (ft_strncmp(commands[0],"echo", 4) == 0 && ft_strlen(commands[0]) == 4)
+		return (TRUE);
+	if (ft_strncmp(commands[0],"env", 3) == 0 && ft_strlen(commands[0]) == 3)
+		return (TRUE);
+	if (ft_strncmp(commands[0],"export", 6) == 0 && ft_strlen(commands[0]) == 6)
+		return (TRUE);
+	if (ft_strncmp(commands[0],"pwd", 3) == 0 && ft_strlen(commands[0]) == 3)
+		return (TRUE);
+	if (ft_strncmp(commands[0],"exit", 4) == 0 && ft_strlen(commands[0]) == 4)
+		return (TRUE);
+	return (FALSE);
+
+}
+
 int main(int argc, char const *argv[], char *envp[])
 {
 	t_root	root;
@@ -112,33 +131,40 @@ int main(int argc, char const *argv[], char *envp[])
 
 	init_all(&root, envp);
 
+	char *saved_line = NULL;
+	int saved_point = 0;
+
 
 	while (1)
 	{
-		prompt = get_prompt(&root);
-		line = readline(prompt);
+		line = readline(get_prompt(&root));
     	str = ft_split(line, ' ');
 		root.tree = parsing_str(str);
 		fd_in = 0;
 		fd_out = 1;
-		if (root.tree)
+		if (!is_built(root.tree->command))
 		{
-			status = checking_processes(root.tree, envp, fd_in, fd_out);
-			free_tree(root.tree, 0);
+			if (root.tree)
+			{
+				status = checking_processes(root.tree, root.my_envp.env_array, fd_in, fd_out);
+				free_tree(root.tree, 0);
+			}
 		}
-
-		/* if (ft_strncmp("exit", line, 4) == 0)
-			exit(0);
-		if (ft_strncmp("export ", line, 7) == 0)
-			export(&root);
-		if (ft_strncmp("env", line, 3) == 0)
-			print_envlsts(&root);
-		if (ft_strncmp("echo", line, 4) == 0)
-			echo(&root);
-		if (ft_strncmp("cd", line, 2) == 0)
-			cd(&root);
-		if (ft_strncmp("pwd", line, 3) == 0)
-			pwd(&root); */
+		else
+		{
+			if (ft_strncmp("exit", line, 4) == 0)
+				exit(0);
+			if (ft_strncmp("export ", line, 7) == 0)
+				export(&root);
+			if (ft_strncmp("env", line, 3) == 0)
+				print_envlsts(&root);
+			if (ft_strncmp("echo", line, 4) == 0)
+				echo(&root);
+			if (ft_strncmp("cd", line, 2) == 0)
+				cd(&root);
+			if (ft_strncmp("pwd", line, 3) == 0)
+				pwd(&root);
+		}
 		add_history(line);
 		free(line);
 		line = NULL;
