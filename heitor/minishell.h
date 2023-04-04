@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/02 21:47:12 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:20:24 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,26 +67,17 @@ typedef struct ast_tree
 	struct ast_tree *prev;
 } t_ast;
 
-typedef struct s_envp
-{
-	char		**env_array;
-	t_envlst	*env_lst;
-} t_envp;
-
 typedef	struct s_root
 {
-	t_ast		ast_tree;
-	t_envp		my_envp;
+	t_ast		*tree;
+	char		**env_array;
+	t_envlst	*env_lst;
+	char		*user;
+	char		*prompt;
+	char		*line;
+	char		**str;
+	char		**command;
 } t_root;
-
-char	*get_file(char **str, t_ast *node);
-char	**treat_string(char **str, t_ast *aux, int i);
-t_ast	*create_treenode(char **str, int check, int i, t_ast *aux);
-void	print_tree(t_ast *node, int i, char **str);
-t_ast	*parsing_str(char **str);
-char	*get_path(char **envp);
-char	*find_path(char *final, char **paths);
-void	do_command(t_ast *tree, int in, int out, char *envp[]);
 
 /* env funcs*/
 
@@ -97,22 +88,24 @@ t_envlst	*ft_lstlast_envlst(t_envlst *envs);
 t_envlst	*ft_lstnew_env(char *key, char *value);
 void		free_envp_lst(t_root *root);
 void		free_envp_array(t_root *root);
-char		*get_env_value(t_root *root, char *key);
-char		*get_prompt(t_root *root);
 void		refresh_env_array(t_root *root);
 int			get_array_size(char **array);
 int			get_lst_size(t_envlst *lst);
 char		*ft_strjoin_gnl(char *s1, char *s2);
-char		*extract_key(char *env);
-char		*extract_value(char *env);
 int			print_env_value(t_root *root, char *key);
+char		*get_env_value(t_root *root, char *key);
 int			change_value(t_root *root, char *key, char *new_value);
-int			change_value2(t_root *root, char *key, char new_value[]);
+char		*get_prompt(t_root *root);
+char		*get_value_from_str(char *env);
+char		*get_key_from_str(char *env);
+void		free_array(char **array);
 
-/* BUILT */
-void		export(t_root *root);
-void		echo(t_root *root);
-void		cd(t_root *root);
-void		pwd(t_root *root);
+/*built in*/
+int		built_in_router(t_root *root);
+void	cd(t_root *root);
+void    echo(t_root *root);
+void	pwd(t_root *root);
+void	export(t_root *root);
+
 
 #endif
