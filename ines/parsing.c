@@ -6,38 +6,44 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 02:37:37 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/04 20:54:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_file(t_lexer *lexer, t_ast *node)
+int	get_file(t_lexer **lexer, t_ast *node)
 {
 	int	i;
 
 	i = 0;
-	while (lexer)
+	while (*lexer)
 	{
-		if (lexer->number == node->node + 1)
-			return (lexer->str);
-		lexer = lexer->next;
+		if ((*lexer)->number == node->node + 1)
+			return (0);
+		*lexer = (*lexer)->next;
 	}
-	return (NULL);
+	return (error_syntax("'newline'", 2));
 }
 
-int	checking_nodes(t_ast *node, int j, int i)
+int	checking_nodes(t_ast *tree, t_lexer *lexer)
 {
-	int max;
-	
-	while (node->prev)
-		node = node->prev;
-	max = j;
-	while (node)
+	int	min;
+	int	max;
+
+	min = lexer->number;
+	max = tree->node;
+	while (tree->prev)
+		tree = tree->prev;
+	while (tree)
 	{
-		if (node->node < j && node->node > i)
-			max = node->node;
-		node = node->rigth;
+		if (tree->left && tree->left->node > lexer->number && tree->left->node < max)
+			max = tree->left->node;
+		if (tree->node > lexer->number && tree->node < max)
+			max = tree->node;
+		if (!tree->rigth)
+			break ;
+		tree = tree->rigth;
 	}
 	return (max);
 }
@@ -45,10 +51,9 @@ int	checking_nodes(t_ast *node, int j, int i)
 int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 {
 	int	len;
-	int a;
 
 	len = 0;
-	if (!aux)
+	if (i == 0)
 	{
 		while (lexer->next)
 		{
@@ -58,8 +63,8 @@ int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 		len++;
 		return (len);
 	}
-	if (aux->rigth)
-		a = aux->rigth->node - aux->node;
+	else if (i == 1)
+		len = checking_nodes(aux, lexer) - lexer->number;
 	else
 	{
 		while (lexer->next)
@@ -89,7 +94,7 @@ char	**create_array(t_lexer *lexer, int len)
 	return (new);
 }
 
-char	**treat_string(t_lexer *lexer, t_ast *aux, int i)
+char	**treat_string(t_lexer **lexer, t_ast *aux)
 {
 	char	**new;
 	int		j;
@@ -97,36 +102,54 @@ char	**treat_string(t_lexer *lexer, t_ast *aux, int i)
 	
 	j = 0;
 	if (!aux)
-		len = length_lexer(lexer, aux, i);
+	{
+		len = length_lexer(*lexer, aux, 0);
+		new = create_array(*lexer, len);
+	}
 	else
 	{
 		if (aux->type == red_in || aux->type == red_out || aux->type == app_out || aux->type == here_doc)
 		{
-			if (lexer->number < aux->node)
-				len = aux->node - lexer->number;
+			if ((*lexer)->number < aux->node)
+				len = length_lexer(*lexer, aux, 1);
 			else
-				len = length_lexer(lexer, aux, i);
+				len = length_lexer(*lexer, aux, 0);
+			new = create_array(*lexer, len);
+		}
+		else if (aux->type == pipem)
+		{
+			if (!aux->left)
+			{
+				len = length_lexer(*lexer, aux, 1);
+				new = create_array(*lexer, len);
+				while ((*lexer)->number != aux->node)
+					*lexer = (*lexer)->next;
+			}
+			else if (!aux->rigth)
+			{
+				len = length_lexer(*lexer, aux, 2);
+				new = create_array(*lexer, len);
+			}
 		}
 	}
-	new = create_array(lexer, len);
 	return (new);
 }
 
-t_ast	*create_treenode(t_lexer *lexer, t_ast *aux, int i, int check)
+t_ast	*create_treenode(t_lexer **lexer, t_ast *aux, int check)
 {
 	t_ast	*node;
 
 	node = malloc(sizeof(t_ast));
 	if (node)
 	{
-		node->node = lexer->number;
-		node->type = lexer->type;
+		node->node = (*lexer)->number;
+		node->type = check;
 		if (check == command)
-			node->command = treat_string(lexer, aux, i);
+			node->command = treat_string(lexer, aux);
 		else
 			node->command = NULL;
 		if (check == file)
-			node->file = ft_strdup(get_file(lexer, aux));
+			node->file = ft_strdup((*lexer)->str);
 		else
 			node->file = NULL;
 		node->left = NULL;
@@ -194,73 +217,103 @@ void	print_tree(t_ast *node, int i)
 	}
 }
 
-int	lexer_length(t_lexer *lexer)
+int	parsing_str(t_lexer **lexer, t_ast **tree)
 {
-	int	len;
-
-	len = 0;
-	while (lexer->prev)
-		lexer = lexer->prev;
-	while (lexer)
-	{
-		len++;
-		if (!lexer->next)
-			break;
-		lexer = lexer->next;
-	}
-	return (len);
-}
-
-t_ast	*parsing_str(t_lexer *lexer)
-{
-	t_ast	*tree;
 	int	i;
-	int j;
 
-	tree = NULL;
-	while (lexer)
+	while (*lexer)
 	{
-		if (lexer->type != 0 && lexer->type != 82 && lexer->type != 87)
+		if ((*lexer)->type != 0 && (*lexer)->type != 82 && (*lexer)->type != 87)
 		{
-			if (!tree)
-				tree = create_treenode(lexer, NULL, lexer->number, lexer->type);
+			if (*tree == NULL)
+				*tree = create_treenode(lexer, NULL, (*lexer)->type);
 			else
-				tree->rigth = create_treenode(lexer, tree, lexer->number, lexer->type);
+				(*tree)->rigth = create_treenode(lexer, *tree, (*lexer)->type);
 		}
-		if (tree && tree->rigth)
+		if (*tree && (*tree)->rigth)
 		{
-			tree->rigth->prev = tree;
-			tree = tree->rigth;
+			(*tree)->rigth->prev = *tree;
+			*tree = (*tree)->rigth;
 		}
-		if (!lexer->next)
+		if ((*lexer)->next == NULL)
 			break ;
-		lexer = lexer->next;
+		*lexer = (*lexer)->next;
 	}
-	while (lexer->prev)
-		lexer = lexer->prev;
-	if (!tree)
-		tree = create_treenode(lexer, NULL, lexer->number, command);
+	while ((*lexer)->prev != NULL)
+		*lexer = (*lexer)->prev;
+	if (*tree == NULL)
+		*tree = create_treenode(lexer, NULL, command);
 	else
 	{
-		if (tree)
-			while (tree->prev)
-				tree = tree->prev;
-		while (lexer)
+		if (((*lexer)->type != 0 || (*lexer)->type != 82 || (*lexer)->type != 87 || (*lexer)->type != pipem) && (*lexer)->next == NULL)
+			return (error_syntax("'newline'", 2));
+		while ((*tree)->prev != NULL)
+			*tree = (*tree)->prev;
+		while (*lexer)
 		{
-			if (lexer->number != tree->node && (tree->type == red_in || tree->type == red_out || tree->type == here_doc || tree->type == app_out))
+			if ((*lexer)->number != (*tree)->node && ((*tree)->type == red_in || (*tree)->type == red_out || (*tree)->type == here_doc || (*tree)->type == app_out))
 			{
-				if (!tree->left && lexer->number == tree->node + 1)
-					tree->left = create_treenode(lexer, tree, lexer->number, file);
-				else if (!tree->rigth && lexer_length(lexer) > 2)
-					tree->rigth = create_treenode(lexer, tree, lexer->number, command);
+				i = (*lexer)->number;
+				if ((*tree)->left == NULL)
+				{
+					if (get_file(lexer, *tree))
+						return (2);
+					(*tree)->left = create_treenode(lexer, *tree, file);
+					if (i != (*lexer)->number)
+					{
+						while ((*lexer)->number != i)
+							*lexer = (*lexer)->prev;	
+					}
+					else
+					{
+						if ((*lexer)->next != NULL)
+							*lexer = (*lexer)->next;
+						else
+							break ;	
+					}
+				}
+				if ((*tree)->rigth == NULL && (*tree)->left->node != (*lexer)->number)
+				{
+					(*tree)->rigth = create_treenode(lexer, *tree, command);
+					if ((*lexer)->next != NULL)
+						*lexer = (*lexer)->next;
+					else
+						break ;
+				}
+				else if ((*tree)->rigth != NULL)
+					*tree = (*tree)->rigth;
 			}
-			if (!lexer->next)
+			else if ((*lexer)->number != (*tree)->node && (*tree)->type == pipem)
+			{
+				if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
+				{
+					(*tree)->left = create_treenode(lexer, *tree, command);
+					if ((*lexer)->next != NULL)
+						*lexer = (*lexer)->next;
+					else
+						break ;
+				}
+				if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
+				{
+					(*tree)->rigth = create_treenode(lexer, *tree, command);
+					if ((*lexer)->next != NULL)
+						*lexer = (*lexer)->next;
+					else
+						break ;
+				}
+				else if ((*tree)->rigth != NULL)
+					*tree = (*tree)->rigth;
+			}
+			else if ((*lexer)->next != NULL)
+				*lexer = (*lexer)->next;
+			else if ((*lexer)->next == NULL)
 				break ;
-			lexer = lexer->next;
 		}
 	}
-	while (tree->prev)
-		tree = tree->prev;
-	print_tree(tree, 0);
-	return (tree);
+	while ((*tree)->prev != NULL)
+		*tree = (*tree)->prev;
+	while ((*lexer)->prev != NULL)
+		*lexer = (*lexer)->prev;
+	//print_tree(*tree, 0);
+	return (0);
 }

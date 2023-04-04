@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 02:33:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:03:46 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_signal(char *main, int *i, t_lexer **node)
 			return (error_syntax(&main[j], 2));
 		else
 			*node = lexical_node(NULL, pipem, j);
-		*i = j + 1;
+		*i = j;
 	}
 	else if (main[j] == '<')
 	{
@@ -53,7 +53,7 @@ int	check_signal(char *main, int *i, t_lexer **node)
 		}
 		else
 			*node = lexical_node(NULL, red_in, j);
-		*i = j + 1;
+		*i = j;
 	}
 	else if (main[j] == '>')
 	{
@@ -64,7 +64,7 @@ int	check_signal(char *main, int *i, t_lexer **node)
 		}
 		else
 			*node = lexical_node(NULL, red_out, j);
-		*i = j + 1;
+		*i = j;
 	}
 	return (0);
 }
@@ -127,14 +127,14 @@ int	check_firstnode(char *main, int *i, t_lexer **node)
 		return (2);
 	if (*node != NULL)
 	{
-		*i = j;	
+		*i = j;
 		return (0);
 	}
 	if (main[j] == 34 || main[j] == 39)
 	{
 		test = treating_quotes(main, main[j], &j);
 		*node = lexical_node(test, main[j] + '0', j);
-		*i = j + 1;
+		*i = j;
 		return (0);
 	}
 	a = 0;
@@ -142,33 +142,33 @@ int	check_firstnode(char *main, int *i, t_lexer **node)
 		j++;
 	test = treating_str1(main, a ,j);
 	*node = lexical_node(test, 0, a);
-	*i = j;
+	*i = j - 1;
 	return (0);
 }
 
-t_lexer	*lexical_annalysis(char *str)
+int	lexical_annalysis(t_lexer **node, char *str)
 {
-	t_lexer	*node;
 	char	*test;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	node = NULL;
-	if (check_firstnode(str, &i, &node))
-		return (NULL);
+	*node = NULL;
+	if (check_firstnode(str, &i, node))
+		return (2);
+	i++;
 	while (str[i] != '\0')
 	{
 		j = i;
-		if (check_signal(str, &i, &node->next))
-			return (NULL);
-		if (j == i && str[i] != ' ')
+		if (check_signal(str, &i, &(*node)->next))
+			return (2);
+		if (!(*node)->next && str[i] != ' ')
 		{
 			if ((str[i] == 34 || str[i] == 39))
 			{
 				test = treating_quotes(str, str[i], &i);
-				node->next = lexical_node(test, str[j] + '0', j);
+				(*node)->next = lexical_node(test, str[j] + '0', j);
 			}
 			else
 			{
@@ -176,30 +176,30 @@ t_lexer	*lexical_annalysis(char *str)
 					i++;
 				test = treating_str1(str, j, i);
 				i--;
-				node->next = lexical_node(test, 0, j);
+				(*node)->next = lexical_node(test, 0, j);
 			}
 			free (test);
 		}
-		if (node->next)
+		if ((*node)->next)
 		{
-			node->next->prev = node;
-			node = node->next;	
+			(*node)->next->prev = *node;
+			*node = (*node)->next;
 		}
 		i++;
 	}
-	while (node->prev)
-		node = node->prev;
+	while ((*node)->prev)
+		*node = (*node)->prev;
 	int	a = 0;
-	while (node)
+	while (*node)
 	{
-		node->number = a;
-		if (!node->next)
+		(*node)->number = a;
+		if (!(*node)->next)
 			break ;
-		node = node->next;
+		*node = (*node)->next;
 		a++;
 	}
-	while (node->prev)
-		node = node->prev;
+	while ((*node)->prev)
+		*node = (*node)->prev;
 	/*int test2 = 1;
 	while (node)
 	{
@@ -214,5 +214,5 @@ t_lexer	*lexical_annalysis(char *str)
 	}
 	while (node->prev)
 		node = node->prev;*/
-	return (node);
+	return (0);
 }

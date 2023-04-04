@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 00:47:40 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/04 21:50:20 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ typedef struct	lexer_list
 }	t_lexer;
 
 /*parsing*/
-char	*get_file(t_lexer *lexer, t_ast *node);
-char	**treat_string(t_lexer *lexer, t_ast *aux, int i);
-t_ast	*create_treenode(t_lexer *lexer, t_ast *aux, int i, int check);
+int		get_file(t_lexer **lexer, t_ast *node);
+char	**treat_string(t_lexer **lexer, t_ast *aux);
+t_ast	*create_treenode(t_lexer **lexer, t_ast *aux, int check);
 void	print_tree(t_ast *node, int i);
-t_ast	*parsing_str(t_lexer *lexer);
+int		parsing_str(t_lexer **lexer, t_ast **tree);
 
 /*command*/
 char	*get_path(char **envp);
@@ -76,20 +76,25 @@ int		do_command(t_ast *tree, int in, int out, char *envp[]);
 
 /*error_exit file*/
 int		error_process(char *str, t_ast *node, int error);
-void	free_tree(t_ast *node, int a);
+void	free_tree(t_ast **node, int a);
 void	free_str_split(char **str);
 void	close_fd(t_ast *tree, int *pipes);
 int		error_syntax(char *str, int error);
+void	free_lexer(t_lexer **lexer);
 
 /*pipes*/
 int counting_pipes(t_ast *tree);
 int	*creating_pipes(t_ast *tree, int pipes);
-int	child_in(t_ast *tree, int in, int *pipes, char *envp[]);
-int	child_out(t_ast *tree, int out, int *pipes, char *envp[]);
-int	child_mid(t_ast *tree, int *pipes, int i, char *envp[]);
+int	child_in(t_ast *tree, int in, int out, int *pipes, char *envp[]);
+int	child_out(t_ast *tree, int in, int out, int *pipes, char *envp[]);
+int	child_mid(t_ast *tree, int in, int out, int *pipes, char *envp[]);
 int	doing_pipes(t_ast **tree, int in, int out, char *envp[]);
 
 /*lexical*/
-t_lexer	*lexical_annalysis(char *str);
+int	lexical_annalysis(t_lexer **node, char *str);
+
+/*main*/
+int	input_file(t_ast *node, int *fd);
+int	output_file(t_ast *node, int *fd);
 
 #endif
