@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:35:44 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/02 20:44:59 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/03 20:15:50 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@ int	error_process(char *str, t_ast *node, int error)
 	else if (node && node->type == command)
 		 write(2, node->command[0], ft_strlen(node->command[0]));
 	write(2, ":", 1);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
+	return (error);
+}
+
+int	error_syntax(char *str, int error)
+{
+	write(2, "minishell: ", 11);
+	write(2, "syntax error near unexpected token ", 35);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
 	return (error);

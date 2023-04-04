@@ -6,25 +6,22 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/02 23:01:51 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/04 02:37:37 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_file(char **str, t_ast *node)
+char	*get_file(t_lexer *lexer, t_ast *node)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (lexer)
 	{
-		if (i == node->node)
-		{
-			i++;
-			return (str[i]);
-		}
-		i++;
+		if (lexer->number == node->node + 1)
+			return (lexer->str);
+		lexer = lexer->next;
 	}
 	return (NULL);
 }
@@ -45,100 +42,104 @@ int	checking_nodes(t_ast *node, int j, int i)
 	return (max);
 }
 
-char	**treat_string(char **str, t_ast *aux, int i)
+int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 {
-	char	**new;
-	int		words;
+	int	len;
+	int a;
+
+	len = 0;
+	if (!aux)
+	{
+		while (lexer->next)
+		{
+			len++;
+			lexer = lexer->next;
+		}
+		len++;
+		return (len);
+	}
+	if (aux->rigth)
+		a = aux->rigth->node - aux->node;
+	else
+	{
+		while (lexer->next)
+		{
+			len++;
+			lexer = lexer->next;
+		}
+		len++;
+	}
+	return (len);
+}
+
+char	**create_array(t_lexer *lexer, int len)
+{
 	int		j;
-	int		max;
+	char	**new;
 
 	j = 0;
-	if (!aux)
-		return (str);
-	if (i < aux->node && aux->type == pipem)
+	new = (char **)malloc(sizeof(char *) * (len + 1));
+	while (j < len)
 	{
-		max = checking_nodes(aux, aux->node, i);
-		new = (char **)malloc(sizeof(char *) * (max - i + 1));
-		while (i < max)
-		{	
-			new[j] = ft_strdup(str[i]);
-			i++;
-			j++;
-		}
-		new[j] = 0;
+		new[j] = ft_strdup(lexer->str);
+		lexer = lexer->next;
+		j++;
 	}
-	else if (i > aux->node && aux->type == pipem)
-	{
-		if (!aux->rigth)
-		{
-			new = (char **)malloc(sizeof(char *) * (i - aux->node + 1));
-			i = aux->node + 1; 
-			while (str[i])
-			{
-				new[j] = ft_strdup(str[i]);
-				i++;
-				j++;
-			}
-			new[j] = 0;
-		}
-	}
-	else if (aux->type == red_in || aux->type == red_out)
-	{
-		if (i < aux->node)
-		{
-			new = (char **)malloc(sizeof(char *) * (aux->node + 1));
-			while (i < aux->node)
-			{
-				new[j] = ft_strdup(str[i]);
-				i++;
-				j++;
-			}
-			new[j] = 0;
-		}
-		else
-		{
-			while (str[i])
-				i++;
-			i--;
-			new = (char **)malloc(sizeof(char *) * (i - aux->node));
-			i = aux->node + 2;
-			while (str[i])
-			{
-				new[j] = ft_strdup(str[i]);
-				i++;
-				j++;
-			}
-			new[j] = 0;
-		}
-	}
+	new[j] = 0;
 	return (new);
 }
 
-t_ast	*create_treenode(char **str, int check, int i, t_ast *aux)
+char	**treat_string(t_lexer *lexer, t_ast *aux, int i)
+{
+	char	**new;
+	int		j;
+	int		len;
+	
+	j = 0;
+	if (!aux)
+		len = length_lexer(lexer, aux, i);
+	else
+	{
+		if (aux->type == red_in || aux->type == red_out || aux->type == app_out || aux->type == here_doc)
+		{
+			if (lexer->number < aux->node)
+				len = aux->node - lexer->number;
+			else
+				len = length_lexer(lexer, aux, i);
+		}
+	}
+	new = create_array(lexer, len);
+	return (new);
+}
+
+t_ast	*create_treenode(t_lexer *lexer, t_ast *aux, int i, int check)
 {
 	t_ast	*node;
 
 	node = malloc(sizeof(t_ast));
 	if (node)
 	{
-		node->node = i;
-		node->type = check;
-		if (check == 3)
-			node->command = treat_string(str, aux, i);
+		node->node = lexer->number;
+		node->type = lexer->type;
+		if (check == command)
+			node->command = treat_string(lexer, aux, i);
 		else
 			node->command = NULL;
-		if (check == 4)
-			node->file = get_file(str, aux);
+		if (check == file)
+			node->file = ft_strdup(get_file(lexer, aux));
 		else
 			node->file = NULL;
 		node->left = NULL;
 		node->rigth = NULL;
-		node->prev = NULL;
+		if (aux)
+			node->prev = aux;
+		else
+			node->prev = NULL;
 	}
 	return (node);
 }
 
-void	print_tree(t_ast *node, int i, char **str)
+void	print_tree(t_ast *node, int i)
 {
 	int j;
 	int	a;
@@ -162,8 +163,12 @@ void	print_tree(t_ast *node, int i, char **str)
 		}
 		printf("\n");
 	}
+	else if (node->file)
+	{
+		printf("node file: %s\n", node->file);
+	}
 	else
-		printf("node_check: %d, node->str: %s\n", node->type, str[node->node]);		
+		printf("node_check: %d\n", node->type);		
 	i++;
 	if (node->left)
 	{
@@ -174,7 +179,7 @@ void	print_tree(t_ast *node, int i, char **str)
 		}
 		j = 0;
 		printf("left node\n");
-		print_tree(node->left, i, str);
+		print_tree(node->left, i);
 	}
 	if (node->rigth)
 	{
@@ -185,122 +190,77 @@ void	print_tree(t_ast *node, int i, char **str)
 		}
 		j = 0;
 		printf("rigth node\n");
-		print_tree(node->rigth, i, str);
+		print_tree(node->rigth, i);
 	}
 }
 
-t_ast	*parsing_str(char **str)
+int	lexer_length(t_lexer *lexer)
 {
-	t_ast	*node;
+	int	len;
+
+	len = 0;
+	while (lexer->prev)
+		lexer = lexer->prev;
+	while (lexer)
+	{
+		len++;
+		if (!lexer->next)
+			break;
+		lexer = lexer->next;
+	}
+	return (len);
+}
+
+t_ast	*parsing_str(t_lexer *lexer)
+{
+	t_ast	*tree;
 	int	i;
 	int j;
 
-	i = 0;
-	node = NULL;
-	while (str[i])
+	tree = NULL;
+	while (lexer)
 	{
-		if (!ft_strncmp(str[i], "|", 1))
+		if (lexer->type != 0 && lexer->type != 82 && lexer->type != 87)
 		{
-			if (!node)
-				node = create_treenode(NULL, pipem, i, NULL);
+			if (!tree)
+				tree = create_treenode(lexer, NULL, lexer->number, lexer->type);
 			else
-				node->rigth = create_treenode(NULL, pipem, i, node);
+				tree->rigth = create_treenode(lexer, tree, lexer->number, lexer->type);
 		}
-		else if (!ft_strncmp(str[i], ">", 1))
+		if (tree && tree->rigth)
 		{
-			if (!node)
-				node = create_treenode(NULL, red_out, i, NULL);
-			else
-				node->rigth = create_treenode(NULL, red_out, i, node);
+			tree->rigth->prev = tree;
+			tree = tree->rigth;
 		}
-		else if (!ft_strncmp(str[i], "<", 1))
-		{
-			if (!node)
-				node = create_treenode(NULL, red_in, i, NULL);
-			else
-				node->rigth = create_treenode(NULL, red_in, i, node);
-		}
-		if (node && node->rigth)
-		{
-			node->rigth->prev = node;
-			node = node->rigth;
-		}
-		i++;
-	}
-	if (node)
-		while (node->prev)
-			node = node->prev;
-	i = 0;
-	while (str[i])
-	{
-		if (!node)
-		{
-			node = create_treenode(str, command, i, NULL);
+		if (!lexer->next)
 			break ;
-		}
-		if (node->type == pipem && node->node != i)
-		{
-			if (i < node->node)
-			{
-				node->left = create_treenode(str, command, i, node);
-				node->left->prev = node;
-				i = node->node;
-			}
-			else if (i > node->node)
-			{
-				if (!node->rigth)
-				{
-					while (str[i])
-						i++;
-					i--;
-					node->rigth = create_treenode(str, command, i, node);
-					node->rigth->prev = node;
-				}
-				else if (node->rigth->type == pipem)
-				{
-					node = node->rigth;
-					node->left = create_treenode(str, command, i, node);
-					node->left->prev = node;
-					i = node->node;
-				}
-				else
-				{
-					node = node->rigth;
-					i--;
-				}
-			}
-		}
-		else if ((node->type == red_in || node->type == red_out) && i != node->node)
-		{
-			if (!node->left)
-			{
-				j = i;
-				i = node->node + 1;
-				node->left = create_treenode(str, file, i, node);
-				node->left->prev = node;
-				i = j - 1;
-			}
-			else if (i != node->node + 1 && !node->rigth)
-			{
-				node->rigth = create_treenode(str, command, i, node);
-				while (str[i] && node->left)
-					i++;
-				if (node->left)
-					i--;
-				if (i < node->node)
-					i = node->node;
-				node->rigth->prev = node; 
-			}
-			else if (i != node->node + 1 && node->rigth)
-			{
-				node = node->rigth;
-				i--;
-			}
-		}
-		i++;
+		lexer = lexer->next;
 	}
-	while (node->prev)
-		node = node->prev;
-	//print_tree(node, 0, str);
-	return (node);
+	while (lexer->prev)
+		lexer = lexer->prev;
+	if (!tree)
+		tree = create_treenode(lexer, NULL, lexer->number, command);
+	else
+	{
+		if (tree)
+			while (tree->prev)
+				tree = tree->prev;
+		while (lexer)
+		{
+			if (lexer->number != tree->node && (tree->type == red_in || tree->type == red_out || tree->type == here_doc || tree->type == app_out))
+			{
+				if (!tree->left && lexer->number == tree->node + 1)
+					tree->left = create_treenode(lexer, tree, lexer->number, file);
+				else if (!tree->rigth && lexer_length(lexer) > 2)
+					tree->rigth = create_treenode(lexer, tree, lexer->number, command);
+			}
+			if (!lexer->next)
+				break ;
+			lexer = lexer->next;
+		}
+	}
+	while (tree->prev)
+		tree = tree->prev;
+	print_tree(tree, 0);
+	return (tree);
 }

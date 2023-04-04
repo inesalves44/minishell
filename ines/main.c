@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/02 23:04:23 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/04 01:48:31 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char *line;
 	char **str;
 	t_ast *tree;
+	t_lexer *node;
 	int fd_in;
 	int fd_out;
 	int	status;
@@ -90,22 +91,22 @@ int	main(int argc, char *argv[], char *envp[])
 	tree = NULL;
 	status = 0;
 	line = NULL;
-	while (1)
-	{
+	//while (1)
+	//{
 		if (!line)
 			line = readline("\033[1;31m prompt: \033[0m");
 		if (line && !ft_strncmp(line, "exit", 4))
 			exit(EXIT_SUCCESS);
-		str = ft_split(line,' ');
-		tree = parsing_str(str);
-		fd_in = 0;
+		node = lexical_annalysis(line);
+		tree = parsing_str(node);
+		/*fd_in = 0;
 		fd_out = 1;
 		status = checking_processes(tree, envp, fd_in, fd_out);
 		if (tree)
-			free_tree(tree, 0);
+			free_tree(tree, 0);*/
 		add_history(line);
 		free(line);
 		line = NULL;
-	}
+	//}
 	return (0);
 }

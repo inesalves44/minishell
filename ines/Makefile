@@ -3,7 +3,7 @@
 CC			= cc
 CFLAGS		= -lreadline -g #-fsanitize=address
 LIBFT = libft.a
-OBJS = main.o parsing.o command.o error_exit.o pipes.o
+OBJS = main.o parsing.o command.o error_exit.o pipes.o lexical.o
 NAME = minishell
 
 all: $(OBJS)
