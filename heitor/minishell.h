@@ -106,6 +106,7 @@ void	cd(t_root *root);
 void    echo(t_root *root);
 void	pwd(t_root *root);
 void	export(t_root *root);
+void	unset(t_root *root);
 
 
 #endif

@@ -4,7 +4,7 @@ LIBFT = libft.a
 OBJS = main.o \
 	   envs/init_envs.o envs/env_utils.o envs/get_value.o get_prompt.o \
 	   built-in/built_cd.o built-in/built_echo.o  built-in/built_pwd.o \
-	   built-in/built_export.o
+	   built-in/built_export.o built-in/built_unset.o
 
 NAME = minishell
 

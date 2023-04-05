@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/04 23:20:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/05 09:35:48 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 int g_sig = 0;
 
+void	redisplay_prompts()
+{
+	rl_reset_line_state();      // Resets the display state to a clean state
+  	rl_cleanup_after_signal();  // Resets the terminal to the state before readline() was called
+  	rl_replace_line("",0);      // Clears the current prompt
+  	rl_crlf();                  // Moves the cursor to the next line
+  	rl_redisplay();
+}
 void	init_all(t_root *root, char **envp)
 {
 	init_envp(root, envp);
@@ -58,6 +66,7 @@ int	free_all(t_root *root)
 	free(root->user);
 	free(root->prompt);
 	free(root->line);
+	rl_clear_history();
 	printf("exit\n");
 	exit(0);
 }
@@ -76,6 +85,8 @@ int	built_in_router(t_root *root)
 		pwd(root);
 	if (ft_strncmp(root->str[0],"exit", 4) == 0 && ft_strlen(root->str[0]) == 4)
 		free_all(root);
+	if (ft_strncmp(root->str[0],"unset", 5) == 0 && ft_strlen(root->str[0]) == 5)
+		unset(root);
 	return (FALSE);
 }
 
@@ -84,13 +95,7 @@ static	void	sig_int(int sig, siginfo_t *info, void *context)
 	(void)context;
 	(void)info;
 	if (sig == SIGINT)
-	{
-		rl_reset_line_state();      // Resets the display state to a clean state
-  		rl_cleanup_after_signal();  // Resets the terminal to the state before readline() was called
-  		rl_replace_line("",0);      // Clears the current prompt
-  		rl_crlf();                  // Moves the cursor to the next line
-  		rl_redisplay();             // Redisplays the prompt
-	}
+		redisplay_prompts();
 	if (sig == SIGQUIT)
 	{
 		g_sig = 1;

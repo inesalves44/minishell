@@ -1,7 +1,690 @@
-[?2004h[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ cd^C[?2004l
-[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ [?2004h^C[?2004l
-[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ [?2004h^C[?2004l
-[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ [?2004h^C[?2004l
-[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ [?2004h
-[?2004l[?2004h[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ 
-[?2004l[?2004h[1m[32mhmaciel-@miniteam:[1m[34m~/Dev/42-inprogress/merge[0m$ asd[?2004l
+==8004== HEAP SUMMARY:
+==8004==     in use at exit: 207,739 bytes in 222 blocks
+==8004==   total heap usage: 724 allocs, 502 frees, 239,414 bytes allocated
+==8004== 
+==8004== 8 bytes in 1 blocks are still reachable in loss record 1 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4947F3A: strdup (strdup.c:42)
+==8004==    by 0x4AAC407: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6818: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8 bytes in 1 blocks are still reachable in loss record 2 of 63
+==8004==    at 0x483AD7B: realloc (vg_replace_malloc.c:834)
+==8004==    by 0x48A790D: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890C9C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4891925: rl_expand_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DC71: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F36B: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 13 bytes in 1 blocks are still reachable in loss record 3 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488D4A2: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0E4: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 14 bytes in 1 blocks are still reachable in loss record 4 of 63
+==8004==    at 0x483AD7B: realloc (vg_replace_malloc.c:834)
+==8004==    by 0x4AA3653: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA788E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA968A: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC21D: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC3F9: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6818: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 15 bytes in 1 blocks are still reachable in loss record 5 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4947F3A: strdup (strdup.c:42)
+==8004==    by 0x4AA2E17: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA3124: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD16: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 15 bytes in 1 blocks are still reachable in loss record 6 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4947F3A: strdup (strdup.c:42)
+==8004==    by 0x4AA60FD: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 16 bytes in 1 blocks are still reachable in loss record 7 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x487F1D3: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 20 bytes in 1 blocks are still reachable in loss record 8 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488E1D3: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488CF59: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488D41C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0E4: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 24 bytes in 1 blocks are still reachable in loss record 9 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x49B49D9: tsearch (tsearch.c:338)
+==8004==    by 0x4AA925C: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA95CD: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC21D: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC3F9: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6818: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 27 bytes in 1 blocks are still reachable in loss record 10 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA39E4: _nc_home_terminfo (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA310E: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD16: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 46 bytes in 1 blocks are still reachable in loss record 11 of 63
+==8004==    at 0x483AD7B: realloc (vg_replace_malloc.c:834)
+==8004==    by 0x4AA3653: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB3ED: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB814: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABC03: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD3B: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004== 
+==8004== 46 bytes in 1 blocks are still reachable in loss record 12 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA0FFE: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60C9: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 48 bytes in 1 blocks are still reachable in loss record 13 of 63
+==8004==    at 0x483AB65: calloc (vg_replace_malloc.c:760)
+==8004==    by 0x4AA3223: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD16: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 62 bytes in 1 blocks are still reachable in loss record 14 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DC98: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F36B: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 62 bytes in 1 blocks are still reachable in loss record 15 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890C68: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4891925: rl_expand_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DC71: rl_set_prompt (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F36B: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 78 bytes in 1 blocks are still reachable in loss record 16 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA106F: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60C9: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 93 bytes in 1 blocks are still reachable in loss record 17 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4947F3A: strdup (strdup.c:42)
+==8004==    by 0x4AA923D: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA95CD: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC21D: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC3F9: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6818: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 94 bytes in 1 blocks are still reachable in loss record 18 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA8E73: _nc_tparm_analyze (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA9127: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA95CD: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC21D: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC3F9: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6818: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 96 bytes in 1 blocks are still reachable in loss record 19 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA318C: _nc_first_db (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD16: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 156 bytes in 1 blocks are still reachable in loss record 20 of 63
+==8004==    at 0x483AD7B: realloc (vg_replace_malloc.c:834)
+==8004==    by 0x4AA3653: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB41F: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB814: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABC03: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD3B: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004== 
+==8004== 168 bytes in 1 blocks are still reachable in loss record 21 of 63
+==8004==    at 0x483AB65: calloc (vg_replace_malloc.c:760)
+==8004==    by 0x4AA91B6: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA95CD: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC21D: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAC3F9: _nc_trim_sgr0 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6818: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 256 bytes in 1 blocks are still reachable in loss record 22 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F326: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 280 bytes in 1 blocks are still reachable in loss record 23 of 63
+==8004==    at 0x483AB65: calloc (vg_replace_malloc.c:760)
+==8004==    by 0x4AA6065: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 608 bytes in 1 blocks are still reachable in loss record 24 of 63
+==8004==    at 0x483AB65: calloc (vg_replace_malloc.c:760)
+==8004==    by 0x4AAB655: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB814: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABC03: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD3B: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 608 bytes in 1 blocks are still reachable in loss record 25 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA1149: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60C9: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 940 bytes in 1 blocks are still reachable in loss record 26 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AAB527: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB814: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABC03: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD3B: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 27 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A7927: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48905FB: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890702: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 28 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A7927: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890613: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890702: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 29 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A7927: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489062B: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890702: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 30 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A7927: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890643: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890702: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 31 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890755: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 32 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890770: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 33 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4890788: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,024 bytes in 1 blocks are still reachable in loss record 34 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48907A0: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48968A6: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DD88: readline_internal_setup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F394: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,536 bytes in 1 blocks are still reachable in loss record 35 of 63
+==8004==    at 0x483AD7B: realloc (vg_replace_malloc.c:834)
+==8004==    by 0x48A790D: xrealloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883C04: rl_add_funmap_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883C58: rl_initialize_funmap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0D8: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 1,602 bytes in 1 blocks are still reachable in loss record 36 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AAABFC: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB814: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABC03: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD3B: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 2,032 bytes in 1 blocks are still reachable in loss record 37 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CE89: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 2,240 bytes in 140 blocks are still reachable in loss record 38 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883BAC: rl_add_funmap_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883C58: rl_initialize_funmap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0D8: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 3,904 bytes in 1 blocks are still reachable in loss record 39 of 63
+==8004==    at 0x483AD7B: realloc (vg_replace_malloc.c:834)
+==8004==    by 0x4AA3653: _nc_doalloc (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB43D: _nc_read_termtype (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AAB814: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABC03: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AABD3B: _nc_read_entry2 (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA5D18: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60B2: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004== 
+==8004== 3,904 bytes in 1 blocks are still reachable in loss record 40 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x4AA101F: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA60C9: _nc_setupterm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6635: tgetent_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC44: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,016 bytes in 1 blocks are still reachable in loss record 41 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x48A10D3: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x401688: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,080 bytes in 1 blocks are still reachable in loss record 42 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CE69: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 43 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C415: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CD97: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 44 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C49A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CD97: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 45 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C49A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CDA3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 46 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C49A: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CDAF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 47 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DC02: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F130: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 48 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DC02: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F13F: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 4,112 bytes in 1 blocks are still reachable in loss record 49 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DC02: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F15D: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 7,952 bytes in 1 blocks are still reachable in loss record 50 of 63
+==8004==    at 0x483AB65: calloc (vg_replace_malloc.c:760)
+==8004==    by 0x4AA23A7: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA2B4B: _nc_find_type_entry (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x4AA6F78: tgetstr_sp (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2)
+==8004==    by 0x489CC92: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 51 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C487: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CD97: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 52 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C415: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CDA3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 53 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C487: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CDA3: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 54 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C415: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CDAF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 55 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489C487: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x489CDAF: _rl_init_terminal_io (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0BB: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 56 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DBF3: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F130: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 57 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DBF3: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F13F: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 58 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DBF3: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F15D: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 59 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F17B: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 8,224 bytes in 2 blocks are still reachable in loss record 60 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F18E: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 12,336 bytes in 3 blocks are still reachable in loss record 61 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DBCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F13F: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 12,336 bytes in 3 blocks are still reachable in loss record 62 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488C64D: rl_bind_keyseq_if_unbound_in_map (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487DBCA: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F15D: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== 28,784 bytes in 7 blocks are still reachable in loss record 63 of 63
+==8004==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==8004==    by 0x48A78E8: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x4883D4D: rl_make_bare_keymap (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488B4AA: rl_generic_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488D23B: rl_parse_and_bind (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x488D41C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F0E4: rl_initialize (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x487F370: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==8004==    by 0x40164D: main (in /home/hmaciel-/Dev/42-inprogress/heitor/minishell)
+==8004== 
+==8004== LEAK SUMMARY:
+==8004==    definitely lost: 0 bytes in 0 blocks
+==8004==    indirectly lost: 0 bytes in 0 blocks
+==8004==      possibly lost: 0 bytes in 0 blocks
+==8004==    still reachable: 207,739 bytes in 222 blocks
+==8004==         suppressed: 0 bytes in 0 blocks
+==8004== 
+==8004== For lists of detected and suppressed errors, rerun with: -s
+==8004== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
