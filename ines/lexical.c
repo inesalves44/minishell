@@ -201,18 +201,18 @@ int	lexical_annalysis(t_lexer **node, char *str)
 	while ((*node)->prev)
 		*node = (*node)->prev;
 	/*int test2 = 1;
-	while (node)
+	while (*node)
 	{
-		printf("------------number: %d-----------\n", node->number);
-		printf("value of node: %d\n", node->type);
-		if (node->str)
-			printf("string of the node: %s\n", node->str);
+		printf("------------number: %d-----------\n", (*node)->number);
+		printf("value of node: %d\n", (*node)->type);
+		if ((*node)->str)
+			printf("string of the node: %s\n", (*node)->str);
 		test2++;
-		if (!node->next)
+		if (!(*node)->next)
 			break ;
-		node = node->next;
+		(*node) = (*node)->next;
 	}
-	while (node->prev)
-		node = node->prev;*/
+	while ((*node)->prev)
+		(*node) = (*node)->prev;*/
 	return (0);
 }

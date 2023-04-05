@@ -105,8 +105,9 @@ int	checking_processes(t_ast *tree, char *envp[], int in, int out)
 					break ;
 				tree = tree->rigth;
 			}
-			while (tree->prev)
-				tree = tree->prev;
+			if (tree->prev)
+				while (tree->prev)
+					tree = tree->prev;
 			if (WIFEXITED(status))
 				return (WEXITSTATUS(status));
 		}
