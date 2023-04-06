@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 09:16:13 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 11:43:14 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:43:19 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	unset(t_root *root)
 
 	cmd = 1;
 	head = root->env_lst;
-	while (root->str[cmd])
+	while (root->tree->command[cmd])
 	{
 		while (root->env_lst && root->env_lst->next)
 		{
-			if (is_equal(root->str[cmd], root->env_lst->next->key))
+			if (is_equal(root->tree->command[cmd], root->env_lst->next->key))
 			{
 				to_delete = root->env_lst->next;
 				root->env_lst->next = root->env_lst->next->next;

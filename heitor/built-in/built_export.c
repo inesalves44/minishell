@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 11:37:08 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:43:13 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	export(t_root *root)
 
 	ret = 0;
 	cmd = 1;
-	while (root->str[cmd])
+	while (root->tree->command[cmd])
 	{
-		if (has_error(root->str[cmd]))
+		if (has_error(root->tree->command[cmd]))
 			ret = 1;
-		else if (ft_strchr(root->str[cmd], '=') != NULL)
+		else if (ft_strchr(root->tree->command[cmd], '=') != NULL)
 		{
-			key = get_key_from_str(root->str[cmd]);
-			value = get_value_from_str(root->str[cmd]);
+			key = get_key_from_str(root->tree->command[cmd]);
+			value = get_value_from_str(root->tree->command[cmd]);
 			if (!change_value(root, key, value))
 			{
 				ft_lstadd_back_env(&root->env_lst, ft_lstnew_env(key, value));

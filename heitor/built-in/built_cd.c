@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:11:12 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 12:24:24 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:43:20 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ int	cd(t_root *root)
 	char	*path;
 
 	path = NULL;
-	if (get_array_size(root->str) == 1)
+	if (get_array_size(root->tree->command) == 1)
 	{
 		change_to_home(root);
 		return (0);
 	}
-	if (has_more_params_error(get_array_size(root->str)))
+	if (has_more_params_error(get_array_size(root->tree->command)))
 		return (1);
 	else
 	{
-		if (chdir(root->str[1]) == 0)
+		if (chdir(root->tree->command[1]) == 0)
 			refresh_pwd_env(root);
 		else
 		{
 			ft_putstr_fd("minishell: cd: ", STDERR);
-			ft_putstr_fd(root->str[1], STDERR);
+			ft_putstr_fd(root->tree->command[1], STDERR);
 			ft_putstr_fd(": No such file or directory\n", STDERR);
 			return (1);
 		}

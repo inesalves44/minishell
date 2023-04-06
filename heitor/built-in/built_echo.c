@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 11:40:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:43:19 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,22 @@ int	echo(t_root *root)
 	int	cmd;
 
 	cmd = 1;
-	if (is_equal(root->str[1], "-n"))
+	if (is_equal(root->tree->command[1], "-n"))
 		cmd++;
-	while (root->str[cmd])
+	while (root->tree->command[cmd])
 	{
-		if (root->str[cmd][0] == '$')
+		if (root->tree->command[cmd][0] == '$')
 		{
-			if (!echo_env(root, root->str[cmd]))
+			if (!echo_env(root, root->tree->command[cmd]))
 				;
 		}
 		else
-			printf("%s", root->str[cmd]);
-		if (root->str != NULL)
+			printf("%s", root->tree->command[cmd]);
+		if (root->tree->command != NULL)
 			printf(" ");
 		cmd++;
 	}
-	if (!(is_equal(root->str[1], "-n")))
+	if (!(is_equal(root->tree->command[1], "-n")))
 		printf("\n");
 	return (0);
 }
