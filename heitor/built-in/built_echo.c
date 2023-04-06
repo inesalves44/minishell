@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 15:43:19 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:05:57 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ int	echo(t_root *root)
 	while (root->tree->command[cmd])
 	{
 		if (root->tree->command[cmd][0] == '$')
-		{
-			if (!echo_env(root, root->tree->command[cmd]))
-				;
-		}
+			echo_env(root, root->tree->command[cmd]);
 		else
 			printf("%s", root->tree->command[cmd]);
 		if (root->tree->command != NULL)
