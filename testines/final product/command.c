@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 19:29:33 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:21:06 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,24 @@ char	*find_path(char *final, char **paths)
 	return (NULL);
 }
 
-int	do_command(t_ast *tree, int in, int out, char *envp[])
+int	do_command(t_root *root)
 {
 	char **paths;
 	char *envp2;
 	char *cmd_path;
 
-	dup2(in, 0);
-	dup2(out, 1);
-	envp2 = get_path(envp);
+	dup2(root->in, 0);
+	dup2(root->out, 1);
+	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	cmd_path = find_path(tree->command[0], paths);
+	cmd_path = find_path(root->tree->command[0], paths);
+	free_str_split(paths);
 	if (!cmd_path)
-		return (error_process(" command not found", tree, 127));
-	if (execve(cmd_path, tree->command, envp) < 0)
+		return (error_process(" command not found", root->tree, 127));
+	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
+	{
+		free(cmd_path);
 		return (error_process("execve error", NULL, 1));
+	}
 	return (0);
 }

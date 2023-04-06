@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_envs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:37:54 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/04 10:18:46 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:57:44 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ int	get_array_size(char **array)
 
 int	get_lst_size(t_envlst *lst)
 {
-	t_envlst	*head;
 	int			i;
 
-	i =0;
-	head = lst;
+	i = 0;
 	while (lst)
 	{
 		lst = lst->next;
@@ -54,10 +52,8 @@ int	ft_keylen(char *env)
 char	*get_key_from_str(char *env)
 {
 	char	*temp_key;
-	int		i;
 	int		size;
 
-	i = 0;
 	size = ft_keylen(env);
 	temp_key = ft_calloc(sizeof(char), size + 1);
 	ft_memcpy(temp_key, env, size);
@@ -67,10 +63,8 @@ char	*get_key_from_str(char *env)
 char	*get_value_from_str(char *env)
 {
 	char	*temp_value;
-	int		i;
 	int		size;
 
-	i = 0;
 	size = ft_keylen(env);
 	temp_value = ft_calloc(sizeof(char), (ft_strlen(env) - size) + 1);
 	ft_memcpy(temp_value, env + size + 1, ft_strlen(env) - size);

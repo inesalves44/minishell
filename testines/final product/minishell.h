@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/03 08:20:24 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 23:37:31 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ typedef enum types
 
 typedef struct ast_tree
 {
-	int	node;
-	int	type;
-	int squotes;
-	int dquotes;
-	char **command;
-	char *file;
+	int				node;
+	int				type;
+	int 			*squotes;
+	int 			*dquotes;
+	char 			**command;
+	char 			*file;
 	struct ast_tree *left;
 	struct ast_tree *rigth;
 	struct ast_tree *prev;
@@ -84,19 +84,19 @@ typedef struct	lexer_list
 
 typedef	struct s_root
 {
-	t_lexer	*lexer;
+	t_lexer		*lexer;
 	t_ast		*tree;
 	char		**env_array;
 	t_envlst	*env_lst;
 	char		*user;
 	char		*prompt;
 	char		*line;
-	int		in;
-	int		out;
-	int		*pipes;
-	int		status;
-	int		num_pipes;
-} t_root;
+	int			in;
+	int			out;
+	int			*pipes;
+	int			status;
+	int			num_pipes;
+}	t_root;
 
 
 /* env funcs*/
@@ -131,7 +131,7 @@ void	unset(t_root *root);
 
 /*parsing*/
 int		get_file(t_lexer **lexer, t_ast *node);
-char	**treat_string(t_lexer **lexer, t_ast *aux, int *i, int *a); //alterei!!
+char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree);
 t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check);
 void	print_tree(t_ast *node, int i);
 int		parsing_str(t_lexer **lexer, t_ast **tree);
@@ -139,7 +139,7 @@ int		parsing_str(t_lexer **lexer, t_ast **tree);
 /*command*/
 char	*get_path(char **envp);
 char	*find_path(char *final, char **paths);
-int		do_command(t_ast *tree, int in, int out, char *envp[]);
+int		do_command(t_root *root);
 
 /*error_exit file*/
 int		error_process(char *str, t_ast *node, int error);
@@ -152,18 +152,21 @@ void	free_lexer(t_lexer **lexer);
 /*pipes*/
 int	counting_pipes(t_ast *tree);
 int	*creating_pipes(t_ast *tree, int pipes);
-int	child_in(t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	child_out(t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	child_mid(t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	doing_pipes(t_ast **tree, int in, int out, char *envp[]);
+int	child_in(t_root *root);//t_ast *tree, int in, int out, int *pipes, char *envp[]);
+int	child_out(t_root *root); //t_ast *tree, int in, int out, int *pipes, char *envp[]);
+int	child_mid(t_root *root);
+int	doing_pipes(t_root *root);
 
 /*lexical*/
 int	lexical_annalysis(t_lexer **node, char *str);
 
 /*main*/
-int	input_file(t_ast *node, int *fd);
-int	output_file(t_ast *node, int *fd);
-int	checking_processes(t_ast *tree, char *envp[], int in, int out);
+int		input_file(t_root *root);
+int		output_file(t_root *root);
+int		checking_processes(t_root *root);
 void	checking_next_node(t_ast **tree);
+
+/*main heitor*/
+int		is_built(char **commands);
 
 #endif

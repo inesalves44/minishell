@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/05 09:35:48 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 23:52:19 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-/* int	is_built(char **commands)
+int	is_built(char **commands)
 {
 	if (ft_strncmp(commands[0],"cd", 2) == 0 && ft_strlen(commands[0]) == 2)
 		return (TRUE);
@@ -56,7 +56,7 @@ void	free_array(char **array)
 	if (ft_strncmp(commands[0],"exit", 4) == 0 && ft_strlen(commands[0]) == 4)
 		return (TRUE);
 	return (FALSE);
-} */
+}
 
 int	free_all(t_root *root)
 {
@@ -70,24 +70,24 @@ int	free_all(t_root *root)
 	exit(0);
 }
 
-/*int	built_in_router(t_root *root)
+int	built_in_router(t_root *root)
 {
-	if (ft_strncmp(root->str[0],"cd", 2) == 0 && ft_strlen(root->str[0]) == 2)
+	if (ft_strncmp(root->tree->command[0],"cd", 2) == 0 && ft_strlen(root->tree->command[0]) == 2)
 		cd(root);
-	if (ft_strncmp(root->str[0],"echo", 4) == 0 && ft_strlen(root->str[0]) == 4)
+	if (ft_strncmp(root->tree->command[0],"echo", 4) == 0 && ft_strlen(root->tree->command[0]) == 4)
 		echo(root);
-	if (ft_strncmp(root->str[0],"env", 3) == 0 && ft_strlen(root->str[0]) == 3)
+	if (ft_strncmp(root->tree->command[0],"env", 3) == 0 && ft_strlen(root->tree->command[0]) == 3)
 		print_envlsts(root);
-	if (ft_strncmp(root->str[0],"export", 6) == 0 && ft_strlen(root->str[0]) == 6)
+	if (ft_strncmp(root->tree->command[0],"export", 6) == 0 && ft_strlen(root->tree->command[0]) == 6)
 		export(root);
-	if (ft_strncmp(root->str[0],"pwd", 3) == 0 && ft_strlen(root->str[0]) == 3)
+	if (ft_strncmp(root->tree->command[0],"pwd", 3) == 0 && ft_strlen(root->tree->command[0]) == 3)
 		pwd(root);
-	if (ft_strncmp(root->str[0],"exit", 4) == 0 && ft_strlen(root->str[0]) == 4)
+	if (ft_strncmp(root->tree->command[0],"exit", 4) == 0 && ft_strlen(root->tree->command[0]) == 4)
 		free_all(root);
-	if (ft_strncmp(root->str[0],"unset", 5) == 0 && ft_strlen(root->str[0]) == 5)
+	if (ft_strncmp(root->tree->command[0],"unset", 5) == 0 && ft_strlen(root->tree->command[0]) == 5)
 		unset(root);
 	return (FALSE);
-}*/
+}
 
 static	void	sig_int(int sig, siginfo_t *info, void *context)
 {
@@ -134,9 +134,8 @@ int main(int argc, char const *argv[], char *envp[])
 			{
 				root.in = 0;
 				root.out = 1;
-				//status = checking_processes(tree, envp, fd_in, fd_out);		
+				root.status = checking_processes(&root);		
 			}
-			print_tree(root.tree, 0);
 		}
 		add_history(root.line);
 		free(root.line);

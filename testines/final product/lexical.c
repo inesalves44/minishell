@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 16:03:46 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/07 00:14:44 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,33 @@ int	check_signal(char *main, int *i, t_lexer **node)
 		if (j == 0)
 			return (error_syntax(&main[j], 2));
 		else
-			*node = lexical_node(NULL, pipem, j);
+			(*node)->next = lexical_node(NULL, pipem, j);
 		*i = j;
 	}
-	else if (main[j] == '<')
+	else if (main[j] == '<' && ((*node)->type != red_in && (*node)->type != here_doc))
 	{
 		if (main[j + 1] == '<')
 		{
-			*node = lexical_node(NULL, here_doc, j);
+			(*node)->next = lexical_node(NULL, here_doc, j);
 			j++;
 		}
 		else
-			*node = lexical_node(NULL, red_in, j);
+			(*node)->next = lexical_node(NULL, red_in, j);
 		*i = j;
 	}
-	else if (main[j] == '>')
+	else if (main[j] == '>' && ((*node)->type != red_out && (*node)->type != app_out))
 	{
 		if (main[j + 1] == '>')
 		{
-			*node = lexical_node(NULL, app_out, j);
+			(*node)->next = lexical_node(NULL, app_out, j);
 			j++;
 		}
 		else
-			*node = lexical_node(NULL, red_out, j);
+			(*node)->next = lexical_node(NULL, red_out, j);
 		*i = j;
 	}
+	else if ((main[j] == '<' && ((*node)->type == red_in || (*node)->type == here_doc)) || (main[j] == '>' && ((*node)->type == red_out || (*node)->type == app_out)))
+		return (error_syntax(&main[j], 2));
 	return (0);
 }
 
@@ -161,7 +163,7 @@ int	lexical_annalysis(t_lexer **node, char *str)
 	while (str[i] != '\0')
 	{
 		j = i;
-		if (check_signal(str, &i, &(*node)->next))
+		if (check_signal(str, &i, node))
 			return (2);
 		if (!(*node)->next && str[i] != ' ')
 		{

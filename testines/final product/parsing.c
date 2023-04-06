@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 20:54:22 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/06 23:52:30 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	get_file(t_lexer **lexer, t_ast *node)
 {
-	int	i;
-
-	i = 0;
 	while (*lexer)
 	{
 		if ((*lexer)->number == node->node + 1)
@@ -28,10 +25,8 @@ int	get_file(t_lexer **lexer, t_ast *node)
 
 int	checking_nodes(t_ast *tree, t_lexer *lexer)
 {
-	int	min;
 	int	max;
 
-	min = lexer->number;
 	max = tree->node;
 	while (tree->prev)
 		tree = tree->prev;
@@ -77,20 +72,33 @@ int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 	return (len);
 }
 
-char	**create_array(t_lexer *lexer, int len, int *i, int *a)
+char	**create_array(t_lexer *lexer, int len, t_ast **tree)
 {
 	int		j;
 	char	**new;
 
 	j = 0;
 	new = (char **)malloc(sizeof(char *) * (len + 1));
+	(*tree)->dquotes = (int *)malloc(sizeof(int) * len);
+	(*tree)->squotes = (int *)malloc(sizeof(int) * len);
 	while (j < len)
 	{
 		new[j] = ft_strdup(lexer->str);
 		if (lexer->type == 82)
-			*i = j;
+		{
+			(*tree)->dquotes[j] = j;
+			(*tree)->squotes[j] = -1;
+		}
 		else if (lexer->type == 87)
-			*a = j;
+		{
+			(*tree)->squotes[j] = j;
+			(*tree)->dquotes[j] = -1;
+		}
+		else
+		{
+			(*tree)->squotes[j] = -1;
+			(*tree)->dquotes[j] = -1;
+		}
 		lexer = lexer->next;
 		j++;
 	}
@@ -98,42 +106,40 @@ char	**create_array(t_lexer *lexer, int len, int *i, int *a)
 	return (new);
 }
 
-char	**treat_string(t_lexer **lexer, t_ast *aux, int *i, int *a)
+char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 {
 	char	**new;
-	int		j;
 	int		len;
 	
-	j = 0;
 	new = NULL;
-	if (!aux)
+	if (aux == NULL)
 	{
-		len = length_lexer(*lexer, aux, 0);
-		new = create_array(*lexer, len, i, a);
+		len = length_lexer(*lexer, NULL, 0);
+		new = create_array(*lexer, len, tree);
 	}
 	else
 	{
-		if (aux->type == red_in || aux->type == red_out || aux->type == app_out || aux->type == here_doc)
+		if ((*aux)->type == red_in || (*aux)->type == red_out || (*aux)->type == app_out || (*aux)->type == here_doc)
 		{
-			if ((*lexer)->number < aux->node)
-				len = length_lexer(*lexer, aux, 1);
+			if ((*lexer)->number < (*aux)->node)
+				len = length_lexer(*lexer, *aux, 1);
 			else
-				len = length_lexer(*lexer, aux, 0);
-			new = create_array(*lexer, len, i, a);
+				len = length_lexer(*lexer, *aux, 0);
+			new = create_array(*lexer, len, tree);
 		}
-		else if (aux->type == pipem)
+		else if ((*aux)->type == pipem)
 		{
-			if (!aux->left)
+			if ((*aux)->left == NULL)
 			{
-				len = length_lexer(*lexer, aux, 1);
-				new = create_array(*lexer, len, i, a);
-				while ((*lexer)->number != aux->node)
+				len = length_lexer(*lexer, *aux, 1);
+				new = create_array(*lexer, len, tree);
+				while ((*lexer)->number != (*aux)->node)
 					*lexer = (*lexer)->next;
 			}
-			else if (!aux->rigth)
+			else if ((*aux)->rigth == NULL)
 			{
-				len = length_lexer(*lexer, aux, 2);
-				new = create_array(*lexer, len, i, a);
+				len = length_lexer(*lexer, *aux, 2);
+				new = create_array(*lexer, len, tree);
 			}
 		}
 	}
@@ -143,31 +149,21 @@ char	**treat_string(t_lexer **lexer, t_ast *aux, int *i, int *a)
 t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
 {
 	t_ast	*node;
-	int		i;
-	int		a;
 
 	node = malloc(sizeof(t_ast));
-	i = -1;
-	a = -1;
 	if (node)
 	{
 		node->node = (*lexer)->number;
 		node->type = check;
-		node->squotes = -1;
-		node->dquotes = -1;
 		if (check == command)
 		{
 			if (!aux)
-				node->command = treat_string(lexer, NULL, &i, &a);
+				node->command = treat_string(lexer, NULL, &node);
 			else
-				node->command = treat_string(lexer, *aux, &i, &a);
-		}	
+				node->command = treat_string(lexer, aux, &node);
+		}
 		else
 			node->command = NULL;
-		if (i >= 0)
-			node->dquotes = i;
-		if (a >= 0)
-			node->squotes = a;
 		if (check == file)
 			node->file = ft_strdup((*lexer)->str);
 		else
@@ -201,7 +197,9 @@ void	print_tree(t_ast *node, int i)
 		printf("node->command:");
 		while (node->command[a])
 		{
-			printf(" %s", node->command[a]);
+			printf(" %s;", node->command[a]);
+			printf("dquotes %d, ", node->dquotes[a]);
+			printf("squotes %d, ", node->squotes[a]);
 			a++;
 		}
 		printf("\n");
@@ -212,10 +210,8 @@ void	print_tree(t_ast *node, int i)
 	}
 	else
 		printf("node_check: %d\n", node->type);
-	if (node->squotes > -1)
-		printf("node_single quotes: %d\n", node->squotes);
-	else if (node->dquotes > -1)
-		printf("node_double quotes: %d\n", node->dquotes);
+	
+
 	i++;
 	if (node->left)
 	{

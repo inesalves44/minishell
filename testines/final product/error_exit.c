@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:35:44 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/04 23:56:34 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:03:10 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ int	error_syntax(char *str, int error)
 
 void	free_tree(t_ast **node, int a)
 {
-	int	i;
-
-	i = 0;
 	while ((*node)->prev != NULL && a == 0)
 		*node = (*node)->prev;
 	if ((*node)->type == command)
