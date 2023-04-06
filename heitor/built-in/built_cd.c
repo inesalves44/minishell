@@ -6,61 +6,65 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:11:12 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/05 08:25:36 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 12:24:24 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*transform(char cwd[])
+void	change_to_home(t_root *root)
 {
 	char	*path;
-	int		i;
 
-	i = 0;
-	path = ft_calloc(sizeof(char), ft_strlen(cwd) + 1);
-	while(cwd[i])
+	path = get_env_value(root, "HOME");
+	chdir(path);
+	change_value(root, "PWD", path);
+	if (path)
+		free(path);
+}
+
+int	has_more_params_error(int size)
+{
+	if (size > 2)
 	{
-		path[i] = cwd[i];
-		i++;
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR);
+		return (1);
 	}
-	return (path);
+	return (0);
 }
 
-char	*get_pwd()
+void	refresh_pwd_env(t_root *root)
 {
-	char cwd[BUFFER_PATH];
+	char	*path;
 
-	getcwd(cwd, BUFFER_PATH);
-	return (transform(cwd));
+	path = get_pwd();
+	change_value(root, "PWD", path);
+	free(path);
 }
 
-void	cd(t_root *root)
+int	cd(t_root *root)
 {
-	char	*err;
 	char	*path;
 
 	path = NULL;
-	if(get_array_size(root->str) == 1)
+	if (get_array_size(root->str) == 1)
 	{
-		path = get_env_value(root, "HOME");
-		chdir(path);
-		change_value(root, "PWD", path);
+		change_to_home(root);
+		return (0);
 	}
-	else if (get_array_size(root->str) > 2)
-		printf("minishell: cd: too many arguments\n");
+	if (has_more_params_error(get_array_size(root->str)))
+		return (1);
 	else
 	{
-		err = ft_strjoin("minishell: cd: ", root->str[1]);
 		if (chdir(root->str[1]) == 0)
-		{
-			path = get_pwd();
-			change_value(root, "PWD", path); //already changes the list;
-		}
+			refresh_pwd_env(root);
 		else
-			perror(err);
-		free(err);
+		{
+			ft_putstr_fd("minishell: cd: ", STDERR);
+			ft_putstr_fd(root->str[1], STDERR);
+			ft_putstr_fd(": No such file or directory\n", STDERR);
+			return (1);
+		}
 	}
-	if (path)
-		free(path);
+	return (0);
 }

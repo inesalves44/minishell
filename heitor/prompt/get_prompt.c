@@ -6,12 +6,11 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 22:05:02 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/04 23:06:30 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:31:16 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
+#include "../minishell.h"
 
 char	*ft_strjoin_gnl(char *s1, char *s2)
 {
@@ -36,6 +35,16 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	return (dest);
 }
 
+static	char	*assembly_prompt(t_root *root)
+{
+	char	*prompt;
+
+	prompt = NULL;
+	prompt = ft_strjoin_gnl(prompt, "\033[1m\033[32m");
+	prompt = ft_strjoin_gnl(prompt, root->user);
+	prompt = ft_strjoin_gnl(prompt, "@miniteam:\033[1m\033[34m");
+	return (prompt);
+}
 
 char	*get_prompt(t_root *root)
 {
@@ -44,15 +53,17 @@ char	*get_prompt(t_root *root)
 	char	*home;
 	int		size;
 
-	pwd = get_env_value(root, "PWD");
-	home = get_env_value(root, "HOME");
+	pwd = get_pwd();
+	home = ft_strdup(getenv("HOME"));
+	if (home == NULL)
+		home = ft_strdup("/");
 	size = ft_strlen(home);
-	prompt = NULL;
-	prompt = ft_strjoin_gnl(prompt, "\033[1m\033[32m");
-	prompt = ft_strjoin_gnl(prompt, root->user);
-	prompt = ft_strjoin_gnl(prompt, "@miniteam:\033[1m\033[34m~");
+	prompt = assembly_prompt(root);
 	if (ft_strncmp(pwd, home, size) == 0)
+	{
+		prompt = ft_strjoin_gnl(prompt, "~");
 		prompt = ft_strjoin_gnl(prompt, pwd + size);
+	}
 	else
 		prompt = ft_strjoin_gnl(prompt, pwd);
 	prompt = ft_strjoin_gnl(prompt, "\033[0m$ ");
@@ -60,5 +71,5 @@ char	*get_prompt(t_root *root)
 	free(home);
 	pwd = NULL;
 	home = NULL;
-	return(prompt);
+	return (prompt);
 }

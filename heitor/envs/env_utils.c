@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:42:25 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/04 23:15:00 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:21:43 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ t_envlst	*ft_lstlast_envlst(t_envlst *envs)
 void	ft_lstadd_back_env(t_envlst **envs, t_envlst *new)
 {
 	t_envlst	*node;
+
 	if (new)
-		{
+	{
 		if (!envs[0])
 			envs[0] = new;
 		else
@@ -57,7 +58,7 @@ void	print_envlsts(t_root *root)
 	t_envlst	*head;
 
 	head = root->env_lst;
-	while(root->env_lst)
+	while (root->env_lst)
 	{
 		printf("%s", root->env_lst->key);
 		printf("=");
@@ -65,19 +66,4 @@ void	print_envlsts(t_root *root)
 		root->env_lst = root->env_lst->next;
 	}
 	root->env_lst = head;
-}
-
-void	free_envp_lst(t_root *root)
-{
-	t_envlst	*temp;
-
-	while (root->env_lst)
-	{
-
-		temp = root->env_lst;
-		root->env_lst = root->env_lst->next;
-		free(temp->key);
-		free(temp->value);
-		free(temp);
-	}
 }

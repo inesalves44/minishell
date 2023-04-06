@@ -6,38 +6,35 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 09:16:13 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/05 10:48:53 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 11:43:14 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	find_key_node(t_root *root, char *key)
+int	unset(t_root *root)
 {
 	t_envlst	*head;
-	t_envlst	*tmp;
+	t_envlst	*to_delete;
+	int			cmd;
 
-	tmp = NULL;
-	printf("%s", key);
-	printf("%s", root->env_lst->key);
+	cmd = 1;
 	head = root->env_lst;
-	while (root->env_lst && root->env_lst->next)
+	while (root->str[cmd])
 	{
-		if (ft_strncmp(root->env_lst->next->key, key, ft_strlen(key)) == 0)
+		while (root->env_lst && root->env_lst->next)
 		{
-			printf("igual - apagar\n");
-			tmp = root->env_lst->next->next;
-			root->env_lst->next = NULL;
-			root->env_lst->next = tmp;
-			break ;
+			if (is_equal(root->str[cmd], root->env_lst->next->key))
+			{
+				to_delete = root->env_lst->next;
+				root->env_lst->next = root->env_lst->next->next;
+				free_env_node(to_delete);
+			}
+			root->env_lst = root->env_lst->next;
 		}
-		root->env_lst = root->env_lst->next;
+		root->env_lst = head;
+		cmd++;
 	}
-	root->env_lst = head;
 	refresh_env_array(root);
-}
-
-void	unset(t_root *root)
-{
-	find_key_node(root, root->str[1]);
+	return (0);
 }

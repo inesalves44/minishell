@@ -95,6 +95,7 @@ typedef	struct s_root
 	int		*pipes;
 	int		status;
 	int		num_pipes;
+	char	**str;
 } t_root;
 
 
@@ -114,18 +115,30 @@ char		*ft_strjoin_gnl(char *s1, char *s2);
 int			print_env_value(t_root *root, char *key);
 char		*get_env_value(t_root *root, char *key);
 int			change_value(t_root *root, char *key, char *new_value);
-char		*get_prompt(t_root *root);
 char		*get_value_from_str(char *env);
 char		*get_key_from_str(char *env);
 void		free_array(char **array);
+void		free_env_node(t_envlst *node);
+
+/*utils*/
+char		*transform(char cwd[]);
+int			is_equal(char *command, char *key);
+char		*get_pwd();
+
+/*signal*/
+void		sig_int(int sig, siginfo_t *info, void *context);
+
+/*prompt*/
+void		redisplay_prompt();
+char		*get_prompt(t_root *root);
 
 /*built in*/
 int		built_in_router(t_root *root);
-void	cd(t_root *root);
-void    echo(t_root *root);
-void	pwd(t_root *root);
-void	export(t_root *root);
-void	unset(t_root *root);
+int		cd(t_root *root);
+int		echo(t_root *root);
+int		pwd();
+int		export(t_root *root);
+int		unset(t_root *root);
 
 
 /*parsing*/

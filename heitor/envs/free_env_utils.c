@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   free_env_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 11:42:51 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/04/06 15:20:32 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/04/06 15:21:13 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	pwd(void)
+void	free_envp_lst(t_root *root)
 {
-	char	*pwd;
+	t_envlst	*temp;
 
-	pwd = get_pwd();
-	if (pwd)
+	while (root->env_lst)
 	{
-		printf("%s\n", pwd);
-		free(pwd);
+		temp = root->env_lst;
+		root->env_lst = root->env_lst->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
 	}
-	return (0);
+}
+
+void	free_env_node(t_envlst *node)
+{
+	free(node->key);
+	free(node->value);
+	free(node);
 }

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/04 20:25:30 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/06 11:37:08 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,43 +17,41 @@ static int	has_error(const char *arg)
 	int		i;
 
 	i = -1;
-	if (arg[0] == '$')
+	if (arg[0] == '$' || arg[0] == '=')
 	{
-			ft_putstr_fd("minishell: export: `", STDERR);
-			while(arg[++i])
-				write(STDERR, &arg[i], 1);
-			ft_putstr_fd("\': not a valid identifier\n", STDERR);
-			return (TRUE);
-	}
-	else if (ft_strchr(arg, '=') == NULL)
-	{
-		ft_putstr_fd("\n", STDERR);
+		ft_putstr_fd("minishell: export: `", STDERR);
+		while (arg[++i])
+			write(STDERR, &arg[i], 1);
+		ft_putstr_fd("\': not a valid identifier\n", STDERR);
 		return (TRUE);
 	}
 	return (FALSE);
 }
 
-void	export(t_root *root)
+int	export(t_root *root)
 {
 	char	*key;
 	char	*value;
-	int		param;
+	int		cmd;
+	int		ret;
 
-	param = 1;
-	while (root->str[param])
+	ret = 0;
+	cmd = 1;
+	while (root->str[cmd])
 	{
-		if (has_error(root->str[param]))
-			break ;
-		else
+		if (has_error(root->str[cmd]))
+			ret = 1;
+		else if (ft_strchr(root->str[cmd], '=') != NULL)
 		{
-			key = get_key_from_str(root->str[1]);
-			value = get_value_from_str(root->str[1]);
+			key = get_key_from_str(root->str[cmd]);
+			value = get_value_from_str(root->str[cmd]);
 			if (!change_value(root, key, value))
 			{
-				ft_lstadd_back_env(&root->env_lst, ft_lstnew_env(key,value));
+				ft_lstadd_back_env(&root->env_lst, ft_lstnew_env(key, value));
 			}
 		}
-		param++;
+		cmd++;
 	}
 	refresh_env_array(root);
+	return (ret);
 }

@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 15:39:44 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 11:42:51 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/04/06 13:23:45 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/04/06 15:10:54 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	pwd(void)
+void	sig_int(int sig, siginfo_t *info, void *context)
 {
-	char	*pwd;
-
-	pwd = get_pwd();
-	if (pwd)
-	{
-		printf("%s\n", pwd);
-		free(pwd);
-	}
-	return (0);
+	(void)context;
+	(void)info;
+	if (sig == SIGINT)
+		redisplay_prompt();
 }
