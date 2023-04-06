@@ -83,7 +83,7 @@ typedef struct	lexer_list
 
 typedef	struct s_root
 {
-	t_lexer	*lexer;
+	t_lexer		*lexer;
 	t_ast		*tree;
 	char		**env_array;
 	t_envlst	*env_lst;
@@ -95,7 +95,6 @@ typedef	struct s_root
 	int		*pipes;
 	int		status;
 	int		num_pipes;
-	char	**str;
 } t_root;
 
 
