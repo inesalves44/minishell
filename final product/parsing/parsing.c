@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/07 21:40:06 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:09:38 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,18 @@ int	checking_nodes(t_ast *tree, t_lexer *lexer)
 {
 	int	max;
 
-	max = tree->node;
-	while (tree->prev)
-		tree = tree->prev;
-	while (tree)
+	max = 0;
+	if (!tree->rigth && tree->type != pipem)
 	{
-		if (tree->left && tree->left->node > lexer->number && tree->left->node < max)
-			max = tree->left->node;
-		if (tree->node > lexer->number && tree->node < max)
-			max = tree->node;
-		if (!tree->rigth)
-			break ;
-		tree = tree->rigth;
+		while (lexer->next)
+			lexer = lexer->next;
+		max = lexer->number - 1;
+		return (max);
 	}
+	else if (!tree->rigth && tree->type == pipem)
+		max = tree->node - 1;
+	else
+		max = tree->rigth->node - 1;
 	return (max);
 }
 
@@ -48,17 +47,7 @@ int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 	int	len;
 
 	len = 0;
-	if (i == 0)
-	{
-		while (lexer->next)
-		{
-			len++;
-			lexer = lexer->next;
-		}
-		len++;
-		return (len);
-	}
-	else if (i == 1)
+	if (i == 1)
 		len = checking_nodes(aux, lexer) - lexer->number;
 	else
 	{
@@ -100,6 +89,16 @@ char	**create_array(t_lexer *lexer, int len, t_ast **tree)
 			(*tree)->dquotes[j] = -1;
 		}
 		lexer = lexer->next;
+		if (!lexer)
+		{
+			j++;
+			break;
+		}
+		if ((lexer->type == red_in || lexer->type == red_out || lexer->type == here_doc ||lexer->type == app_out))
+		{
+			lexer = lexer->next;
+			lexer = lexer->next;
+		}
 		j++;
 	}
 	new[j] = 0;
@@ -337,3 +336,17 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 	//print_tree(*tree, 0);
 	return (0);
 }
+
+
+/*while (tree->prev)
+		tree = tree->prev;
+	while (tree)
+	{
+		if (tree->left && tree->left->node > lexer->number && tree->left->node < max)
+			max = tree->left->node;
+		if (tree->node > lexer->number && tree->node < max)
+			max = tree->node;
+		if (!tree->rigth)
+			break ;
+		tree = tree->rigth;
+	}*/

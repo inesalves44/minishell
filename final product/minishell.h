@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/07 23:57:46 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/08 13:33:41 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef	struct s_root
 	char		*line;
 	int			in;
 	int			out;
+	int			isbuilt;
 	int			*pipes;
 	int			status;
 	int			num_pipes;

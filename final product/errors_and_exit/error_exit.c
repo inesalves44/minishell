@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:35:44 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/07 23:59:03 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/08 11:34:35 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ int	error_process(char *str, t_ast *node, int error)
 	write(2, " : ", 1);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
-	exit(error);
+	if (node->prev && (node->prev->type == red_in || node->prev->type == red_out))
+		return (error);
+	else if (node && node->type == command)
+		exit(error);
+	return (error);
 }
 
 int	error_syntax(char *str, int error)

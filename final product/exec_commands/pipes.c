@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/08 00:39:22 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/08 15:30:56 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	*creating_pipes(t_ast *tree, int pipes)
 	return (array);
 }
 
-int	child_in(t_root *root)//t_ast *tree, int in, int out, int *pipes, char *envp[])
+int	child_in(t_root *root)
 {
 	char *envp2;
 	char **paths;
@@ -67,10 +67,10 @@ int	child_in(t_root *root)//t_ast *tree, int in, int out, int *pipes, char *envp
 		free(cmd_path);
 		return (error_process("execve error", NULL, 1));
 	}
-	return (0);
+	exit (0);
 }
 
-int	child_out(t_root *root) //t_ast *tree, int in, int out, int *pipes, char *envp[])
+int	child_out(t_root *root)
 {
 	char	*envp2;
 	char	**paths;
@@ -81,19 +81,19 @@ int	child_out(t_root *root) //t_ast *tree, int in, int out, int *pipes, char *en
 	close_fd(root->tree, root->pipes);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->command[0], paths);
+	cmd_path = find_path(root->tree->rigth->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
 		return (error_process(" command not found", root->tree, 127));
-	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
+	if (execve(cmd_path, root->tree->rigth->command, root->env_array) < 0)
 	{
 		free(cmd_path);
 		return (error_process("execve error", NULL, 1));
 	}
-	return(0);
+	exit (0);
 }
 
-int	child_mid(t_root *root)//t_ast *tree, int in, int out, int *pipes, char *envp[])
+int	child_mid(t_root *root)
 {
 	char	*envp2;
 	char	**paths;
@@ -126,17 +126,9 @@ int	checking_redirects(t_root *root, int i, int max)
 	while (root->tree)
 	{
 		if (root->tree->type == red_in || root->tree->type == here_doc)
-		{
 			root->status = input_file(root);
-			if (root->status)
-				return (root->status);
-		}
 		else if (root->tree->type == red_out || root->tree->type == app_out)
-		{
 			root->status = output_file(root);
-			if (root->status)
-				return (root->status);
-		}
 		else if (root->tree->type == pipem || root->tree->type == command)
 			break ;
 		root->tree = root->tree->rigth;
@@ -151,6 +143,12 @@ int	checking_redirects(t_root *root, int i, int max)
 			in2 = root->pipes[2 * i - 2];
 		root->in = in2;
 	}
+	if (root->isbuilt != 0)
+	{
+		close(root->isbuilt);
+		root->in = open(".temp", O_RDONLY);
+		root->isbuilt = 0;
+	}
 	if (root->out == 1)
 	{
 		if (i == 0)
@@ -161,6 +159,8 @@ int	checking_redirects(t_root *root, int i, int max)
 			out2 = root->pipes[2 * i + 1];
 		root->out = out2;	
 	}
+	if (root->status)
+		return (root->status);
 	return (0);
 }
 
@@ -176,38 +176,56 @@ int	doing_pipes(t_root *root)
 	root->num_pipes = counting_pipes(root->tree);
 	root->pipes = creating_pipes(root->tree, root->num_pipes);
 	max = root->num_pipes + 1;
+	root->isbuilt = 0;
 	while (i < max)
 	{
 		root->in = 0;
 		root->out = 1;
-		checking_redirects(root, i, max);
-		if (i != max - 1)
-			root->tree = root->tree->left;
-		if ((!is_built(root->tree->command)))
+		if (!checking_redirects(root, i, max))
 		{
-			pid = fork();
-			if (pid == 0)
+			if (i != max - 1)
+				root->tree = root->tree->left;
+			if (ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
 			{
-				root->tree = root->tree->prev;
-				if (i == 0)
-					child_in(root);
-				else if (i == max - 1)
-					child_out(root);
-				else
-					child_mid(root);
+				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+				root->out = root->isbuilt;
+				built_in_router(root);
 			}
-			root->tree = root->tree->prev;	
+			else if (!is_built(root->tree->command))
+			{
+				pid = fork();
+				if (pid == 0)
+				{
+					root->tree = root->tree->prev;
+					if (i == 0)
+						child_in(root);
+					else if (i == max - 1)
+						child_out(root);
+					else
+						child_mid(root);
+				}	
+			}
 		}
-		else if (ft_strncmp(root->tree->command[0], "cd", 2) && is_built(root->tree->command))
-		{
-			built_in_router(root);
-			root->tree = root->tree->prev;
-		}
+		root->tree = root->tree->prev;
 		if (root->tree->rigth)
 			root->tree = root->tree->rigth;
 		i++;
 	}
 	close_fd(root->tree, root->pipes);
 	waitpid(pid, &status, 0);
+	while (root->tree->prev)
+		root->tree = root->tree->prev;
+	while (root->tree)
+	{
+		if (root->tree->type == command && is_built(root->tree->command))
+			unlink(".temp");
+		else if (root->tree->left && root->tree->left->type == command && is_built(root->tree->left->command))
+			unlink(".temp");
+		if (!root->tree->rigth)
+			break;
+		root->tree = root->tree->rigth;
+	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (0);
 }
