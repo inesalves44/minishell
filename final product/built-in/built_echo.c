@@ -3,63 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   built_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/07 21:11:27 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/09 16:29:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_special_char(char c)
+static int	get_end(char *cmd)
 {
-	if (c == '$' || c == '?')
+	size_t	end;
+
+	end = 0;
+	while (cmd[end] != ' ' && cmd[end] != '$' && cmd[end])
+		end++;
+	return (end);
+}
+
+static int	handler_env(t_root *root, char *begin, size_t end)
+{
+	char	*value;
+	char	*key;
+
+	key = ft_calloc(sizeof(char), end + 1);
+	ft_strlcpy(key, begin, end + 1);
+	value = get_env_value(root, key);
+	free(key);
+	if (value)
+	{
+		ft_putstr_fd(value, STDOUT);
+		free(value);
 		return (1);
+	}
 	return (0);
 }
 
-int	echo_env(t_root *root, char *cmd)
+static int	handler_special(char c)
 {
-	cmd++;
-	return (print_env_value(root, cmd));
+	if (c == '$')
+		ft_putnbr_fd(getpid(), STDOUT);
+	else
+		ft_putnbr_fd(666, STDOUT);
+	return (1);
+}
+
+static int	do_print_echo(t_root *root, char *cmd)
+{
+	size_t	i;
+	size_t	end;
+
+	i = 0;
+	end = 0;
+	while (i < ft_strlen(cmd))
+	{
+		if (cmd[i] == '$' && cmd[i + 1])
+		{
+			i++;
+			if (cmd[i] == '?' || cmd[i] == '$')
+				i += handler_special(cmd[i]);
+			else
+			{
+				end = get_end(cmd + i);
+				return (handler_env(root, cmd + i, end));
+			}
+		}
+		else
+		{
+			ft_putchar_fd(cmd[i], STDOUT);
+			i++;
+		}
+	}
+	return (1);
 }
 
 int	echo(t_root *root)
 {
 	int	cmd;
-	int	i;
+	int	space;
 
-	i = 0;
+	space = 0;
 	cmd = 1;
 	if (is_equal(root->tree->command[1], "-n"))
 		cmd++;
 	while (root->tree->command[cmd])
 	{
-		if (root->tree->command[cmd][0] == '$' && !is_special_char(root->tree->command[cmd][1]))
-			echo_env(root, root->tree->command[cmd]);
-		else
-		{
-			while(root->tree->command[cmd][i])
-			{
-				if (root->tree->command[cmd][i] == '$' && root->tree->command[cmd][i+1] == '$')
-				{
-					ft_putnbr_fd(getpid(), root->out);
-					i++;
-				}
-				else
-				{
-					ft_putchar_fd(root->tree->command[cmd][i], root->out);
-				}
-				i++;
-			}
-		}
-		if (root->tree->command[cmd+1])
-			ft_putchar_fd(' ', root->out);
+		space = do_print_echo(root, root->tree->command[cmd]);
 		cmd++;
-		i = 0;
+		if (root->tree->command[cmd] && space == 1)
+			ft_putchar_fd(' ', STDOUT);
+		space = 0;
 	}
 	if (!(is_equal(root->tree->command[1], "-n")))
-		ft_putchar_fd('\n', root->out);
+		ft_putchar_fd('\n', STDOUT);
 	return (0);
 }
