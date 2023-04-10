@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/10 17:38:05 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:06:41 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	handler_env(t_root *root, char *begin, size_t end)
 	free(key);
 	if (value)
 	{
-		ft_putstr_fd(value, STDOUT);
+		ft_putstr_fd(value, root->out);
 		free(value);
 		return (1);
 	}
@@ -43,9 +43,9 @@ static int	handler_env(t_root *root, char *begin, size_t end)
 static int	handler_special(t_root *root, char c)
 {
 	if (c == '$')
-		ft_putnbr_fd(getpid(), STDOUT);
+		ft_putnbr_fd(getpid(), root->out);
 	else
-		ft_putnbr_fd(root->status, STDOUT);
+		ft_putnbr_fd(root->status, root->out);
 	return (1);
 }
 
@@ -71,7 +71,7 @@ static int	do_print_echo(t_root *root, char *cmd)
 		}
 		else
 		{
-			ft_putchar_fd(cmd[i], STDOUT);
+			ft_putchar_fd(cmd[i], root->out);
 			i++;
 		}
 	}
@@ -92,10 +92,10 @@ int	echo(t_root *root)
 		space = do_print_echo(root, root->tree->command[cmd]);
 		cmd++;
 		if (root->tree->command[cmd] && space == 1)
-			ft_putchar_fd(' ', STDOUT);
+			ft_putchar_fd(' ', root->out);
 		space = 0;
 	}
 	if (!(is_equal(root->tree->command[1], "-n")))
-		ft_putchar_fd('\n', STDOUT);
+		ft_putchar_fd('\n', root->out);
 	return (0);
 }

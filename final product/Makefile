@@ -3,10 +3,10 @@ OBJS = main.o \
 	   envs/init_envs.o envs/env_utils.o envs/get_value.o envs/free_env_utils.o \
 	   prompt/get_prompt.o prompt/prompt_utils.o \
 	   built-in/built_cd.o built-in/built_echo.o  built-in/built_pwd.o \
-	   built-in/built_export.o built-in/built_unset.o utils/utils.o \
+	   built-in/built_export.o built-in/built_unset.o built-in/built_env.o utils/utils.o \
 	   signals/signal_handler.o exec_commands/command.o lexer/lexical.o exec_commands/simple.o \
-	   exec_commands/pipes.o parsing/parsing.o errors_and_exit/error_exit.o 
-	   
+	   exec_commands/pipes.o parsing/parsing.o errors_and_exit/error_exit.o
+
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g #-fsanitize=address
 GREEN		:=	\033[0;32m

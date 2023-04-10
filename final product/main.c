@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/10 19:36:13 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:06:44 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	built_in_router(t_root *root)
 	if (is_equal(root->tree->command[0], "echo"))
 		echo(root);
 	if (is_equal(root->tree->command[0], "env"))
-		print_envlsts(root);
+		env(root);
 	if (is_equal(root->tree->command[0], "export"))
 		export(root);
 	if (is_equal(root->tree->command[0], "pwd"))
@@ -100,7 +100,7 @@ int main(int argc, char const *argv[], char *envp[])
 				root.out = 1;
 				root.status = 0;
 				root.status = checking_processes(&root);
-			//	printf("\n status: %d\n", root.status);	
+			//	printf("\n status: %d\n", root.status);
 			}
 		}
 		add_history(root.line);

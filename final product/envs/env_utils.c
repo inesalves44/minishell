@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:42:25 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 15:21:43 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:06:46 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ void	print_envlsts(t_root *root)
 	head = root->env_lst;
 	while (root->env_lst)
 	{
-		printf("%s", root->env_lst->key);
-		printf("=");
-		printf("%s\n", root->env_lst->value);
+		ft_putstr_fd(root->env_lst->key, root->out);
+		ft_putstr_fd("=", root->out);
+		ft_putstr_fd(root->env_lst->value, root->out);
+		ft_putchar_fd('\n', root->out);
 		root->env_lst = root->env_lst->next;
 	}
 	root->env_lst = head;

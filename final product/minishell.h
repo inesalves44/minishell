@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/08 13:33:41 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:05:00 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int		echo(t_root *root);
 int		pwd(t_root *root);
 int		export(t_root *root);
 int		unset(t_root *root);
+int		env(t_root *root);
 
 /*parsing*/
 int		get_file(t_lexer **lexer, t_ast *node);
