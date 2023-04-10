@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/09 16:29:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:38:05 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ static int	handler_env(t_root *root, char *begin, size_t end)
 	return (0);
 }
 
-static int	handler_special(char c)
+static int	handler_special(t_root *root, char c)
 {
 	if (c == '$')
 		ft_putnbr_fd(getpid(), STDOUT);
 	else
-		ft_putnbr_fd(666, STDOUT);
+		ft_putnbr_fd(root->status, STDOUT);
 	return (1);
 }
 
@@ -62,7 +62,7 @@ static int	do_print_echo(t_root *root, char *cmd)
 		{
 			i++;
 			if (cmd[i] == '?' || cmd[i] == '$')
-				i += handler_special(cmd[i]);
+				i += handler_special(root, cmd[i]);
 			else
 			{
 				end = get_end(cmd + i);
