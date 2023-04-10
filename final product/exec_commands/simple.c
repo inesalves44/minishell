@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/07 23:31:14 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:46:49 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	checking_processes(t_root *root)
 			pid = fork();
 			if (pid == 0)
 				do_command(root);
-			waitpid(-1, &status, 0);
+			waitpid(pid, &status, 0);
 			while (root->tree->prev)
 				root->tree = root->tree->prev;
 			while (root->tree)

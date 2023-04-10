@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/08 17:09:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/10 20:25:38 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,57 @@ int	get_file(t_lexer **lexer, t_ast *node)
 	return (error_syntax("'newline'", 2));
 }
 
-int	checking_nodes(t_ast *tree, t_lexer *lexer)
+int	pipes_lexer(t_lexer *lexer)
+{
+	int	p;
+
+	p = 0;
+	while (lexer->prev)
+		lexer = lexer->prev;
+	while (lexer)
+	{
+		if (lexer->type == pipem)
+			p++;
+		if (!lexer->next)
+			break ;
+		lexer = lexer->next;
+	}
+	return (p);
+}
+
+int	checking_nodes(t_ast *tree, t_lexer *lexer, int i)
 {
 	int	max;
-
+	int red;
+	int start;
+	
 	max = 0;
-	if (!tree->rigth && tree->type != pipem)
+	red = 0;
+	start = lexer->number;
+	if (i == 1 || i == 3)
 	{
 		while (lexer->next)
+		{
+			max++;
+			if (lexer->type != 0 && lexer->type != 82 && lexer->type != 82)
+				red += 2;
 			lexer = lexer->next;
-		max = lexer->number - 1;
-		return (max);
+		}
+		max++;
+		max = max - red;
 	}
-	else if (!tree->rigth && tree->type == pipem)
-		max = tree->node - 1;
-	else
-		max = tree->rigth->node - 1;
+	else if (i == 2)
+	{
+		while (tree->type != pipem)
+			tree = tree->rigth;
+		while (lexer->number != tree->node)
+		{
+			if (lexer->type != 0 && lexer->type != 82 && lexer->type != 82)
+				red += 2;
+			lexer = lexer->next;
+		}
+		max = tree->node - red - start;
+	}
 	return (max);
 }
 
@@ -47,9 +82,7 @@ int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 	int	len;
 
 	len = 0;
-	if (i == 1)
-		len = checking_nodes(aux, lexer) - lexer->number;
-	else
+	if (i == 0)
 	{
 		while (lexer->next)
 		{
@@ -58,10 +91,12 @@ int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 		}
 		len++;
 	}
+	else
+		len = checking_nodes(aux, lexer, i);
 	return (len);
 }
 
-char	**create_array(t_lexer *lexer, int len, t_ast **tree)
+char	**create_array(t_lexer **lexer, int len, t_ast **tree)
 {
 	int		j;
 	char	**new;
@@ -72,13 +107,23 @@ char	**create_array(t_lexer *lexer, int len, t_ast **tree)
 	(*tree)->squotes = (int *)malloc(sizeof(int) * len);
 	while (j < len)
 	{
-		new[j] = ft_strdup(lexer->str);
-		if (lexer->type == 82)
+		if ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)
+		{
+			while ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)
+			{
+				*lexer = (*lexer)->next;
+				*lexer = (*lexer)->next;
+				if ((*lexer)->next == NULL)
+					break ;
+			}
+		}
+		new[j] = ft_strdup((*lexer)->str);
+		if ((*lexer)->type == 82)
 		{
 			(*tree)->dquotes[j] = j;
 			(*tree)->squotes[j] = -1;
 		}
-		else if (lexer->type == 87)
+		else if ((*lexer)->type == 87)
 		{
 			(*tree)->squotes[j] = j;
 			(*tree)->dquotes[j] = -1;
@@ -88,17 +133,24 @@ char	**create_array(t_lexer *lexer, int len, t_ast **tree)
 			(*tree)->squotes[j] = -1;
 			(*tree)->dquotes[j] = -1;
 		}
-		lexer = lexer->next;
-		if (!lexer)
+		if ((*lexer)->next == NULL || j == len - 1)
 		{
 			j++;
+			if ((*lexer)->next != NULL)
+				*lexer = (*lexer)->next;
+			if ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)
+			{
+				while ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)
+				{
+					*lexer = (*lexer)->next;
+					*lexer = (*lexer)->next;
+					if ((*lexer)->next == NULL)
+						break ;
+				}
+			}
 			break;
 		}
-		if ((lexer->type == red_in || lexer->type == red_out || lexer->type == here_doc ||lexer->type == app_out))
-		{
-			lexer = lexer->next;
-			lexer = lexer->next;
-		}
+		(*lexer) = (*lexer)->next;
 		j++;
 	}
 	new[j] = 0;
@@ -114,33 +166,20 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 	if (aux == NULL)
 	{
 		len = length_lexer(*lexer, NULL, 0);
-		new = create_array(*lexer, len, tree);
+		new = create_array(lexer, len, tree);
 	}
 	else
 	{
-		if ((*aux)->type == red_in || (*aux)->type == red_out || (*aux)->type == app_out || (*aux)->type == here_doc)
-		{
-			if ((*lexer)->number < (*aux)->node)
-				len = length_lexer(*lexer, *aux, 1);
-			else
-				len = length_lexer(*lexer, *aux, 0);
-			new = create_array(*lexer, len, tree);
-		}
-		else if ((*aux)->type == pipem)
+		if (!pipes_lexer(*lexer))
+			len = length_lexer(*lexer, *aux, 1);
+		else
 		{
 			if ((*aux)->left == NULL)
-			{
-				len = length_lexer(*lexer, *aux, 1);
-				new = create_array(*lexer, len, tree);
-				while ((*lexer)->number != (*aux)->node)
-					*lexer = (*lexer)->next;
-			}
-			else if ((*aux)->rigth == NULL)
-			{
 				len = length_lexer(*lexer, *aux, 2);
-				new = create_array(*lexer, len, tree);
-			}
+			else
+				len = length_lexer(*lexer, *aux, 3);
 		}
+		new = create_array(lexer, len, tree);
 	}
 	return (new);
 }
@@ -270,7 +309,7 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 			*tree = (*tree)->prev;
 		while (*lexer)
 		{
-			if ((*lexer)->number != (*tree)->node && ((*tree)->type == red_in || (*tree)->type == red_out || (*tree)->type == here_doc || (*tree)->type == app_out))
+			if ((*lexer)->number != (*tree)->node && (*lexer)->type != pipem && ((*tree)->type == red_in || (*tree)->type == red_out || (*tree)->type == here_doc || (*tree)->type == app_out))
 			{
 				i = (*lexer)->number;
 				if ((*tree)->left == NULL)
@@ -294,10 +333,7 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 				if ((*tree)->rigth == NULL && (*tree)->left->node != (*lexer)->number)
 				{
 					(*tree)->rigth = create_treenode(lexer, tree, command);
-					if ((*lexer)->next != NULL)
-						*lexer = (*lexer)->next;
-					else
-						break ;
+					break ;
 				}
 				else if ((*tree)->rigth != NULL)
 					*tree = (*tree)->rigth;
@@ -307,18 +343,12 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 				if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
 				{
 					(*tree)->left = create_treenode(lexer, tree, command);
-					if ((*lexer)->next != NULL)
 						*lexer = (*lexer)->next;
-					else
-						break ;
 				}
 				if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
 				{
 					(*tree)->rigth = create_treenode(lexer, tree, command);
-					if ((*lexer)->next != NULL)
-						*lexer = (*lexer)->next;
-					else
-						break ;
+					break ;
 				}
 				else if ((*tree)->rigth != NULL)
 					*tree = (*tree)->rigth;
@@ -350,3 +380,27 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 			break ;
 		tree = tree->rigth;
 	}*/
+
+	/*if ((*aux)->type == red_in || (*aux)->type == red_out || (*aux)->type == app_out || (*aux)->type == here_doc)
+		{
+			if ((*lexer)->number < (*aux)->node)
+				len = length_lexer(*lexer, *aux, 1);
+			else
+				len = length_lexer(*lexer, *aux, 0);
+			new = create_array(*lexer, len, tree);
+		}
+		else if ((*aux)->type == pipem)
+		{
+			if ((*aux)->left == NULL)
+			{
+				len = length_lexer(*lexer, *aux, 1);
+				new = create_array(*lexer, len, tree);
+				while ((*lexer)->number != (*aux)->node)
+					*lexer = (*lexer)->next;
+			}
+			else if ((*aux)->rigth == NULL)
+			{
+				len = length_lexer(*lexer, *aux, 2);
+				new = create_array(*lexer, len, tree);
+			}
+		}*/

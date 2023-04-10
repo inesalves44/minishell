@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/08 16:10:04 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/10 14:00:32 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,18 @@ char	*treating_str1(char *main, int i, int j)
 	return (str);
 }
 
+int	closing_quotes(char *str, char c, int i)
+{
+	i++;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	check_firstnode(char *main, int *i, t_lexer **node)
 {
 	int		j;
@@ -154,7 +166,7 @@ int	check_firstnode(char *main, int *i, t_lexer **node)
 		*i = j;
 		return (0);
 	}
-	if (main[j] == 34 || main[j] == 39)
+	if ((main[j] == 34 || main[j] == 39) && closing_quotes(main, main[j], j))
 	{
 		test = treating_quotes(main, main[j], &j);
 		*node = lexical_node(test, main[j] + '0', j);
@@ -189,7 +201,7 @@ int	lexical_annalysis(t_lexer **node, char *str)
 			return (2);
 		if (!(*node)->next && str[i] != ' ')
 		{
-			if ((str[i] == 34 || str[i] == 39))
+			if ((str[i] == 34 || str[i] == 39) && closing_quotes(str, str[i], i))
 			{
 				test = treating_quotes(str, str[i], &i);
 				(*node)->next = lexical_node(test, str[j] + '0', j);
