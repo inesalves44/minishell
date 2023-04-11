@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/08 15:30:56 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/12 00:44:03 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ int	checking_redirects(t_root *root, int i, int max)
 			root->status = output_file(root);
 		else if (root->tree->type == pipem || root->tree->type == command)
 			break ;
+		if (!root->tree->rigth)
+			break ;
 		root->tree = root->tree->rigth;
 	}
 	if (root->in == 0)
@@ -185,13 +187,13 @@ int	doing_pipes(t_root *root)
 		{
 			if (i != max - 1)
 				root->tree = root->tree->left;
-			if (ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
+			if (!root->tree->command[0] && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
 			{
 				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 				root->out = root->isbuilt;
 				built_in_router(root);
 			}
-			else if (!is_built(root->tree->command))
+			else if (!root->tree->command[0] && !is_built(root->tree->command))
 			{
 				pid = fork();
 				if (pid == 0)

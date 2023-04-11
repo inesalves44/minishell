@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/11 20:38:02 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/12 00:04:49 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_signal(char *main, int *i, t_lexer **node)
 	if (endofstring(main[*i]) && !node_type(*node, main[*i]))
 	{
 		(*node)->next = sign_node(i, main[*i], main);
-		(*i)++;
+		//(*i)++;
 	}
 	else if (endofstring(main[*i]) && node_type(*node, main[*i]))
 		return (error_syntax(&main[*i], 2));

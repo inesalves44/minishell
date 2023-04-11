@@ -1,18 +1,1 @@
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 built-in
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 envs
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 errors_and_exit
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 exec_commands
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 lexer
-drwxrwxr-x 6 ines ines  4096 abr 10 20:01 libft
--rw-rw-r-- 1 ines ines 81000 abr 10 20:01 libft.a
--rw-rw-r-- 1 ines ines  2984 abr 10 19:36 main.c
--rw-rw-r-- 1 ines ines 15992 abr 10 20:00 main.o
--rw-rw-r-- 1 ines ines  1194 abr 10 10:51 Makefile
--rwxrwxr-x 1 ines ines 95888 abr 10 20:01 minishell
--rw-rw-r-- 1 ines ines  4725 abr 10 10:51 minishell.h
--rw-rw-r-- 1 ines ines     0 abr 10 20:03 out
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 parsing
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 prompt
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 signals
--rw-rw-r-- 1 ines ines    97 abr 10 10:51 test
-drwxrwxr-x 2 ines ines  4096 abr 10 20:00 utils
+hello cat

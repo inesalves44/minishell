@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/10 18:46:49 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/12 00:32:02 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	checking_next_node(t_ast **tree)
 {
 	while ((*tree)->prev)
 		*tree = (*tree)->prev;
-	while ((*tree)->type == red_in || (*tree)->type == red_out || (*tree)->type == app_out || (*tree)->type == here_doc)
+	while (*tree && ((*tree)->type == red_in || (*tree)->type == red_out || (*tree)->type == app_out || (*tree)->type == here_doc))
 		(*tree) = (*tree)->rigth;
 }
 
@@ -74,14 +74,14 @@ int	checking_processes(t_root *root)
 				status = input_file(root);
 			else if (root->tree->type == red_out || root->tree->type == app_out)
 				status = output_file(root);
-			else if (!root->tree->rigth)
+			if (!root->tree->rigth)
 				break ;
 			if (status)
 				return (status);
 			root->tree = root->tree->rigth;
 		}
-		checking_next_node(&root->tree);
-		if (root->tree->type == command && !is_built(root->tree->command))
+		checking_next_node(&root->tree);		
+		if (root->tree && root->tree->type == command && !is_built(root->tree->command))
 		{
 			pid = fork();
 			if (pid == 0)
@@ -106,7 +106,7 @@ int	checking_processes(t_root *root)
 			if (WIFEXITED(status))
 				return (WEXITSTATUS(status));
 		}
-		else
+		else if (root->tree && root->tree->type == command && is_built(root->tree->command))
 			built_in_router(root);
 	}
 	else
