@@ -6,216 +6,109 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/10 14:00:32 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/11 19:46:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_lexer	*lexical_node(char *str, int i, int j)
+t_lexer	*first_node(char *main, int *i, char **test)
 {
 	t_lexer	*node;
+	int		start;
 
-	node = malloc(sizeof(t_lexer));
-	if (node)
-	{
-		if (str)
-			node->str = ft_strdup(str);
-		else
-			node->str = NULL;
-		node->type = i;
-		node->number = j;
-		node->next = NULL;
-		node->prev = NULL;
-	}
+	start = *i;
+	if (endofquotes(main[*i]))
+		(*i)++;
+	while (!endofstring(main[*i]))
+		(*i)++;
+	*test = ft_substr(main, start, *i);
+	node = lexical_node(*test, 0, start);
 	return (node);
-}
-
-
-int	check_signal1(char *main, int *i, t_lexer **node)
-{
-	int	j;
-
-	j = *i;
-	if (main[j] == '|')
-		return (error_syntax(&main[j], 2));
-	else if (main[j] == '<')
-	{
-		(*node) = lexical_node(NULL, red_in, j);
-		*i = j;
-	}
-	else if (main[j] == '>')
-	{
-		(*node) = lexical_node(NULL, red_out, j);
-		*i = j;
-	}
-	return (0);
-}
-
-int	check_signal(char *main, int *i, t_lexer **node)
-{
-	int	j;
-
-	j = *i;
-	if (main[j] == '|')
-	{
-		if (j == 0)
-			return (error_syntax(&main[j], 2));
-		else
-			(*node)->next = lexical_node(NULL, pipem, j);
-		*i = j;
-	}
-	else if (main[j] == '<' && ((*node)->type != red_in && (*node)->type != here_doc && (*node)->type != red_out && (*node)->type != app_out))
-	{
-		if (main[j + 1] == '<')
-		{
-			(*node)->next = lexical_node(NULL, here_doc, j);
-			j++;
-		}
-		else
-			(*node)->next = lexical_node(NULL, red_in, j);
-		*i = j;
-	}
-	else if (main[j] == '>' && ((*node)->type != red_out && (*node)->type != app_out && (*node)->type != red_in && (*node)->type != here_doc))
-	{
-		if (main[j + 1] == '>')
-		{
-			(*node)->next = lexical_node(NULL, app_out, j);
-			j++;
-		}
-		else
-			(*node)->next = lexical_node(NULL, red_out, j);
-		*i = j;
-	}
-	else if ((main[j] == '<' || main[j] == '>') && ((*node)->type == red_in || (*node)->type == here_doc || (*node)->type == red_out || (*node)->type == app_out))
-		return (error_syntax(&main[j], 2));
-	return (0);
-}
-
-char	*treating_quotes(char *str, char s, int *b)
-{
-	int		i;
-	int		j;
-	int		a;
-	int		len;
-	char	*test;
-
-	j = *b;
-	i = j + 1;
-	while (str[i] != s)
-		i++;
-	len = i - j;
-	test = (char *)malloc(sizeof(char) * (len));
-	a = 0;
-	while (a < len - 1)
-	{
-		test[a] = str[j + 1];
-		a++;
-		j++;
-	}
-	test[a] = '\0';
-	*b = i;
-	return (test);
-}
-
-char	*treating_str1(char *main, int i, int j)
-{
-	char	*str;
-	int		a;
-	int		len;
-
-	a = 0;
-	len = j - i;
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	while (a < len)
-	{
-		str[a] = main[i];
-		a++;
-		i++;
-	}
-	str[a] = '\0';
-	return (str);
-}
-
-int	closing_quotes(char *str, char c, int i)
-{
-	i++;
-	while (str[i] != '\0')
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 int	check_firstnode(char *main, int *i, t_lexer **node)
 {
-	int		j;
-	int		a;
 	char	*test;
 
-	j = 0;
 	*node = NULL;
-	if (check_signal1(main,  &j, node))
+	while (main[*i] == ' ')
+		(*i)++;
+	if (check_signal1(main, i, node))
 		return (2);
 	if (*node != NULL)
-	{
-		*i = j;
 		return (0);
-	}
-	if ((main[j] == 34 || main[j] == 39) && closing_quotes(main, main[j], j))
+	if (endofquotes(main[*i]) && closing_q(main, main[*i], *i))
 	{
-		test = treating_quotes(main, main[j], &j);
-		*node = lexical_node(test, main[j] + '0', j);
-		*i = j;
-		return (0);
+		test = treating_quotes(main, main[*i], i);
+		*node = lexical_node(test, main[*i] + '0', *i);
+		(*i)++;
 	}
-	a = 0;
-	while (main[j] != '\0' && main[j] != ' ' && main[j] != '<' && main[j] != '>' && main[j] != '|')
-		j++;
-	test = treating_str1(main, a ,j);
-	*node = lexical_node(test, 0, a);
-	*i = j - 1;
+	else
+		*node = first_node(main, i, &test);
+	free(test);
 	return (0);
+}
+
+void	add_index(t_lexer **node)
+{
+	int	i;
+
+	while ((*node)->prev)
+		*node = (*node)->prev;
+	i = 0;
+	while (*node)
+	{
+		(*node)->number = i;
+		if (!(*node)->next)
+			break ;
+		*node = (*node)->next;
+		i++;
+	}
+	while ((*node)->prev)
+		*node = (*node)->prev;
+}
+
+t_lexer	*node_str(char *str, int *i, int j)
+{
+	t_lexer	*node;
+	char	*test;
+
+	if (endofquotes(str[*i]) && closing_q(str, str[*i], *i))
+	{
+		test = treating_quotes(str, str[*i], i);
+		node = lexical_node(test, str[j] + '0', j);
+	}
+	else
+	{
+		while (!endofstring(str[*i]))
+			(*i)++;
+		test = ft_substr(str, j, *i - j);
+		(*i)--;
+		node = lexical_node(test, 0, j);
+	}
+	free (test);
+	return (node);
 }
 
 int	lexical_annalysis(t_lexer **node, char *str)
 {
-	char	*test;
 	int		i;
 	int		j;
 
 	i = 0;
-	j = 0;
 	*node = NULL;
+	if (str[i] == '\0')
+		return (1);
 	if (check_firstnode(str, &i, node))
 		return (2);
-	i++;
 	while (str[i] != '\0')
 	{
 		j = i;
 		if (check_signal(str, &i, node))
 			return (2);
 		if (!(*node)->next && str[i] != ' ')
-		{
-			if ((str[i] == 34 || str[i] == 39) && closing_quotes(str, str[i], i))
-			{
-				test = treating_quotes(str, str[i], &i);
-				(*node)->next = lexical_node(test, str[j] + '0', j);
-			}
-			else
-			{
-				while (str[i] != '\0' && str[i] != ' ' && str[i] != '<' && str[i] != '>' && str[i] != '|')
-					i++;
-				test = treating_str1(str, j, i);
-				i--;
-				(*node)->next = lexical_node(test, 0, j);
-			}
-			free (test);
-		}
+			(*node)->next = node_str(str, &i, j);
 		if ((*node)->next)
 		{
 			(*node)->next->prev = *node;
@@ -223,19 +116,10 @@ int	lexical_annalysis(t_lexer **node, char *str)
 		}
 		i++;
 	}
-	while ((*node)->prev)
-		*node = (*node)->prev;
-	int	a = 0;
-	while (*node)
-	{
-		(*node)->number = a;
-		if (!(*node)->next)
-			break ;
-		*node = (*node)->next;
-		a++;
-	}
-	while ((*node)->prev)
-		*node = (*node)->prev;
+	add_index(node);
+	return (0);
+}
+
 	/*int test2 = 1;
 	while (*node)
 	{
@@ -250,5 +134,34 @@ int	lexical_annalysis(t_lexer **node, char *str)
 	}
 	while ((*node)->prev)
 		(*node) = (*node)->prev;*/
-	return (0);
-}
+
+	/*str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	while (a < len)
+	{
+		str[a] = main[i];
+		a++;
+		i++;
+	}
+	str[a] = '\0';*/
+
+/*	char	*treating_str1(char *main, int i, int j)
+{
+	char	*str;
+	int		len;
+
+	len = j - i;
+	str = ft_substr(main, i, len);
+	return (str);
+}*/
+
+/*//(char *)malloc(sizeof(char) * (len));
+	a = 0;
+	while (a < len - 1)
+	{
+		test[a] = str[j + 1];
+		a++;
+		j++;
+	}
+	test[a] = '\0';*/

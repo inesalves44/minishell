@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/10 22:05:00 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:57:23 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,15 @@ int	child_mid(t_root *root);
 int	doing_pipes(t_root *root);
 
 /*lexical*/
-int	lexical_annalysis(t_lexer **node, char *str);
+t_lexer	*lexical_node(char *str, int i, int j);
+int		endofquotes(char s);
+int		endofstring(char s);
+int		node_type(t_lexer *node, char s);
+int		closing_q(char *str, char c, int i);
+int		check_signal1(char *main, int *i, t_lexer **node);
+int		check_signal(char *main, int *i, t_lexer **node);
+char	*treating_quotes(char *str, char s, int *b);
+int		lexical_annalysis(t_lexer **node, char *str);
 
 /*main*/
 int		input_file(t_root *root);
