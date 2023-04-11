@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/11 07:46:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/11 08:27:32 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	export(t_root *root)
 	{
 		key = get_key_from_str(root->tree->command[cmd]);
 		value = get_value_from_str(root->tree->command[cmd]);
+		printf("%s", key);
+		printf("\n%s", value);
 		if (has_error(key, value))
 			ret = 1;
 		else if (ft_strchr(root->tree->command[cmd], '=') != NULL)

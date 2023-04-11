@@ -6,19 +6,24 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/10 22:06:41 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/11 09:45:55 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	get_end(char *cmd)
+int	handler_special(t_root *root, char c);
+int	dq_print(t_root *root, char *cmd);
+
+static int	get_end(char *cmd, int dquote)
 {
 	size_t	end;
 
 	end = 0;
 	while (cmd[end] != ' ' && cmd[end] != '$' && cmd[end])
 		end++;
+	if (cmd[end - 1] == '\'' && dquote != -1)
+		return (end - 1);
 	return (end);
 }
 
@@ -35,21 +40,12 @@ static int	handler_env(t_root *root, char *begin, size_t end)
 	{
 		ft_putstr_fd(value, root->out);
 		free(value);
-		return (1);
+		return (end);
 	}
-	return (0);
-}
-
-static int	handler_special(t_root *root, char c)
-{
-	if (c == '$')
-		ft_putnbr_fd(getpid(), root->out);
-	else
-		ft_putnbr_fd(root->status, root->out);
 	return (1);
 }
 
-static int	do_print_echo(t_root *root, char *cmd)
+static int	do_print_echo(t_root *root, char *cmd, int dquote)
 {
 	size_t	i;
 	size_t	end;
@@ -65,8 +61,8 @@ static int	do_print_echo(t_root *root, char *cmd)
 				i += handler_special(root, cmd[i]);
 			else
 			{
-				end = get_end(cmd + i);
-				return (handler_env(root, cmd + i, end));
+				end = get_end(cmd + i, dquote);
+				i += handler_env(root, cmd + i, end);
 			}
 		}
 		else
@@ -89,7 +85,11 @@ int	echo(t_root *root)
 		cmd++;
 	while (root->tree->command[cmd])
 	{
-		space = do_print_echo(root, root->tree->command[cmd]);
+		if (root->tree->squotes[cmd] != -1)
+			space = dq_print(root, root->tree->command[cmd]);
+		else
+			space = do_print_echo(root, root->tree->command[cmd], \
+			root->tree->dquotes[cmd]);
 		cmd++;
 		if (root->tree->command[cmd] && space == 1)
 			ft_putchar_fd(' ', root->out);
