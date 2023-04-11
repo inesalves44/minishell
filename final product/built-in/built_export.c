@@ -47,8 +47,6 @@ int	export(t_root *root)
 	{
 		key = get_key_from_str(root->tree->command[cmd]);
 		value = get_value_from_str(root->tree->command[cmd]);
-		printf("%s", key);
-		printf("\n%s", value);
 		if (has_error(key, value))
 			ret = 1;
 		else if (ft_strchr(root->tree->command[cmd], '=') != NULL)
