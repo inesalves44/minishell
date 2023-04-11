@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/11 10:43:03 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/11 20:38:47 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ char	**create_array(t_lexer **lexer, int len, t_ast **tree)
 		if ((*lexer)->next == NULL || j == len - 1)
 		{
 			j++;
+			if (j == len)
+				break ;
 			if ((*lexer)->next != NULL)
 				*lexer = (*lexer)->next;
 			if ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)

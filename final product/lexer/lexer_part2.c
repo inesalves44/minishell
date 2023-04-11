@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/11 19:55:10 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/11 20:38:02 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_lexer	*sign_node(int *i, char s, char *str)
 		else
 			node = lexical_node(NULL, app_out, *i);
 		(*i)++;
+		return (node);
 	}
 	if (s == '|')
 		node = lexical_node(NULL, pipem, *i);
