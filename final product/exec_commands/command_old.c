@@ -3,37 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/12 16:46:32 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/08 00:04:10 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* char	*get_path(char **envp)
+char	*get_path(char **envp)
 {
 	while (ft_strncmp("PATH", *envp, 4))
 		envp++;
 	return (*envp + 5);
-} */
-
-char	*get_path(char **envp)
-{
-	char	*key;
-	while (*envp)
-	{
-		key = get_key_from_str(*envp);
-		if (is_equal(key, "PATH"))
-		{
-			free(key);
-			return (get_value_from_str(*envp));
-		}
-		free(key);
-		envp++;
-	}
-	return ft_strdup("-");
 }
 
 char	*find_path(char *final, char **paths)
@@ -71,7 +54,6 @@ int	do_command(t_root *root)
 	dup2(root->out, 1);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	//free(envp2);
 	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
