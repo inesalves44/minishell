@@ -33,56 +33,56 @@
 # define FALSE 0
 # define BUFFER_PATH 100
 
-typedef enum io
+typedef enum s_io
 {
-    STDIN,
-    STDOUT,
-    STDERR,
-} io;
+	STDIN,
+	STDOUT,
+	STDERR,
+}	t_io;
 
-typedef	struct	s_envlst
+typedef struct s_envlst
 {
 	char			*key;
 	char			*value;
 	struct s_envlst	*next;
-} t_envlst;
+}	t_envlst;
 
 typedef enum types
 {
-    pipem = 1,
-    red_in = 2,
-    red_out = 3,
-    command = 4,
-    file = 5,
+	pipem = 1,
+	red_in = 2,
+	red_out = 3,
+	command = 4,
+	file = 5,
 	here_doc = 6,
 	app_out = 7,
 	s_quotes = 87,
 	d_quotes = 82,
-}	check;
+}	t_check;
 
 typedef struct ast_tree
 {
 	int				node;
 	int				type;
-	int 			*squotes;
-	int 			*dquotes;
-	char 			**command;
-	char 			*file;
-	struct ast_tree *left;
-	struct ast_tree *rigth;
-	struct ast_tree *prev;
+	int				*squotes;
+	int				*dquotes;
+	char			**command;
+	char			*file;
+	struct ast_tree	*left;
+	struct ast_tree	*rigth;
+	struct ast_tree	*prev;
 }	t_ast;
 
-typedef struct	lexer_list
+typedef struct lexer_list
 {
 	char				*str;
 	int					number;
 	int					type;
-	struct	lexer_list	*next;
-	struct	lexer_list	*prev;
+	struct lexer_list	*next;
+	struct lexer_list	*prev;
 }	t_lexer;
 
-typedef	struct s_root
+typedef struct s_root
 {
 	t_lexer		*lexer;
 	t_ast		*tree;
@@ -98,7 +98,6 @@ typedef	struct s_root
 	int			status;
 	int			num_pipes;
 }	t_root;
-
 
 /* env funcs*/
 
@@ -124,70 +123,72 @@ void		free_env_node(t_envlst *node);
 /*utils*/
 char		*transform(char cwd[]);
 int			is_equal(char *command, char *key);
-char		*get_pwd();
+char		*get_pwd(void);
 
 /*signal*/
 void		sig_int(int sig, siginfo_t *info, void *context);
 
 /*prompt*/
-void		redisplay_prompt();
+void		redisplay_prompt(void);
 char		*get_prompt(t_root *root);
 
 /*built in*/
-int		built_in_router(t_root *root);
-int		cd(t_root *root);
-int		echo(t_root *root);
-int		pwd(t_root *root);
-int		export(t_root *root);
-int		unset(t_root *root);
-int		env(t_root *root);
+int			built_in_router(t_root *root);
+int			cd(t_root *root);
+int			echo(t_root *root);
+int			pwd(t_root *root);
+int			export(t_root *root);
+int			unset(t_root *root);
+int			env(t_root *root);
 
 /*parsing*/
-int		get_file(t_lexer **lexer, t_ast *node);
-char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree);
-t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check);
-void	print_tree(t_ast *node, int i);
-int		parsing_str(t_lexer **lexer, t_ast **tree);
+int			get_file(t_lexer **lexer, t_ast *node);
+char		**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree);
+t_ast		*create_treenode(t_lexer **lexer, t_ast **aux, int check);
+void		print_tree(t_ast *node, int i);
+int			parsing_str(t_lexer **lexer, t_ast **tree);
 
 /*command*/
-char	*get_path(char **envp);
-char	*find_path(char *final, char **paths);
-int		do_command(t_root *root);
+char		*get_path(char **envp);
+char		*find_path(char *final, char **paths);
+int			do_command(t_root *root);
 
 /*error_exit file*/
-int		error_process(char *str, t_ast *node, int error);
-t_ast	*free_tree(t_ast *node, int a);
-void	free_str_split(char **str);
-void	close_fd(t_ast *tree, int *pipes);
-int		error_syntax(char *str, int error);
-t_lexer	*free_lexer(t_lexer *lexer);
+int			error_process(char *str, t_ast *node, int error);
+t_ast		*free_tree(t_ast *node, int a);
+void		free_str_split(char **str);
+void		close_fd(t_ast *tree, int *pipes);
+int			error_syntax(char *str, int error);
+t_lexer		*free_lexer(t_lexer *lexer);
 
 /*pipes*/
-int	counting_pipes(t_ast *tree);
-int	*creating_pipes(t_ast *tree, int pipes);
-int	child_in(t_root *root);//t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	child_out(t_root *root); //t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	child_mid(t_root *root);
-int	doing_pipes(t_root *root);
+/* t_ast *tree, int in, int out, int *pipes, char *envp[]);
+   t_ast *tree, int in, int out, int *pipes, char *envp[]); */
+int			counting_pipes(t_ast *tree);
+int			*creating_pipes(t_ast *tree, int pipes);
+int			child_in(t_root *root);
+int			child_out(t_root *root); //
+int			child_mid(t_root *root);
+int			doing_pipes(t_root *root);
 
 /*lexical*/
-t_lexer	*lexical_node(char *str, int i, int j);
-int		endofquotes(char s);
-int		endofstring(char s);
-int		node_type(t_lexer *node, char s);
-int		closing_q(char *str, char c, int i);
-int		check_signal1(char *main, int *i, t_lexer **node);
-int		check_signal(char *main, int *i, t_lexer **node);
-char	*treating_quotes(char *str, char s, int *b);
-int		lexical_annalysis(t_lexer **node, char *str);
+t_lexer		*lexical_node(char *str, int i, int j);
+int			endofquotes(char s);
+int			endofstring(char s);
+int			node_type(t_lexer *node, char s);
+int			closing_q(char *str, char c, int i);
+int			check_signal1(char *main, int *i, t_lexer **node);
+int			check_signal(char *main, int *i, t_lexer **node);
+char		*treating_quotes(char *str, char s, int *b);
+int			lexical_annalysis(t_lexer **node, char *str);
 
 /*main*/
-int		input_file(t_root *root);
-int		output_file(t_root *root);
-int		checking_processes(t_root *root);
-void	checking_next_node(t_ast **tree);
+int			input_file(t_root *root);
+int			output_file(t_root *root);
+int			checking_processes(t_root *root);
+void		checking_next_node(t_ast **tree);
 
 /*main heitor*/
-int		is_built(char **commands);
+int			is_built(char **commands);
 
 #endif
