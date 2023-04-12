@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/12 00:07:03 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/12 08:51:37 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int g_sig = 0;
 
 void	init_all(t_root *root, char **envp)
 {
@@ -33,16 +31,20 @@ void	free_array(char **array)
 }
 int	free_all(t_root *root)
 {
+	if (root->tree != NULL)
+		root->tree = free_tree(root->tree, 0);
+	if (root->lexer != NULL)
+		root->lexer = free_lexer(root->lexer);
 	free_envp_lst(root);
 	free_array(root->env_array);
-	if (root->tree->command)
-		free_array(root->tree->command);
+	/* if (root->tree->command)
+		free_array(root->tree->command); */
 	free(root->user);
 	free(root->prompt);
 	free(root->line);
 	rl_clear_history();
 	printf("exit\n");
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
 
 int	built_in_router(t_root *root)
@@ -85,12 +87,13 @@ int main(int argc, char const *argv[], char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	root.tree = NULL;
 	root.lexer = NULL;
+	root.line = ft_calloc(sizeof(char), 1);
 	while (1)
 	{
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
-		if (root.line && !ft_strncmp(root.line, "exit", 4))
-			exit(EXIT_SUCCESS);
+		if ((root.line && !ft_strncmp(root.line, "exit", 4)) || root.line == NULL)
+			free_all(&root);
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
 			root.tree = NULL;
@@ -111,7 +114,6 @@ int main(int argc, char const *argv[], char *envp[])
 			root.tree = free_tree(root.tree, 0);
 		if (root.lexer != NULL)
 			root.lexer = free_lexer(root.lexer);
-		if (g_sig == 1)
-			free_all(&root);
 	}
+	free_all(&root);
 }
