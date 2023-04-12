@@ -187,13 +187,15 @@ int	doing_pipes(t_root *root)
 		{
 			if (i != max - 1)
 				root->tree = root->tree->left;
-			if (!root->tree->command[0] && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
+			if (root->tree->type == pipem)
+				root->tree = root->tree->rigth;
+			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
 			{
 				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 				root->out = root->isbuilt;
 				built_in_router(root);
 			}
-			else if (!root->tree->command[0] && !is_built(root->tree->command))
+			else if (root->tree->command && !is_built(root->tree->command))
 			{
 				pid = fork();
 				if (pid == 0)
@@ -219,6 +221,8 @@ int	doing_pipes(t_root *root)
 		root->tree = root->tree->prev;
 	while (root->tree)
 	{
+		if (root->tree->type == here_doc)
+			unlink(".here_doc");
 		if (root->tree->type == command && is_built(root->tree->command))
 			unlink(".temp");
 		else if (root->tree->left && root->tree->left->type == command && is_built(root->tree->left->command))
