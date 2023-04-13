@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 16:09:04 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:37:50 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ t_lexer	*first_node(char *main, int *i, char **test)
 {
 	t_lexer	*node;
 	int		start;
+	int		len;
 
 	start = *i;
 	if (endofquotes(main[*i]))
 		(*i)++;
 	while (!endofstring(main[*i]))
 		(*i)++;
-	*test = ft_substr(main, start, *i);
+	len = *i - start;
+	*test = ft_substr(main, start, len);
 	node = lexical_node(*test, 0, start);
 	return (node);
 }

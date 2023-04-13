@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 15:31:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:53:08 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	child_out(t_root *root)
 	exit (0);
 }
 
-int	child_mid(t_root *root)
+/*int	child_mid(t_root *root)
 {
 	char	*envp2;
 	char	**paths;
@@ -115,7 +115,7 @@ int	child_mid(t_root *root)
 	}
 	exit (0);
 }
-
+*/
 int	checking_redirects(t_root *root, int i, int max)
 {
 	int	in2;
@@ -182,31 +182,28 @@ int	doing_pipes(t_root *root)
 	max = root->num_pipes + 1;
 	root->isbuilt = 0;
 	pid = 0;
-	while (i < max - 1)
+	while (i < max)
 	{
 		root->in = 0;
 		root->out = 1;
 		if (!checking_redirects(root, i, max))
 		{
-			if (i != max - 1)
+			if (i != max -1)
 				root->tree = root->tree->left;
 			if (root->tree->type == pipem)
 				root->tree = root->tree->rigth;
-			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
+			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command) && i < max - 1)
 			{
 				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 				root->out = root->isbuilt;
 				built_in_router(root);
 			}
-			else if (root->tree->command && !is_built(root->tree->command))
+			else if (root->tree->command && !is_built(root->tree->command) && i < max - 1)
 			{
 				if (fork() == 0)
 				{
 					root->tree = root->tree->prev;
-					if (i == 0)
-						child_in(root);
-					else
-						child_mid(root);
+					child_in(root);
 				}	
 			}
 		}
@@ -220,7 +217,10 @@ int	doing_pipes(t_root *root)
 	if (!checking_redirects(root, i, max))
 	{
 		if (root->tree->type == pipem)
-			root->tree = root->tree->rigth;
+		{
+			if (root->tree->rigth)
+				root->tree = root->tree->rigth;
+		}
 		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
 		{
 			root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
