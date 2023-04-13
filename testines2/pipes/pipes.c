@@ -17,10 +17,12 @@ int counting_pipes(t_ast *tree)
 	int	pipes;
 
 	pipes = 0;
-	while (tree->rigth)
+	while (tree)
 	{
 		if (tree->type == pipem)
 			pipes++;
+		if (!tree->rigth)
+			break ;
 		tree = tree->rigth;
 	}
 	while (tree->prev)
@@ -168,37 +170,70 @@ int	checking_redirects(t_root *root, int i, int max)
 	return (0);
 }
 
+t_ast	*checking_unfinishpipes(t_ast *tree)
+{
+	char	*str;
+	t_lexer	*node;
+	t_ast	*aux;
+
+	str = NULL;
+	aux = NULL;
+	while (1)
+	{
+		if (tree->type == pipem)
+		{
+			if (!tree->rigth)
+			{
+				write(1, ">", 1);
+				str = get_next_line(0);
+				break ;
+			}
+		}
+		if (!tree->rigth)
+		{
+			while (tree->prev)
+				tree = tree->prev;
+			return (tree);
+		}
+		tree = tree->rigth;
+	}
+	lexical_annalysis(&node, str);
+	parsing_str(&node, &aux);
+	tree->rigth = aux;
+	while (tree->prev)
+		tree = tree->prev;
+	return (tree);
+}
+
 int	doing_pipes(t_root *root)
 {
 	int 	status;
 	int		i;
-	int		max;
 	pid_t	pid;
 
-
+	root->tree = checking_unfinishpipes(root->tree);
 	i = 0;
 	root->num_pipes = counting_pipes(root->tree);
 	root->pipes = creating_pipes(root->tree, root->num_pipes);
-	max = root->num_pipes + 1;
 	root->isbuilt = 0;
 	pid = 0;
-	while (i < max)
+	while (i < root->num_pipes)
 	{
 		root->in = 0;
 		root->out = 1;
-		if (!checking_redirects(root, i, max))
+		if (!checking_redirects(root, i, root->num_pipes + 1))
 		{
-			if (i != max -1)
+			if (i != root->num_pipes)
 				root->tree = root->tree->left;
 			if (root->tree->type == pipem)
 				root->tree = root->tree->rigth;
-			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command) && i < max - 1)
+			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
 			{
 				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 				root->out = root->isbuilt;
 				built_in_router(root);
 			}
-			else if (root->tree->command && !is_built(root->tree->command) && i < max - 1)
+			else if (root->tree->command && !is_built(root->tree->command))
 			{
 				if (fork() == 0)
 				{
@@ -214,13 +249,9 @@ int	doing_pipes(t_root *root)
 	}
 	root->in = 0;
 	root->out = 1;
-	if (!checking_redirects(root, i, max))
+	if (!checking_redirects(root, i, root->num_pipes + 1))
 	{
-		if (root->tree->type == pipem)
-		{
-			if (root->tree->rigth)
-				root->tree = root->tree->rigth;
-		}
+		//root->tree = root->tree->rigth;
 		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
 		{
 			root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
@@ -230,16 +261,16 @@ int	doing_pipes(t_root *root)
 		else if (root->tree->command && !is_built(root->tree->command))
 		{
 			pid = fork();
+			printf("%d\n", pid);
 			if (pid == 0)
 			{
+				printf("helloooooo!!!!!");
 				root->tree = root->tree->prev;
 				child_out(root);
 			}
 		}	
 	}
-
 	close_fd(root->tree, root->pipes);
-	
 	waitpid(pid, &status, 0);
 	while (i-- >= 0)
 		waitpid(0, NULL, 0);
