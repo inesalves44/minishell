@@ -345,7 +345,7 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 				if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
 				{
 					(*tree)->left = create_treenode(lexer, tree, command);
-						*lexer = (*lexer)->next;
+					*lexer = (*lexer)->next;
 					if ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)
 					{
 						while ((*lexer)->type == red_in || (*lexer)->type == red_out || (*lexer)->type == here_doc || (*lexer)->type == app_out)
@@ -357,7 +357,7 @@ int	parsing_str(t_lexer **lexer, t_ast **tree)
 						}
 					}
 				}
-				if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
+				else if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
 				{
 					(*tree)->rigth = create_treenode(lexer, tree, command);
 					break ;

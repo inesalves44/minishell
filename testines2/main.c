@@ -103,7 +103,7 @@ int main(int argc, char const *argv[], char *envp[])
 				root.out = 1;
 				root.status = 0;
 				root.status = checking_processes(&root);
-			//	printf("\n status: %d\n", root.status);
+				printf("\n status: %d\n", root.status);
 			}
 		}
 		add_history(root.line);

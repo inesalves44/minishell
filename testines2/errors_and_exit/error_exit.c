@@ -21,11 +21,9 @@ int	error_process(char *str, t_ast *node, int error)
 		 write(2, node->command[0], ft_strlen(node->command[0]));
 	write(2, " : ", 1);
 	write(2, str, ft_strlen(str));
-	write(2, "\n", 1);
+	write(2, "\n\n", 1);
 	if (node->prev && (node->prev->type == red_in || node->prev->type == red_out))
 		return (error);
-	else if (node && node->type == command)
-		exit(error);
 	return (error);
 }
 
