@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/12 00:44:03 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:31:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,8 +243,6 @@ int	doing_pipes(t_root *root)
 	waitpid(pid, &status, 0);
 	while (i-- >= 0)
 		waitpid(0, NULL, 0);
-
-	
 	while (root->tree->prev)
 		root->tree = root->tree->prev;
 	while (root->tree)

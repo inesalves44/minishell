@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/11 09:45:55 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:02:38 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	do_print_echo(t_root *root, char *cmd, int dquote)
 	return (1);
 }
 
-int	echo(t_root *root)
+static int	loop_echo(t_root *root)
 {
 	int	cmd;
 	int	space;
@@ -82,7 +82,7 @@ int	echo(t_root *root)
 	space = 0;
 	cmd = 1;
 	if (is_equal(root->tree->command[1], "-n"))
-		cmd++;
+			cmd++;
 	while (root->tree->command[cmd])
 	{
 		if (root->tree->squotes[cmd] != -1)
@@ -97,5 +97,14 @@ int	echo(t_root *root)
 	}
 	if (!(is_equal(root->tree->command[1], "-n")))
 		ft_putchar_fd('\n', root->out);
+	return (0);
+}
+
+int	echo(t_root *root)
+{
+	if (get_array_size(root->tree->command) <= 1)
+		ft_putchar_fd('\n', root->out);
+	else
+		loop_echo(root);
 	return (0);
 }

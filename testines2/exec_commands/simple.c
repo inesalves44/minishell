@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/12 00:32:02 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:31:38 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	input_file(t_root *root)
 	if (root->tree->type == red_in)
 		root->in = open(root->tree->left->file, O_RDONLY);
 	else
-		root->in = open(".here_doc", O_CREAT | O_WRONLY | O_APPEND, 0000644);
+		root->in = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (root->in < 0)
 		return (error_process(": no such file or directory", root->tree->left, 1));
 	if (root->tree->type == here_doc)

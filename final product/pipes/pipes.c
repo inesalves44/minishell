@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/12 00:44:03 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:31:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ int	child_in(t_root *root)
 	cmd_path = find_path(root->tree->left->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		return (error_process(" command not found", root->tree, 127));
+		exit (error_process(" command not found", root->tree->left, 127));
 	if (execve(cmd_path, root->tree->left->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		return (error_process("execve error", NULL, 1));
+		exit (error_process("execve error", NULL, 1));
 	}
 	exit (0);
 }
@@ -84,11 +84,11 @@ int	child_out(t_root *root)
 	cmd_path = find_path(root->tree->rigth->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		return (error_process(" command not found", root->tree, 127));
+		exit (error_process(" command not found", root->tree->rigth, 127));
 	if (execve(cmd_path, root->tree->rigth->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		return (error_process("execve error", NULL, 1));
+		exit (error_process("execve error", NULL, 1));
 	}
 	exit (0);
 }
@@ -107,13 +107,13 @@ int	child_mid(t_root *root)
 	cmd_path = find_path(root->tree->left->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		return (error_process(" command not found", root->tree, 127));
+		exit (error_process(" command not found", root->tree->left, 127));
 	if (execve(cmd_path, root->tree->left->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		return (error_process("execve error", NULL, 1));
+		exit (error_process("execve error", NULL, 1));
 	}
-	return (0);
+	exit (0);
 }
 
 int	checking_redirects(t_root *root, int i, int max)
@@ -135,6 +135,8 @@ int	checking_redirects(t_root *root, int i, int max)
 			break ;
 		root->tree = root->tree->rigth;
 	}
+	if (root->status)
+		return (root->status);
 	if (root->in == 0)
 	{
 		if (i == 0)
@@ -179,7 +181,8 @@ int	doing_pipes(t_root *root)
 	root->pipes = creating_pipes(root->tree, root->num_pipes);
 	max = root->num_pipes + 1;
 	root->isbuilt = 0;
-	while (i < max)
+	pid = 0;
+	while (i < max - 1)
 	{
 		root->in = 0;
 		root->out = 1;
@@ -197,14 +200,11 @@ int	doing_pipes(t_root *root)
 			}
 			else if (root->tree->command && !is_built(root->tree->command))
 			{
-				pid = fork();
-				if (pid == 0)
+				if (fork() == 0)
 				{
 					root->tree = root->tree->prev;
 					if (i == 0)
 						child_in(root);
-					else if (i == max - 1)
-						child_out(root);
 					else
 						child_mid(root);
 				}	
@@ -215,8 +215,34 @@ int	doing_pipes(t_root *root)
 			root->tree = root->tree->rigth;
 		i++;
 	}
+	root->in = 0;
+	root->out = 1;
+	if (!checking_redirects(root, i, max))
+	{
+		if (root->tree->type == pipem)
+			root->tree = root->tree->rigth;
+		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
+		{
+			root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+			root->out = root->isbuilt;
+			built_in_router(root);
+		}
+		else if (root->tree->command && !is_built(root->tree->command))
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				root->tree = root->tree->prev;
+				child_out(root);
+			}
+		}	
+	}
+
 	close_fd(root->tree, root->pipes);
+	
 	waitpid(pid, &status, 0);
+	while (i-- >= 0)
+		waitpid(0, NULL, 0);
 	while (root->tree->prev)
 		root->tree = root->tree->prev;
 	while (root->tree)
