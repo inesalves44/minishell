@@ -49,6 +49,11 @@ int	cd(t_root *root)
 		change_to_home(root);
 		return (0);
 	}
+	if (is_equal(root->tree->command[1], "~"))
+	{
+		change_to_home(root);
+		return (0);
+	}
 	if (has_more_params_error(get_array_size(root->tree->command)))
 		return (1);
 	else
