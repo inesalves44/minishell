@@ -60,11 +60,11 @@ int	child_in(t_root *root)
 	close_fd(root->tree, root->pipes);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->left->command[0], paths);
+	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (error_process(" command not found", root->tree->left, 127));
-	if (execve(cmd_path, root->tree->left->command, root->env_array) < 0)
+		exit (error_process(" command not found", root->tree, 127));
+	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
 		exit (error_process("execve error", NULL, 1));
@@ -83,11 +83,11 @@ int	child_out(t_root *root)
 	close_fd(root->tree, root->pipes);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->rigth->command[0], paths);
+	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (error_process(" command not found", root->tree->rigth, 127));
-	if (execve(cmd_path, root->tree->rigth->command, root->env_array) < 0)
+		exit (error_process(" command not found", root->tree, 127));
+	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
 		exit (error_process("execve error", NULL, 1));
@@ -95,29 +95,6 @@ int	child_out(t_root *root)
 	exit (0);
 }
 
-/*int	child_mid(t_root *root)
-{
-	char	*envp2;
-	char	**paths;
-	char	*cmd_path;
-
-	dup2(root->in, 0);
-	dup2(root->out, 1);
-	close_fd(root->tree, root->pipes);
-	envp2 = get_path(root->env_array);
-	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->left->command[0], paths);
-	free_array(paths);
-	if (!cmd_path)
-		exit (error_process(" command not found", root->tree->left, 127));
-	if (execve(cmd_path, root->tree->left->command, root->env_array) < 0)
-	{
-		free(cmd_path);
-		exit (error_process("execve error", NULL, 1));
-	}
-	exit (0);
-}
-*/
 int	checking_redirects(t_root *root, int i, int max)
 {
 	int	in2;
@@ -173,6 +150,7 @@ int	checking_redirects(t_root *root, int i, int max)
 t_ast	*checking_unfinishpipes(t_ast *tree)
 {
 	char	*str;
+	char	*new;
 	t_lexer	*node;
 	t_ast	*aux;
 
@@ -184,8 +162,13 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 		{
 			if (!tree->rigth)
 			{
-				write(1, ">", 1);
-				str = get_next_line(0);
+				while (1)
+				{
+					write(1, ">", 1);
+					str = get_next_line(0);
+					if (str[0] != '\n')
+						break ;	
+				}
 				break ;
 			}
 		}
@@ -197,11 +180,15 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 		}
 		tree = tree->rigth;
 	}
-	lexical_annalysis(&node, str);
+	new = ft_substr(str, 0, ft_strlen(str) - 1);
+	lexical_annalysis(&node, new);
 	parsing_str(&node, &aux);
 	tree->rigth = aux;
+	aux->prev = tree;
 	while (tree->prev)
 		tree = tree->prev;
+	free(str);
+	free(new);
 	return (tree);
 }
 
@@ -227,20 +214,18 @@ int	doing_pipes(t_root *root)
 				root->tree = root->tree->left;
 			if (root->tree->type == pipem)
 				root->tree = root->tree->rigth;
-			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
+			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && ft_strncmp("exit", root->tree->command[0], 4) && is_built(root->tree->command))
 			{
-				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-				root->out = root->isbuilt;
+				if ((root->out == root->pipes[2 * i + 1] && i > 0) || (root->out == root->pipes[1] && i == 0))
+				{
+					root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+					root->out = root->isbuilt;	
+				}
 				built_in_router(root);
 			}
 			else if (root->tree->command && !is_built(root->tree->command))
-			{
 				if (fork() == 0)
-				{
-					root->tree = root->tree->prev;
 					child_in(root);
-				}	
-			}
 		}
 		root->tree = root->tree->prev;
 		if (root->tree->rigth)
@@ -251,23 +236,13 @@ int	doing_pipes(t_root *root)
 	root->out = 1;
 	if (!checking_redirects(root, i, root->num_pipes + 1))
 	{
-		//root->tree = root->tree->rigth;
-		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
-		{
-			root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-			root->out = root->isbuilt;
+		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && ft_strncmp("exit", root->tree->command[0], 4) && is_built(root->tree->command))
 			built_in_router(root);
-		}
 		else if (root->tree->command && !is_built(root->tree->command))
 		{
 			pid = fork();
-			printf("%d\n", pid);
 			if (pid == 0)
-			{
-				printf("helloooooo!!!!!");
-				root->tree = root->tree->prev;
 				child_out(root);
-			}
 		}	
 	}
 	close_fd(root->tree, root->pipes);

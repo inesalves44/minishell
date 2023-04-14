@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 15:31:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:53:08 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ int counting_pipes(t_ast *tree)
 	int	pipes;
 
 	pipes = 0;
-	while (tree->rigth)
+	while (tree)
 	{
 		if (tree->type == pipem)
 			pipes++;
+		if (!tree->rigth)
+			break ;
 		tree = tree->rigth;
 	}
 	while (tree->prev)
@@ -58,11 +60,11 @@ int	child_in(t_root *root)
 	close_fd(root->tree, root->pipes);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->left->command[0], paths);
+	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (error_process(" command not found", root->tree->left, 127));
-	if (execve(cmd_path, root->tree->left->command, root->env_array) < 0)
+		exit (error_process(" command not found", root->tree, 127));
+	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
 		exit (error_process("execve error", NULL, 1));
@@ -81,34 +83,11 @@ int	child_out(t_root *root)
 	close_fd(root->tree, root->pipes);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->rigth->command[0], paths);
+	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (error_process(" command not found", root->tree->rigth, 127));
-	if (execve(cmd_path, root->tree->rigth->command, root->env_array) < 0)
-	{
-		free(cmd_path);
-		exit (error_process("execve error", NULL, 1));
-	}
-	exit (0);
-}
-
-int	child_mid(t_root *root)
-{
-	char	*envp2;
-	char	**paths;
-	char	*cmd_path;
-
-	dup2(root->in, 0);
-	dup2(root->out, 1);
-	close_fd(root->tree, root->pipes);
-	envp2 = get_path(root->env_array);
-	paths = ft_split(envp2, ':');
-	cmd_path = find_path(root->tree->left->command[0], paths);
-	free_array(paths);
-	if (!cmd_path)
-		exit (error_process(" command not found", root->tree->left, 127));
-	if (execve(cmd_path, root->tree->left->command, root->env_array) < 0)
+		exit (error_process(" command not found", root->tree, 127));
+	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
 		exit (error_process("execve error", NULL, 1));
@@ -168,47 +147,85 @@ int	checking_redirects(t_root *root, int i, int max)
 	return (0);
 }
 
+t_ast	*checking_unfinishpipes(t_ast *tree)
+{
+	char	*str;
+	char	*new;
+	t_lexer	*node;
+	t_ast	*aux;
+
+	str = NULL;
+	aux = NULL;
+	while (1)
+	{
+		if (tree->type == pipem)
+		{
+			if (!tree->rigth)
+			{
+				while (1)
+				{
+					write(1, ">", 1);
+					str = get_next_line(0);
+					if (str[0] != '\n')
+						break ;	
+				}
+				break ;
+			}
+		}
+		if (!tree->rigth)
+		{
+			while (tree->prev)
+				tree = tree->prev;
+			return (tree);
+		}
+		tree = tree->rigth;
+	}
+	new = ft_substr(str, 0, ft_strlen(str) - 1);
+	lexical_annalysis(&node, new);
+	parsing_str(&node, &aux);
+	tree->rigth = aux;
+	aux->prev = tree;
+	while (tree->prev)
+		tree = tree->prev;
+	free(str);
+	free(new);
+	return (tree);
+}
+
 int	doing_pipes(t_root *root)
 {
 	int 	status;
 	int		i;
-	int		max;
 	pid_t	pid;
 
-
+	root->tree = checking_unfinishpipes(root->tree);
 	i = 0;
 	root->num_pipes = counting_pipes(root->tree);
 	root->pipes = creating_pipes(root->tree, root->num_pipes);
-	max = root->num_pipes + 1;
 	root->isbuilt = 0;
 	pid = 0;
-	while (i < max - 1)
+	while (i < root->num_pipes)
 	{
 		root->in = 0;
 		root->out = 1;
-		if (!checking_redirects(root, i, max))
+		if (!checking_redirects(root, i, root->num_pipes + 1))
 		{
-			if (i != max - 1)
+			if (i != root->num_pipes)
 				root->tree = root->tree->left;
 			if (root->tree->type == pipem)
 				root->tree = root->tree->rigth;
-			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
+			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && ft_strncmp("exit", root->tree->command[0], 4) && is_built(root->tree->command))
 			{
-				root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-				root->out = root->isbuilt;
+				if ((root->out == root->pipes[2 * i + 1] && i > 0) || (root->out == root->pipes[1] && i == 0))
+				{
+					root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+					root->out = root->isbuilt;	
+				}
 				built_in_router(root);
 			}
 			else if (root->tree->command && !is_built(root->tree->command))
-			{
 				if (fork() == 0)
-				{
-					root->tree = root->tree->prev;
-					if (i == 0)
-						child_in(root);
-					else
-						child_mid(root);
-				}	
-			}
+					child_in(root);
 		}
 		root->tree = root->tree->prev;
 		if (root->tree->rigth)
@@ -217,29 +234,18 @@ int	doing_pipes(t_root *root)
 	}
 	root->in = 0;
 	root->out = 1;
-	if (!checking_redirects(root, i, max))
+	if (!checking_redirects(root, i, root->num_pipes + 1))
 	{
-		if (root->tree->type == pipem)
-			root->tree = root->tree->rigth;
-		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && is_built(root->tree->command))
-		{
-			root->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-			root->out = root->isbuilt;
+		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && ft_strncmp("exit", root->tree->command[0], 4) && is_built(root->tree->command))
 			built_in_router(root);
-		}
 		else if (root->tree->command && !is_built(root->tree->command))
 		{
 			pid = fork();
 			if (pid == 0)
-			{
-				root->tree = root->tree->prev;
 				child_out(root);
-			}
 		}	
 	}
-
 	close_fd(root->tree, root->pipes);
-	
 	waitpid(pid, &status, 0);
 	while (i-- >= 0)
 		waitpid(0, NULL, 0);

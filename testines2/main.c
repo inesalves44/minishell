@@ -92,7 +92,7 @@ int main(int argc, char const *argv[], char *envp[])
 	{
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
-		if ((root.line && !ft_strncmp(root.line, "exit", 4)) || root.line == NULL)
+		if ((root.line && !ft_strncmp(root.line, "exit", 4) && ft_strlen(root.line) < 4 )|| root.line == NULL)
 			free_all(&root);
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
