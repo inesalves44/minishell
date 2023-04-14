@@ -143,10 +143,13 @@ int			env(t_root *root);
 
 /*parsing*/
 int			get_file(t_lexer **lexer, t_ast *node);
+int			pipes_lexer(t_lexer *lexer);
+int			length_lexer(t_lexer *lexer, t_ast *aux, int i);
 char		**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree);
-t_ast		*create_treenode(t_lexer **lexer, t_ast **aux, int check);
-void		print_tree(t_ast *node, int i);
-int			parsing_str(t_lexer **lexer, t_ast **tree);
+char		**create_array(t_lexer **lexer, int len, t_ast **tree);
+int			is_file(int i);
+void		passing_file(t_lexer **lexer);void	passing_file(t_lexer **lexer);
+void		array_quotes(t_ast **tree, t_lexer **lexer, int j);
 
 /*command*/
 char		*get_path(char **envp);
