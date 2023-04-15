@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 12:11:27 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/15 15:29:50 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "libft/incs/libft.h"
 # include "libft/incs/ft_printf.h"
 # include "libft/incs/get_next_line.h"
+# include "incs/parse_lexer.h"
+# include "incs/lists_structs.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdlib.h>
@@ -32,72 +34,6 @@
 # define TRUE 1
 # define FALSE 0
 # define BUFFER_PATH 100
-
-typedef enum s_io
-{
-	STDIN,
-	STDOUT,
-	STDERR,
-}	t_io;
-
-typedef struct s_envlst
-{
-	char			*key;
-	char			*value;
-	struct s_envlst	*next;
-}	t_envlst;
-
-typedef enum types
-{
-	pipem = 1,
-	red_in = 2,
-	red_out = 3,
-	command = 4,
-	file = 5,
-	here_doc = 6,
-	app_out = 7,
-	s_quotes = 87,
-	d_quotes = 82,
-}	t_check;
-
-typedef struct ast_tree
-{
-	int				node;
-	int				type;
-	int				*squotes;
-	int				*dquotes;
-	char			**command;
-	char			*file;
-	struct ast_tree	*left;
-	struct ast_tree	*rigth;
-	struct ast_tree	*prev;
-}	t_ast;
-
-typedef struct lexer_list
-{
-	char				*str;
-	int					number;
-	int					type;
-	struct lexer_list	*next;
-	struct lexer_list	*prev;
-}	t_lexer;
-
-typedef struct s_root
-{
-	t_lexer		*lexer;
-	t_ast		*tree;
-	char		**env_array;
-	t_envlst	*env_lst;
-	char		*user;
-	char		*prompt;
-	char		*line;
-	int			in;
-	int			out;
-	int			isbuilt;
-	int			*pipes;
-	int			status;
-	int			num_pipes;
-}	t_root;
 
 /* env funcs*/
 
@@ -141,19 +77,6 @@ int			export(t_root *root);
 int			unset(t_root *root);
 int			env(t_root *root);
 
-/*parsing*/
-int			get_file(t_lexer **lexer, t_ast *node);
-int			pipes_lexer(t_lexer *lexer);
-int			length_lexer(t_lexer *lexer, t_ast *aux, int i);
-char		**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree);
-char		**create_array(t_lexer **lexer, int len, t_ast **tree);
-int			is_file(int i);
-void		passing_file(t_lexer **lexer);void	passing_file(t_lexer **lexer);
-void		array_quotes(t_ast **tree, t_lexer **lexer, int j);
-int			parsing_str(t_lexer **l, t_ast **t);
-t_ast		*create_treenode(t_lexer **lexer, t_ast **aux, int check);
-int			checking_nodes(t_ast *tree, t_lexer *lexer, int i);
-
 /*command*/
 char		*get_path(char **envp);
 char		*find_path(char *final, char **paths);
@@ -168,25 +91,12 @@ int			error_syntax(char *str, int error);
 t_lexer		*free_lexer(t_lexer *lexer);
 
 /*pipes*/
-/* t_ast *tree, int in, int out, int *pipes, char *envp[]);
-   t_ast *tree, int in, int out, int *pipes, char *envp[]); */
 int			counting_pipes(t_ast *tree);
 int			*creating_pipes(t_ast *tree, int pipes);
 int			child_in(t_root *root);
 int			child_out(t_root *root); //
 int			child_mid(t_root *root);
 int			doing_pipes(t_root *root);
-
-/*lexical*/
-t_lexer		*lexical_node(char *str, int i, int j);
-int			endofquotes(char s);
-int			endofstring(char s);
-int			node_type(t_lexer *node, char s);
-int			closing_q(char *str, char c, int i);
-int			check_signal1(char *main, int *i, t_lexer **node);
-int			check_signal(char *main, int *i, t_lexer **node);
-char		*treating_quotes(char *str, char s, int *b);
-int			lexical_annalysis(t_lexer **node, char *str);
 
 /*main*/
 int			input_file(t_root *root);
