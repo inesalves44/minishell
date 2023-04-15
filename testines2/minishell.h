@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/11 13:57:23 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:11:27 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,9 @@ char		**create_array(t_lexer **lexer, int len, t_ast **tree);
 int			is_file(int i);
 void		passing_file(t_lexer **lexer);void	passing_file(t_lexer **lexer);
 void		array_quotes(t_ast **tree, t_lexer **lexer, int j);
+int			parsing_str(t_lexer **l, t_ast **t);
+t_ast		*create_treenode(t_lexer **lexer, t_ast **aux, int check);
+int			checking_nodes(t_ast *tree, t_lexer *lexer, int i);
 
 /*command*/
 char		*get_path(char **envp);

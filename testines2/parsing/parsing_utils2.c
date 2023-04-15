@@ -6,21 +6,38 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 17:06:19 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:33:59 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	check_nodespart2(t_ast *tree, t_lexer *lexer)
+{
+	int	max;
+	int	red;
+	int	start;
+
+	start = lexer->number;
+	while (tree->type != pipem)
+		tree = tree->rigth;
+	while (lexer->number != tree->node)
+	{
+		if (lexer->type != 0 && lexer->type != 82 && lexer->type != 82)
+			red += 2;
+		lexer = lexer->next;
+	}
+	max = tree->node - red - start;
+	return (max);
+}
+
 int	checking_nodes(t_ast *tree, t_lexer *lexer, int i)
 {
 	int	max;
 	int red;
-	int start;
 	
 	max = 0;
 	red = 0;
-	start = lexer->number;
 	if (i == 1 || i == 3)
 	{
 		while (lexer->next)
@@ -34,17 +51,7 @@ int	checking_nodes(t_ast *tree, t_lexer *lexer, int i)
 		max = max - red;
 	}
 	else if (i == 2)
-	{
-		while (tree->type != pipem)
-			tree = tree->rigth;
-		while (lexer->number != tree->node)
-		{
-			if (lexer->type != 0 && lexer->type != 82 && lexer->type != 82)
-				red += 2;
-			lexer = lexer->next;
-		}
-		max = tree->node - red - start;
-	}
+		max = check_nodespart2(tree, lexer);
 	return (max);
 }
 

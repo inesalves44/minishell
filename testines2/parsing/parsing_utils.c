@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 17:06:19 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:22:53 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ int	length_lexer(t_lexer *lexer, t_ast *aux, int i)
 	return (len);
 }
 
+char	**newstring(t_lexer **lexer, t_ast **tree)
+{
+	char	**new;
+	int		len;
+
+	len = length_lexer(*lexer, NULL, 0);
+	new = create_array(lexer, len, tree);
+	return (new);
+}
+
 char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 {
 	char	**new;
@@ -67,10 +77,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 	
 	new = NULL;
 	if (aux == NULL)
-	{
-		len = length_lexer(*lexer, NULL, 0);
-		new = create_array(lexer, len, tree);
-	}
+		new = newstring(lexer, tree);
 	else
 	{
 		if (!pipes_lexer(*lexer))
@@ -83,12 +90,29 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 				len = length_lexer(*lexer, *aux, 3);
 		}
 		new = create_array(lexer, len, tree);
-		if ((*lexer)->next != NULL) /*MUDEI ISTO*/
+		if ((*lexer)->next != NULL)
 			*lexer = (*lexer)->next;
 		if (is_file((*lexer)->type))
 			passing_file(lexer);
 	}
 	return (new);
+}
+
+void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, t_ast **node)
+{
+	if (check == command)
+	{
+		if (!aux)
+			(*node)->command = treat_string(lexer, NULL, node);
+		else
+			(*node)->command = treat_string(lexer, aux, node);
+	}
+	else
+		(*node)->command = NULL;
+	if (check == file)
+		(*node)->file = ft_strdup((*lexer)->str);
+	else
+		(*node)->file = NULL;	
 }
 
 t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
@@ -100,19 +124,7 @@ t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
 	{
 		node->node = (*lexer)->number;
 		node->type = check;
-		if (check == command)
-		{
-			if (!aux)
-				node->command = treat_string(lexer, NULL, &node);
-			else
-				node->command = treat_string(lexer, aux, &node);
-		}
-		else
-			node->command = NULL;
-		if (check == file)
-			node->file = ft_strdup((*lexer)->str);
-		else
-			node->file = NULL;
+		find_filecomand(lexer, aux, check, &node);
 		node->left = NULL;
 		node->rigth = NULL;
 		if (aux)
@@ -123,7 +135,7 @@ t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
 	return (node);
 }
 
-
+/*
 void	print_tree(t_ast *node, int i)
 {
 	int j;
@@ -181,4 +193,4 @@ void	print_tree(t_ast *node, int i)
 		printf("rigth node\n");
 		print_tree(node->rigth, i);
 	}
-}
+}*/

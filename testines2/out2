@@ -1,0 +1,29 @@
+total 276
+-rw-rw-r-- 1 ines ines      0 abr 13 17:02 a
+-rw-rw-r-- 1 ines ines    169 abr 15 11:38 b
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 built-in
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 envs
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 errors_and_exit
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 exec_commands
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 lexer
+drwxrwxr-x 6 ines ines   4096 abr 15 12:11 libft
+-rw-rw-r-- 1 ines ines  81000 abr 15 12:11 libft.a
+-rw-rw-r-- 1 ines ines   3130 abr 15 11:38 main.c
+-rw-rw-r-- 1 ines ines  16128 abr 15 12:11 main.o
+-rw-rw-r-- 1 ines ines   1314 abr 15 11:38 Makefile
+-rwxrwxr-x 1 ines ines 104152 abr 15 12:11 minishell
+-rw-rw-r-- 1 ines ines   5452 abr 15 12:11 minishell.h
+-rw-rw-r-- 1 ines ines     58 abr 15 11:38 out
+-rw-rw-r-- 1 ines ines      0 abr 15 12:12 out2
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 parsing
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 pipes
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 prompt
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 signals
+-rw-rw-r-- 1 ines ines     12 abr 15 11:38 test
+-rw-rw-r-- 1 ines ines     10 abr 15 11:38 test\
+-rw-rw-r-- 1 ines ines      0 abr 15 11:38 test1
+drwxrwxr-x 2 ines ines   4096 abr 15 12:11 utils
+-rwxrwxr-x 1 ines ines 104152 abr 15 12:11 minishell
+-rw-rw-r-- 1 ines ines   5452 abr 15 12:11 minishell.h
+2
+1
