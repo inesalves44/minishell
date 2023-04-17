@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 15:31:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:57:04 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	checking_processes(t_root *root)
 				return (WEXITSTATUS(status));
 		}
 		else if (root->tree && root->tree->type == command && is_built(root->tree->command))
-			built_in_router(root);
+			return (built_in_router(root));
 	}
 	else
 	{

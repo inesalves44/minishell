@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/12 08:51:37 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:56:34 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,19 @@ int	free_all(t_root *root)
 int	built_in_router(t_root *root)
 {
 	if (is_equal(root->tree->command[0], "cd"))
-		cd(root);
+		return (cd(root));
 	if (is_equal(root->tree->command[0], "echo"))
-		echo(root);
+		return (echo(root));
 	if (is_equal(root->tree->command[0], "env"))
-		env(root);
+		return (env(root));
 	if (is_equal(root->tree->command[0], "export"))
-		export(root);
+		return (export(root));
 	if (is_equal(root->tree->command[0], "pwd"))
-		pwd(root);
+		return (pwd(root));
 	if (is_equal(root->tree->command[0], "exit"))
 		free_all(root);
 	if (is_equal(root->tree->command[0], "unset"))
-		unset(root);
+		return (unset(root));
 	return (FALSE);
 }
 
@@ -97,6 +97,7 @@ int main(int argc, char const *argv[], char *envp[])
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
 			root.tree = NULL;
+			root.status_old = root.status;
 			if(!parsing_str(&root.lexer, &root.tree))
 			{
 				root.in = 0;
