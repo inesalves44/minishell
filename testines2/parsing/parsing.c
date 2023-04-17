@@ -37,39 +37,6 @@ int	first_objects(t_lexer **lexer, t_ast **tree)
 	return (0);
 }
 
-int	when_file(t_lexer **lexer, t_ast **tree)
-{
-	int	i;
-
-	i = (*lexer)->number;
-	if ((*tree)->left == NULL)
-	{
-		if (get_file(lexer, *tree))
-			return (2);
-		(*tree)->left = create_treenode(lexer, tree, file);
-		if (i != (*lexer)->number)
-		{
-			while ((*lexer)->number != i)
-				*lexer = (*lexer)->prev;	
-		}
-		else
-		{
-			if ((*lexer)->next != NULL)
-				*lexer = (*lexer)->next;
-			else
-				return (0);
-		}
-	}
-	if ((*tree)->rigth == NULL && (*tree)->left->node != (*lexer)->number)
-	{
-		(*tree)->rigth = create_treenode(lexer, tree, command);
-		return (0);
-	}
-	else if ((*tree)->rigth != NULL)
-		*tree = (*tree)->rigth;
-	return (0);
-}
-
 int	when_pipe(t_lexer **lexer, t_ast **tree)
 {
 	if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
@@ -105,6 +72,26 @@ void	finish_parse(t_lexer **lexer, t_ast **tree)
 		*lexer = (*lexer)->prev;
 }
 
+int	second_loop(t_lexer **l, t_ast **t)
+{
+	while (*l)
+	{
+		if ((*l)->number != (*t)->node && \
+		(*l)->type != pipem && is_file((*t)->type))
+		{
+			if (when_file(l, t))
+				return (2);
+		}
+		else if ((*l)->number != (*t)->node && (*t)->type == pipem)
+			when_pipe(l, t);
+		else if ((*l)->next != NULL)
+			*l = (*l)->next;
+		else if ((*l)->next == NULL)
+			break ;
+	}
+	return (0);
+}
+
 int	parsing_str(t_lexer **l, t_ast **t)
 {
 	first_objects(l, t);
@@ -112,24 +99,12 @@ int	parsing_str(t_lexer **l, t_ast **t)
 		*t = create_treenode(l, NULL, command);
 	else
 	{
-		if ((!is_file((*l)->type)) && (*l)->next == NULL)
+		if ((is_file((*l)->type)) && (*l)->next == NULL)
 			return (error_syntax("'newline'", 2));
 		while ((*t)->prev != NULL)
 			*t = (*t)->prev;
-		while (*l)
-		{
-			if ((*l)->number != (*t)->node && (*l)->type != pipem && is_file((*t)->type))
-			{
-				if (when_file(l, t))
-					return (2);
-			}
-			else if ((*l)->number != (*t)->node && (*t)->type == pipem)
-				when_pipe(l, t);
-			else if ((*l)->next != NULL)
-				*l = (*l)->next;
-			else if ((*l)->next == NULL)
-				break ;
-		}
+		if (second_loop(l, t))
+			return (2);
 	}
 	finish_parse(l, t);
 	return (0);

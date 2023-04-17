@@ -74,7 +74,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 {
 	char	**new;
 	int		len;
-	
+
 	new = NULL;
 	if (aux == NULL)
 		new = newstring(lexer, tree);
@@ -90,49 +90,12 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 				len = length_lexer(*lexer, *aux, 3);
 		}
 		new = create_array(lexer, len, tree);
-		if ((*lexer)->next != NULL)
-			*lexer = (*lexer)->next;
 		if (is_file((*lexer)->type))
 			passing_file(lexer);
+		if ((*lexer)->next != NULL)
+			*lexer = (*lexer)->next;
 	}
 	return (new);
-}
-
-void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, t_ast **node)
-{
-	if (check == command)
-	{
-		if (!aux)
-			(*node)->command = treat_string(lexer, NULL, node);
-		else
-			(*node)->command = treat_string(lexer, aux, node);
-	}
-	else
-		(*node)->command = NULL;
-	if (check == file)
-		(*node)->file = ft_strdup((*lexer)->str);
-	else
-		(*node)->file = NULL;	
-}
-
-t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
-{
-	t_ast	*node;
-
-	node = malloc(sizeof(t_ast));
-	if (node)
-	{
-		node->node = (*lexer)->number;
-		node->type = check;
-		find_filecomand(lexer, aux, check, &node);
-		node->left = NULL;
-		node->rigth = NULL;
-		if (aux)
-			node->prev = *aux;
-		else
-			node->prev = NULL;
-	}
-	return (node);
 }
 
 /*

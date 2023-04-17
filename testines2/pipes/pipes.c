@@ -260,7 +260,7 @@ int	doing_pipes(t_root *root)
 		else if (root->tree->left && root->tree->left->type == command && is_built(root->tree->left->command))
 			unlink(".temp");
 		if (!root->tree->rigth)
-			break;
+			break ;
 		root->tree = root->tree->rigth;
 	}
 	if (WIFEXITED(status))

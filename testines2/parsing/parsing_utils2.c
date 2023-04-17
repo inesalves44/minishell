@@ -12,10 +12,9 @@
 
 #include "../minishell.h"
 
-int	check_nodespart2(t_ast *tree, t_lexer *lexer)
+int	check_nodespart2(t_ast *tree, t_lexer *lexer, int red)
 {
 	int	max;
-	int	red;
 	int	start;
 
 	start = lexer->number;
@@ -34,8 +33,8 @@ int	check_nodespart2(t_ast *tree, t_lexer *lexer)
 int	checking_nodes(t_ast *tree, t_lexer *lexer, int i)
 {
 	int	max;
-	int red;
-	
+	int	red;
+
 	max = 0;
 	red = 0;
 	if (i == 1 || i == 3)
@@ -51,34 +50,22 @@ int	checking_nodes(t_ast *tree, t_lexer *lexer, int i)
 		max = max - red;
 	}
 	else if (i == 2)
-		max = check_nodespart2(tree, lexer);
+		max = check_nodespart2(tree, lexer, red);
 	return (max);
 }
 
-int is_file(int i)
+int	is_file(int i)
 {
-    if (i == red_in)
-        return (1);
-    else if (i == red_out)
-        return (1);
-    else if (i == app_out)
-        return (1);
-    else if (i == here_doc)
-        return (1);
-    return (0);
+	if (i == red_in)
+		return (1);
+	else if (i == red_out)
+		return (1);
+	else if (i == app_out)
+		return (1);
+	else if (i == here_doc)
+		return (1);
+	return (0);
 }
-
-void	passing_file(t_lexer **lexer)
-{
-	while (is_file((*lexer)->type))
-	{
-		*lexer = (*lexer)->next;
-		*lexer = (*lexer)->next;
-		if ((*lexer)->next == NULL)
-			break ;
-	}
-}
-
 
 void	array_quotes(t_ast **tree, t_lexer **lexer, int j)
 {
@@ -119,7 +106,7 @@ char	**create_array(t_lexer **lexer, int len, t_ast **tree)
 			j++;
 			if (j == len)
 				break ;
-			break;
+			break ;
 		}
 		(*lexer) = (*lexer)->next;
 		j++;

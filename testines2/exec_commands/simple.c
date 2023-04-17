@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 15:31:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:41:09 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,20 @@ void	checking_next_node(t_ast **tree)
 		(*tree) = (*tree)->rigth;
 }
 
+int	check_expander(t_ast **tree)
+{
+	char	*value;
+
+	
+}
+
 int	checking_processes(t_root *root)
 {
 	pid_t	pid;
 	int		status;
 
 	status = 0;
+	check_expander(root->tree);
 	if (!counting_pipes(root->tree))
 	{
 		while (root->tree)

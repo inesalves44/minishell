@@ -40,9 +40,8 @@ static	char	*assembly_prompt(t_root *root)
 	char	*prompt;
 
 	prompt = NULL;
-	prompt = ft_strjoin_gnl(prompt, "\033[1m\033[32m");
 	prompt = ft_strjoin_gnl(prompt, root->user);
-	prompt = ft_strjoin_gnl(prompt, "@miniteam:\033[1m\033[34m");
+	prompt = ft_strjoin_gnl(prompt, "@miniteam:");
 	return (prompt);
 }
 
@@ -66,7 +65,7 @@ char	*get_prompt(t_root *root)
 	}
 	else
 		prompt = ft_strjoin_gnl(prompt, pwd);
-	prompt = ft_strjoin_gnl(prompt, "\033[0m$ ");
+	prompt = ft_strjoin_gnl(prompt, "$ ");
 	free(pwd);
 	free(home);
 	pwd = NULL;
