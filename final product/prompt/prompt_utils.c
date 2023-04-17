@@ -21,9 +21,8 @@
 */
 void	redisplay_prompt(void)
 {
-	rl_reset_line_state();
-	rl_cleanup_after_signal();
+	write(1, "\n", STDOUT);
+	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_crlf();
 	rl_redisplay();
 }
