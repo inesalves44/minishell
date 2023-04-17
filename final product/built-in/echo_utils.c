@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 09:29:11 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/11 09:32:04 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:16:51 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int	handler_special(t_root *root, char c)
 	if (c == '$')
 		ft_putnbr_fd(getpid(), root->out);
 	else
-		ft_putnbr_fd(root->status, root->out);
+		ft_putnbr_fd(root->status_old, root->out);
 	return (1);
 }
