@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/17 15:18:20 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/12 08:51:37 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int main(int argc, char const *argv[], char *envp[])
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
 			root.tree = NULL;
-			root.status_old = root.status;
 			if(!parsing_str(&root.lexer, &root.tree))
 			{
 				root.in = 0;
