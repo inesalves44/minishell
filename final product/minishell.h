@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 17:04:17 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 18:00:43 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		free_str_split(char **str);
 void		close_fd(t_ast *tree, int *pipes);
 int			error_syntax(char *str, int error);
 t_lexer		*free_lexer(t_lexer *lexer);
-int			free_all(t_root *root);
+void		free_all(t_root *root);
 
 /*pipes*/
 int			counting_pipes(t_ast *tree);

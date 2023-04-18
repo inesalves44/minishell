@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 17:01:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 18:02:59 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_array(char **array)
 	}
 	free(array);
 }
-int	free_all(t_root *root)
+void	free_all(t_root *root)
 {
 	if (root->tree != NULL)
 		root->tree = free_tree(root->tree, 0);
@@ -46,7 +46,6 @@ int	free_all(t_root *root)
 	free(root->line);
 	rl_clear_history();
 	printf("exit\n");
-	exit(EXIT_SUCCESS);
 }
 
 int	built_in_router(t_root *root)
@@ -93,8 +92,6 @@ int main(int argc, char const *argv[], char *envp[])
 	{
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
-		if ((root.line && !ft_strncmp(root.line, "exit", 4)) || root.line == NULL)
-			free_all(&root);
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
 			root.tree = NULL;
