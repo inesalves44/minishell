@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 15:29:50 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:04:17 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int			pwd(t_root *root);
 int			export(t_root *root);
 int			unset(t_root *root);
 int			env(t_root *root);
+int			ft_exit(t_root *root);
 
 /*command*/
 char		*get_path(char **envp);
@@ -89,6 +90,7 @@ void		free_str_split(char **str);
 void		close_fd(t_ast *tree, int *pipes);
 int			error_syntax(char *str, int error);
 t_lexer		*free_lexer(t_lexer *lexer);
+int			free_all(t_root *root);
 
 /*pipes*/
 int			counting_pipes(t_ast *tree);

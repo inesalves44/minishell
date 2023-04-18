@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 16:42:50 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:01:59 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	built_in_router(t_root *root)
 	if (is_equal(root->tree->command[0], "pwd"))
 		return (pwd(root));
 	if (is_equal(root->tree->command[0], "exit"))
-		free_all(root);
+		return (ft_exit(root));
 	if (is_equal(root->tree->command[0], "unset"))
 		return (unset(root));
 	return (FALSE);
