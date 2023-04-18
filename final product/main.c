@@ -6,11 +6,13 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 16:32:07 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:42:50 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_status = 0;
 
 void	init_all(t_root *root, char **envp)
 {
@@ -96,7 +98,10 @@ int main(int argc, char const *argv[], char *envp[])
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
 			root.tree = NULL;
-			root.status_old = root.status;
+			if (g_status == 130)
+				root.status_old = 130;
+			else
+				root.status_old = root.status;
 			if(!parsing_str(&root.lexer, &root.tree))
 			{
 				root.in = 0;
