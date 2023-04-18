@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/17 16:56:34 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:32:07 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int main(int argc, char const *argv[], char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	root.tree = NULL;
 	root.lexer = NULL;
-	root.line = ft_calloc(sizeof(char), 1);
 	while (1)
 	{
 		root.prompt = get_prompt(&root);

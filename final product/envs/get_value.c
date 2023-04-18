@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 22:35:27 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 15:18:41 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:53:27 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ void	refresh_env_array(t_root *root)
 		root->env_array[i] = NULL;
 		root->env_array[i] = ft_strjoin_gnl(root->env_array[i], \
 							root->env_lst->key);
-		root->env_array[i] = ft_strjoin_gnl(root->env_array[i], "=");
-		root->env_array[i] = ft_strjoin_gnl(root->env_array[i], \
-							root->env_lst->value);
+		if (root->env_lst->value)
+		{
+			root->env_array[i] = ft_strjoin_gnl(root->env_array[i], "=");
+			root->env_array[i] = ft_strjoin_gnl(root->env_array[i], \
+								root->env_lst->value);
+		}
 		i++;
 		root->env_lst = root->env_lst->next;
 	}
