@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 12:33:59 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 00:40:17 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_nodespart2(t_ast *tree, t_lexer *lexer, int red)
 		tree = tree->rigth;
 	while (lexer->number != tree->node)
 	{
-		if (lexer->type != 0 && lexer->type != 82 && lexer->type != 82)
+		if (is_file(lexer->type))
 			red += 2;
 		lexer = lexer->next;
 	}
@@ -42,7 +42,7 @@ int	checking_nodes(t_ast *tree, t_lexer *lexer, int i)
 		while (lexer->next)
 		{
 			max++;
-			if (lexer->type != 0 && lexer->type != 82 && lexer->type != 82)
+			if (is_file(lexer->type))
 				red += 2;
 			lexer = lexer->next;
 		}

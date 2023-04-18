@@ -6,116 +6,106 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/17 16:41:09 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 21:23:31 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	input_file(t_root *root)
-{
-	char	*buf;
-
-	if (root->tree->type == red_in)
-		root->in = open(root->tree->left->file, O_RDONLY);
-	else
-		root->in = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-	if (root->in < 0)
-		return (error_process(": no such file or directory", root->tree->left, 1));
-	if (root->tree->type == here_doc)
-	{
-		while (1)
-		{
-			write(1, ">", 1);
-			buf = get_next_line(0);
-			write(root->in, buf, ft_strlen(buf));
-			if (ft_strlen(buf) == (ft_strlen(root->tree->left->file) + 1) && \
-				!ft_strncmp(buf, root->tree->left->file, ft_strlen(root->tree->left->file)))
-				break ;
-			free(buf);
-		}
-		root->in = open(".here_doc", O_RDONLY);
-		if (root->in < 0)
-			return (error_process(": no such file or directory", root->tree->left, 1));
-	}
-	return (0);
-}
-
-int	output_file(t_root *root)
-{
-	if (root->tree->type == red_out)
-		root->out = open(root->tree->left->file, O_CREAT | O_TRUNC | O_RDWR, 0000666);
-	else
-		root->out = open(root->tree->left->file, O_APPEND | O_CREAT | O_RDWR, 0000666);
-	if (root->out < 0)
-		return (error_process(": no such file or directory", root->tree->left, 1));
-	return (0);
-}
-
 void	checking_next_node(t_ast **tree)
 {
 	while ((*tree)->prev)
 		*tree = (*tree)->prev;
-	while (*tree && ((*tree)->type == red_in || (*tree)->type == red_out || (*tree)->type == app_out || (*tree)->type == here_doc))
+	while ((*tree)->rigth && is_file((*tree)->type))
 		(*tree) = (*tree)->rigth;
 }
 
-int	check_expander(t_ast **tree)
+int	check_expander(t_root *r, t_ast **tree)
 {
 	char	*value;
+	int		i;
 
-	
+	value = NULL;
+	if ((*tree)->type == file)
+	{
+		if ((*tree)->prev->type != here_doc && (*tree)->file[0] == '$' && (*tree)->squotes[0] == -1)
+		{
+			value = get_env_value(r, (*tree)->file + 1);
+			free((*tree)->file);
+			(*tree)->file = NULL;
+			(*tree)->file = ft_strdup(value);
+			free(value);
+		}
+	}
+	else if ((*tree)->type == command)
+	{
+		i = 0;
+		while ((*tree)->command[i])
+		{
+			if (!ft_strncmp("$", (*tree)->command[i], 1) && (*tree)->squotes[i] == -1)
+			{
+				value = get_env_value(r, (*tree)->command[i] + 1);
+				free((*tree)->command[i]);
+				(*tree)->command[i] = NULL;
+				(*tree)->command[i] = ft_strdup(value);
+				free(value);
+			}
+			i++;	
+		}
+	}
+	if ((*tree)->left)
+		check_expander(r, &(*tree)->left);
+	if ((*tree)->rigth)
+		check_expander(r, &(*tree)->rigth);
+	return(0);
 }
 
 int	checking_processes(t_root *root)
 {
 	pid_t	pid;
 	int		status;
+	t_ast	*aux;
 
 	status = 0;
-	check_expander(root->tree);
+	aux = root->tree;
+	check_expander(root, &aux);
+	while (aux->prev)
+		aux = aux->prev;
+	root->tree = aux;
 	if (!counting_pipes(root->tree))
 	{
-		while (root->tree)
-		{
-			if (root->tree->type == red_in || root->tree->type == here_doc)
-				status = input_file(root);
-			else if (root->tree->type == red_out || root->tree->type == app_out)
-				status = output_file(root);
-			if (!root->tree->rigth)
-				break ;
-			if (status)
-				return (status);
-			root->tree = root->tree->rigth;
-		}
-		checking_next_node(&root->tree);		
-		if (root->tree && root->tree->type == command && !is_built(root->tree->command))
+		if (checking_redirects(root, &status))
+			return (status);
+		checking_next_node(&root->tree);
+		if (root->tree->type != command || root->tree->command[0] == NULL)
+			return (0);
+		if (root->tree && root->tree->type == command && !is_built(root->tree->command, 0))
 		{
 			pid = fork();
 			if (pid == 0)
 				do_command(root);
 			waitpid(pid, &status, 0);
+		}
+		else if (root->tree && root->tree->type == command && is_built(root->tree->command, 0))
+			built_in_router(root);
+		while (root->tree->prev)
+			root->tree = root->tree->prev;
+		while (root->tree)
+		{
+			if (root->tree->type == here_doc)
+			{
+				unlink(".here_doc");
+				break ;
+			}
+			if (!root->tree->rigth)
+				break ;
+			root->tree = root->tree->rigth;
+		}
+		if (root->tree->prev)
 			while (root->tree->prev)
 				root->tree = root->tree->prev;
-			while (root->tree)
-			{
-				if (root->tree->type == here_doc)
-				{
-					unlink(".here_doc");
-					break ;
-				}
-				if (!root->tree->rigth)
-					break ;
-				root->tree = root->tree->rigth;
-			}
-			if (root->tree->prev)
-				while (root->tree->prev)
-					root->tree = root->tree->prev;
-			if (WIFEXITED(status))
-				return (WEXITSTATUS(status));
-		}
-		else if (root->tree && root->tree->type == command && is_built(root->tree->command))
-			built_in_router(root);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 	}
 	else
 	{

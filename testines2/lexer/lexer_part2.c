@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 11:46:46 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 00:21:02 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_lexer	*sign_node(int *i, char s, char *str)
 	t_lexer	*node;
 
 	node = NULL;
-	if (str[*i] == str[*i + 1])
+	if (str[*i] == str[*i + 1] && str[*i] == '<' && str[*i] == '>')
 	{
 		if (s == '<')
 			node = lexical_node(NULL, here_doc, *i);
@@ -50,10 +50,7 @@ int	check_signal(char *main, int *i, t_lexer **node)
 	if (main[*i] == ' ' || main[*i] == '\0')
 		return (0);
 	if (endofstring(main[*i]) && !node_type(*node, main[*i]))
-	{
 		(*node)->next = sign_node(i, main[*i], main);
-		//(*i)++;
-	}
 	else if (endofstring(main[*i]) && node_type(*node, main[*i]))
 		return (error_syntax(&main[*i], 2));
 	return (0);

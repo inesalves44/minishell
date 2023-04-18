@@ -6,14 +6,14 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:25:55 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 15:27:17 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 10:48:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LISTS_STRUCTS_H
 # define LISTS_STRUCTS_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
 typedef enum s_io
 {

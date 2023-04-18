@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 17:53:08 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 21:25:16 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,26 +95,14 @@ int	child_out(t_root *root)
 	exit (0);
 }
 
-int	checking_redirects(t_root *root, int i, int max)
+int	checking_redirects_pipes(t_root *root, int i, int max)
 {
 	int	in2;
 	int	out2;
 
 	in2 = 0;
 	out2 = 0;
-	while (root->tree)
-	{
-		if (root->tree->type == red_in || root->tree->type == here_doc)
-			root->status = input_file(root);
-		else if (root->tree->type == red_out || root->tree->type == app_out)
-			root->status = output_file(root);
-		else if (root->tree->type == pipem || root->tree->type == command)
-			break ;
-		if (!root->tree->rigth)
-			break ;
-		root->tree = root->tree->rigth;
-	}
-	if (root->status)
+	if (checking_redirects(root, &(root->status)))
 		return (root->status);
 	if (root->in == 0)
 	{
@@ -142,8 +130,6 @@ int	checking_redirects(t_root *root, int i, int max)
 			out2 = root->pipes[2 * i + 1];
 		root->out = out2;	
 	}
-	if (root->status)
-		return (root->status);
 	return (0);
 }
 
@@ -153,9 +139,11 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 	char	*new;
 	t_lexer	*node;
 	t_ast	*aux;
+	int		i;
 
 	str = NULL;
 	aux = NULL;
+	i = 0;
 	while (1)
 	{
 		if (tree->type == pipem)
@@ -166,8 +154,11 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 				{
 					write(1, ">", 1);
 					str = get_next_line(0);
-					if (str[0] != '\n')
-						break ;	
+					while (str[i] == ' ')
+						i++;
+					if (str[i] != '\n')
+						break ;
+					
 				}
 				break ;
 			}
@@ -208,13 +199,13 @@ int	doing_pipes(t_root *root)
 	{
 		root->in = 0;
 		root->out = 1;
-		if (!checking_redirects(root, i, root->num_pipes + 1))
+		if (!checking_redirects_pipes(root, i, root->num_pipes + 1))
 		{
 			if (i != root->num_pipes)
 				root->tree = root->tree->left;
 			if (root->tree->type == pipem)
 				root->tree = root->tree->rigth;
-			if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && ft_strncmp("exit", root->tree->command[0], 4) && is_built(root->tree->command))
+			if (root->tree->command[0] != NULL && is_built(root->tree->command, 1))
 			{
 				if ((root->out == root->pipes[2 * i + 1] && i > 0) || (root->out == root->pipes[1] && i == 0))
 				{
@@ -223,7 +214,7 @@ int	doing_pipes(t_root *root)
 				}
 				built_in_router(root);
 			}
-			else if (root->tree->command && !is_built(root->tree->command))
+			else if (root->tree->command[0] != NULL && !is_built(root->tree->command, 0))
 				if (fork() == 0)
 					child_in(root);
 		}
@@ -234,11 +225,11 @@ int	doing_pipes(t_root *root)
 	}
 	root->in = 0;
 	root->out = 1;
-	if (!checking_redirects(root, i, root->num_pipes + 1))
+	if (!checking_redirects_pipes(root, i, root->num_pipes + 1))
 	{
-		if (root->tree->command && ft_strncmp("cd", root->tree->command[0], 2) && ft_strncmp("exit", root->tree->command[0], 4) && is_built(root->tree->command))
+		if (root->tree->command[0] != NULL && is_built(root->tree->command, 1))
 			built_in_router(root);
-		else if (root->tree->command && !is_built(root->tree->command))
+		else if (root->tree->command[0] != NULL && !is_built(root->tree->command, 0))
 		{
 			pid = fork();
 			if (pid == 0)
@@ -255,9 +246,9 @@ int	doing_pipes(t_root *root)
 	{
 		if (root->tree->type == here_doc)
 			unlink(".here_doc");
-		if (root->tree->type == command && is_built(root->tree->command))
+		if (root->tree->type == command && is_built(root->tree->command, 0))
 			unlink(".temp");
-		else if (root->tree->left && root->tree->left->type == command && is_built(root->tree->left->command))
+		else if (root->tree->left && root->tree->left->type == command && is_built(root->tree->left->command, 0))
 			unlink(".temp");
 		if (!root->tree->rigth)
 			break ;
