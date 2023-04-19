@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 21:25:16 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:09:32 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,12 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 				{
 					write(1, ">", 1);
 					str = get_next_line(0);
+					if (!str)
+						return (NULL);
 					while (str[i] == ' ')
 						i++;
 					if (str[i] != '\n')
-						break ;
-					
+						break ;				
 				}
 				break ;
 			}
@@ -190,6 +191,8 @@ int	doing_pipes(t_root *root)
 	pid_t	pid;
 
 	root->tree = checking_unfinishpipes(root->tree);
+	if (root->tree == NULL)
+		return (130);
 	i = 0;
 	root->num_pipes = counting_pipes(root->tree);
 	root->pipes = creating_pipes(root->tree, root->num_pipes);
