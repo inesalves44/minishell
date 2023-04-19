@@ -1,0 +1,21 @@
+total 256
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 built-in
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 envs
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 errors_and_exit
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 exec_commands
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 09:54 incs
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 lexer
+drwxr-xr-x 6 idias-al 2022_porto   4096 Apr 19 16:48 libft
+-rw-r--r-- 1 idias-al 2022_porto  72064 Apr 19 16:48 libft.a
+-rw-r--r-- 1 idias-al 2022_porto   3165 Apr 19 09:20 main.c
+-rw-r--r-- 1 idias-al 2022_porto  12520 Apr 19 16:48 main.o
+-rw-r--r-- 1 idias-al 2022_porto   1389 Apr 19 10:17 Makefile
+-rwxr-xr-x 1 idias-al 2022_porto 105896 Apr 19 16:48 minishell
+-rw-r--r-- 1 idias-al 2022_porto   3145 Apr 19 10:43 minishell.h
+-rw-r--r-- 1 idias-al 2022_porto      0 Apr 19 16:51 out
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 parsing
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 pipes
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 prompt
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 redirects
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 signals
+drwxr-xr-x 2 idias-al 2022_porto   4096 Apr 19 16:48 utils

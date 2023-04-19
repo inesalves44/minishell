@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:54:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 23:24:41 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:40:27 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,14 @@ t_lexer	*lexical_node(char *str, int type, int j)
 
 int	closing_q(char *str, char c, int i, int *a)
 {
-	(*a)++;
+	(void)a;
 	i++;
 	while (str[i] != '\0')
 	{
 		if (str[i] == c)
-			(*a)++;
+			return (1);
 		i++;
 	}
-	if (*a > 1)
-		return (1);
 	return (0);
 }
 

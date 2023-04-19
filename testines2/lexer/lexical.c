@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/19 00:16:01 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:48:47 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,70 @@ t_lexer	*node_str(char *str, int *i, int j)
 	return (node);
 }
 
+char	*find_string(char *line, int i, int len)
+{
+	char	s;
+	int		len1;
+	char	*aux;
+
+	s = line[i];
+	len1 = len - 1;
+	while (line[len1] != s)
+		len1--;
+	i--;
+	while (line[len1] == line[len1 - 1] && line[i] == line[i + 1])
+	{
+		len1--;
+		i++;
+	}
+	aux = ft_substr(line, i, len1 - i + 1);
+	return (aux);
+}
+
+char	*annalysing_quotes(char *line, int i)
+{
+	char	*aux;
+	int		len;
+	int		a;
+
+	a = i;
+	len = ft_strlen(line);
+	aux = NULL;
+	if (closing_q(line, line[i], i, NULL))
+		aux = find_string(line, i, len);
+	return (aux);
+}
+
+char	*create_string(char *line)
+{
+	char	*str;
+	char	*aux;
+	int		i;
+
+	i = 0;
+	str = NULL;
+	while (line[i] != 34 && line[i] != 39 && line[i] != '\0')
+		i++;
+	if (line[i] == '\0')
+	{
+		str = ft_strdup(line);
+		return (str);
+	}
+	if (i > 0)
+		str = ft_substr(line, 0, i);
+	aux = annalysing_quotes(line, i);
+	printf("string: %s\n", str);
+	printf("string: %s\n", aux);
+	return (str);
+}
+
 int	lexical_annalysis(t_lexer **node, char *str)
 {
 	int		i;
 	int		j;
 
 	i = 0;
+	create_string(str);
 	if (str[0] == '\0')
 		return (1);
 	if (check_firstnode(str, &i, node))
