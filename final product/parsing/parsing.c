@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 12:37:00 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 11:45:35 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 	if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
 	{
 		(*tree)->left = create_treenode(lexer, tree, command);
-		*lexer = (*lexer)->next;
-		if (is_file((*lexer)->type))
+		/*if ((*lexer)->next != NULL)
+			*lexer = (*lexer)->next;*/
+		if (*lexer && is_file((*lexer)->type))
 		{
 			while (is_file((*lexer)->type))
 			{
@@ -74,13 +75,18 @@ void	finish_parse(t_lexer **lexer, t_ast **tree)
 
 int	second_loop(t_lexer **l, t_ast **t)
 {
+	int	j;
+
 	while (*l)
 	{
 		if ((*l)->number != (*t)->node && \
 		(*l)->type != pipem && is_file((*t)->type))
 		{
-			if (when_file(l, t))
+			j = when_file(l, t);
+			if (j == 2)
 				return (2);
+			else if (j == 1)
+				return (0);
 		}
 		else if ((*l)->number != (*t)->node && (*t)->type == pipem)
 			when_pipe(l, t);

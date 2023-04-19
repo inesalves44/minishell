@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 12:22:53 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/17 21:32:15 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 	return (new);
 }
 
-/*
+
 void	print_tree(t_ast *node, int i)
 {
 	int j;
@@ -156,4 +156,4 @@ void	print_tree(t_ast *node, int i)
 		printf("rigth node\n");
 		print_tree(node->rigth, i);
 	}
-}*/
+}

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 16:37:50 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 00:16:01 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ t_lexer	*first_node(char *main, int *i, char **test)
 int	check_firstnode(char *main, int *i, t_lexer **node)
 {
 	char	*test;
+	int		a;
 
+	a = 0;
 	*node = NULL;
 	while (main[*i] == ' ')
 		(*i)++;
@@ -40,7 +42,7 @@ int	check_firstnode(char *main, int *i, t_lexer **node)
 		return (2);
 	if (*node != NULL)
 		return (0);
-	if (endofquotes(main[*i]) && closing_q(main, main[*i], *i))
+	if (endofquotes(main[*i]) && closing_q(main, main[*i], *i, &a))
 	{
 		test = treating_quotes(main, main[*i], i);
 		*node = lexical_node(test, main[*i] + '0', *i);
@@ -75,8 +77,10 @@ t_lexer	*node_str(char *str, int *i, int j)
 {
 	t_lexer	*node;
 	char	*test;
+	int		a;
 
-	if (endofquotes(str[*i]) && closing_q(str, str[*i], *i) && str[*i - 1] == ' ')
+	a = 0;
+	if (endofquotes(str[*i]) && closing_q(str, str[*i], *i, &a) && str[*i - 1] == ' ')
 	{
 		test = treating_quotes(str, str[*i], i);
 		node = lexical_node(test, str[j] + '0', j);
@@ -99,8 +103,7 @@ int	lexical_annalysis(t_lexer **node, char *str)
 	int		j;
 
 	i = 0;
-	*node = NULL;
-	if (str[i] == '\0')
+	if (str[0] == '\0')
 		return (1);
 	if (check_firstnode(str, &i, node))
 		return (2);

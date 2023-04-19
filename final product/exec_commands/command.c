@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/13 16:13:39 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 00:40:31 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,21 @@ int	do_command(t_root *root)
 	char *envp2;
 	char *cmd_path;
 
+	cmd_path = NULL;
 	dup2(root->in, 0);
 	dup2(root->out, 1);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
 	//free(envp2);
-	cmd_path = find_path(root->tree->command[0], paths);
+	if (root->tree->command[0] != NULL)
+		cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
 		exit (error_process(":command not found", root->tree, 127));
 	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		exit (error_process("execve error", NULL, 1));
+		exit (error_process("execve error", root->tree, 1));
 	}
 	exit (0);
 }

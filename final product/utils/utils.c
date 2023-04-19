@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:36:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/08 00:30:03 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:43:14 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,11 @@ char	*get_pwd(void)
 	return (transform(cwd));
 }
 
-int	is_built(char **commands)
+int	is_built(char **commands, int i)
 {
-	if (is_equal(commands[0], "cd"))
+	if (commands[0] == NULL)
+		return (FALSE);
+	if (is_equal(commands[0], "cd") && i != 1)
 		return (TRUE);
 	if (is_equal(commands[0], "echo"))
 		return (TRUE);
@@ -65,7 +67,7 @@ int	is_built(char **commands)
 		return (TRUE);
 	if (is_equal(commands[0], "pwd"))
 		return (TRUE);
-	if (is_equal(commands[0], "exit"))
+	if (is_equal(commands[0], "exit") && i != 1)
 		return (TRUE);
 	if (is_equal(commands[0], "unset"))
 		return (TRUE);

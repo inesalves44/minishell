@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lists_structs.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:25:55 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 10:48:22 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:59:31 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LISTS_STRUCTS_H
 # define LISTS_STRUCTS_H
 
-# include "../minishell.h"
+#include "../minishell.h"
 
 typedef enum s_io
 {
@@ -78,6 +78,7 @@ typedef struct s_root
 	int			isbuilt;
 	int			*pipes;
 	int			status;
+	int			status_old;
 	int			num_pipes;
 }	t_root;
 

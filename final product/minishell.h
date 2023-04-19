@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 18:00:43 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:43:28 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "libft/incs/get_next_line.h"
 # include "incs/parse_lexer.h"
 # include "incs/lists_structs.h"
+# include "incs/exec_redirects.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdlib.h>
@@ -78,11 +79,6 @@ int			unset(t_root *root);
 int			env(t_root *root);
 int			ft_exit(t_root *root);
 
-/*command*/
-char		*get_path(char **envp);
-char		*find_path(char *final, char **paths);
-int			do_command(t_root *root);
-
 /*error_exit file*/
 int			error_process(char *str, t_ast *node, int error);
 t_ast		*free_tree(t_ast *node, int a);
@@ -92,21 +88,10 @@ int			error_syntax(char *str, int error);
 t_lexer		*free_lexer(t_lexer *lexer);
 void		free_all(t_root *root);
 
-/*pipes*/
-int			counting_pipes(t_ast *tree);
-int			*creating_pipes(t_ast *tree, int pipes);
-int			child_in(t_root *root);
-int			child_out(t_root *root); //
-int			child_mid(t_root *root);
-int			doing_pipes(t_root *root);
-
 /*main*/
-int			input_file(t_root *root);
-int			output_file(t_root *root);
-int			checking_processes(t_root *root);
 void		checking_next_node(t_ast **tree);
 
 /*main heitor*/
-int			is_built(char **commands);
+int			is_built(char **commands, int i);
 
 #endif

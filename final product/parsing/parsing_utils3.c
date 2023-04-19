@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/15 12:22:53 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/18 11:47:16 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, t_ast **node)
 	else
 		(*node)->command = NULL;
 	if (check == file)
+	{
 		(*node)->file = ft_strdup((*lexer)->str);
+		(*node)->dquotes = (int *)malloc(sizeof(int) * 1);
+		(*node)->squotes = (int *)malloc(sizeof(int) * 1);
+		array_quotes(node, lexer, 0);
+	}
 	else
 		(*node)->file = NULL;
 }
@@ -75,7 +80,7 @@ int	leftnode_file(t_lexer **lexer, t_ast **tree, int i)
 		if ((*lexer)->next != NULL)
 			*lexer = (*lexer)->next;
 		else
-			return (0);
+			return (1);
 	}
 	return (0);
 }
@@ -83,13 +88,17 @@ int	leftnode_file(t_lexer **lexer, t_ast **tree, int i)
 int	when_file(t_lexer **lexer, t_ast **tree)
 {
 	int	i;
+	int	j;
 
 	i = (*lexer)->number;
 	if ((*tree)->left == NULL)
-    {
-        if (leftnode_file(lexer, tree, i)) 
-            return (2);
-    }
+	{
+		j = leftnode_file(lexer, tree, i);
+		if (j == 2)
+			return (2);
+		else if (j == 1)
+			return (1);
+	}
 	if ((*tree)->rigth == NULL && (*tree)->left->node != (*lexer)->number)
 	{
 		(*tree)->rigth = create_treenode(lexer, tree, command);

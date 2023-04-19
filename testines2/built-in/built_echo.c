@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/13 16:02:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:48:55 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	handler_special(t_root *root, char c);
 int	dq_print(t_root *root, char *cmd);
+int	is_valid_param(char *cmd);
 
 static int	get_end(char *cmd, int dquote)
 {
@@ -81,7 +82,7 @@ static int	loop_echo(t_root *root)
 
 	space = 0;
 	cmd = 1;
-	if (is_equal(root->tree->command[1], "-n"))
+	while (is_valid_param(root->tree->command[cmd]) && root->tree->command[cmd])
 			cmd++;
 	while (root->tree->command[cmd])
 	{
@@ -95,7 +96,7 @@ static int	loop_echo(t_root *root)
 			ft_putchar_fd(' ', root->out);
 		space = 0;
 	}
-	if (!(is_equal(root->tree->command[1], "-n")))
+	if (!is_valid_param(root->tree->command[1]))
 		ft_putchar_fd('\n', root->out);
 	return (0);
 }

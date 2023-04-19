@@ -27,7 +27,6 @@ int	error_process(char *str, t_ast *node, int error)
 	return (error);
 }
 
-
 int	error_syntax(char *str, int error)
 {
 	write(2, "minishell: ", 11);
