@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 18:01:52 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:57:02 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ static void	print_export(t_root *root)
 		key = get_key_from_str(root->env_array[i]);
 		if (key)
 		{
-			ft_putstr_fd("declare -x ", STDOUT);
-			ft_putstr_fd(key, STDOUT);
+			ft_putstr_fd("declare -x ", root->out);
+			ft_putstr_fd(key, root->out);
 			value = get_value_from_str(root->env_array[i]);
 			if (value)
 			{
-				ft_putstr_fd("=\"", STDOUT);
-				ft_putstr_fd(value, STDOUT);
-				ft_putstr_fd("\"", STDOUT);
+				ft_putstr_fd("=\"", root->out);
+				ft_putstr_fd(value, root->out);
+				ft_putstr_fd("\"", root->out);
 				free(value);
 			}
-			ft_putstr_fd("\n", STDOUT);
+			ft_putstr_fd("\n", root->out);
 		}
 		free(key);
 		i++;
