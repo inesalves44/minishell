@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 21:23:31 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:15:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,20 @@ int	check_expander(t_root *r, t_ast **tree)
 			if (!ft_strncmp("$", (*tree)->command[i], 1) && (*tree)->squotes[i] == -1)
 			{
 				value = get_env_value(r, (*tree)->command[i] + 1);
-				free((*tree)->command[i]);
-				(*tree)->command[i] = NULL;
-				(*tree)->command[i] = ft_strdup(value);
-				free(value);
+				if (is_equal((*tree)->command[i] + 1, "?"))
+				{
+					free((*tree)->command[i]);
+					(*tree)->command[i] = NULL;
+					(*tree)->command[i] = ft_strdup(ft_itoa(r->status_old));
+				}
+				else if (value)
+				{
+					free((*tree)->command[i]);
+					(*tree)->command[i] = NULL;
+					(*tree)->command[i] = ft_strdup(ft_itoa(r->status_old));
+					(*tree)->command[i] = ft_strdup(value);
+					free(value);
+				}
 			}
 			i++;	
 		}

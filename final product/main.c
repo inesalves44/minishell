@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/19 13:09:45 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:12:00 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	g_status = 0;
 void	init_all(t_root *root, char **envp)
 {
 	init_envp(root, envp);
+	root->status = 0;
+	root->status_old = 0;
 }
 
 void	free_array(char **array)
