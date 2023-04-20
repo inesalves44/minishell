@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/20 13:22:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:30:14 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	dq_print(t_root *root, char *cmd);
 int	is_valid_param(char *cmd);
 
-/* static int	get_end(char *cmd, int dquote)
+static int	get_end(char *cmd, int dquote)
 {
 	size_t	end;
 
@@ -25,9 +25,9 @@ int	is_valid_param(char *cmd);
 	if (cmd[end - 1] == '\'' && dquote != -1)
 		return (end - 1);
 	return (end);
-} */
+}
 
-/* static int	handler_env(t_root *root, char *begin, size_t end)
+static int	handler_env(t_root *root, char *begin, size_t end)
 {
 	char	*value;
 	char	*key;
@@ -40,10 +40,9 @@ int	is_valid_param(char *cmd);
 	{
 		ft_putstr_fd(value, root->out);
 		free(value);
-		return (end);
 	}
-	return (1);
-} */
+	return (end);
+}
 
 static int	do_print_echo(t_root *root, char *cmd, int dquote)
 {
@@ -52,11 +51,19 @@ static int	do_print_echo(t_root *root, char *cmd, int dquote)
 
 	i = 0;
 	end = 0;
-	(void)dquote;
 	while (i < ft_strlen(cmd))
 	{
-		ft_putchar_fd(cmd[i], root->out);
-		i++;
+		if (cmd[i] == '$' && cmd[i + 1])
+		{
+			i++;
+			end = get_end(cmd + i, dquote);
+			i += handler_env(root, cmd + i, end);
+		}
+		else
+		{
+			ft_putchar_fd(cmd[i], root->out);
+			i++;
+		}
 	}
 	return (1);
 }

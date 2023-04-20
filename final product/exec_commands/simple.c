@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/20 15:15:58 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:30:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	check_expander(t_root *r, t_ast **tree)
 				{
 					free((*tree)->command[i]);
 					(*tree)->command[i] = NULL;
-					(*tree)->command[i] = ft_strdup(ft_itoa(r->status_old));
 					(*tree)->command[i] = ft_strdup(value);
 					free(value);
 				}
