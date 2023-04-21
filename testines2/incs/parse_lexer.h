@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:21:16 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/20 16:09:20 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:22:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ int			check_signal(char *main, int *i, t_lexer **node);
 char		*treating_quotes(char *str, char s, int *b);
 int			lexical_annalysis(t_lexer **node, char *str);
 char		*create_string(char *line);
+
+int	closing_q2(char *str, char c, int i, int len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:54:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/19 16:40:27 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:22:51 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ int	closing_q(char *str, char c, int i, int *a)
 	(void)a;
 	i++;
 	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	closing_q2(char *str, char c, int i, int len)
+{
+	i++;
+	while (i < len)
 	{
 		if (str[i] == c)
 			return (1);

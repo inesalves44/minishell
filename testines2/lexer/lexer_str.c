@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/21 09:20:53 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:23:56 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,142 +43,125 @@ char	*find_string(char *line, int *i, int len)
 	return (aux);
 }
 
-char	*annalysing_quotes(char *line, int *i, int len)
+char	*create_string3(char *line, int *i, int len, int c)
 {
+	int		a;
 	char	*aux;
 	char	*str;
 	char	s;
-	int		a;
-	int		b;
-	int		c;
 
-	aux = NULL;
 	str = NULL;
-	a = 0;
-	b = *i;
+	aux = NULL;
+	if (c > 0)
+		str = ft_substr(line, 0, 1);
+	a = *i;
 	while (line[*i] != 34 && line[*i] != 39 && *i < len)
 		(*i)++;
-	if (line[*i] != 34 && line[*i] != 39)
-		return  (line);
+	if (a < *i && str)
+		str = ft_strjoin(str, ft_substr(line, a, *i - a + 1));
+	else if (a < *i && str)
+		str = ft_substr(line, a, *i - a + 1);
 	s = line[*i];
-	if (b != *i)
-		str = ft_substr(line, a, *i - a + 1);
-	if (closing_q(line, line[*i], *i, NULL))
-	{
-		aux = find_string(line, i, len);
-		c = 0;
-		if (aux && aux[0] != s)
-			aux = annalysing_quotes(aux, &c, ft_strlen(aux));
-		else if (aux && aux[0] == s)
-		{
-			c++;
-			aux = annalysing_quotes(aux, &(c), ft_strlen(aux) - 1);
-		}
-		if (str && aux)
-		{
-			aux = ft_strjoin(str, aux);
-			free (str);
-		}
-	}
-	else if (str && !aux)
-			aux = ft_strdup(str);
-	if (*i == len)
-		return(aux);
-	a = *i;
-	if (s == 34)
-		s = 39;
-	else
-		s = 34;
-	while (line[*i] != s && *i < len)
-		(*i)++;
-	if (*i > a)
-		str = ft_substr(line, a, *i - a + 1);
 	if (*i == len)
 	{
-		if (str && aux)
-			aux = ft_strjoin(aux, str);
-		else if (!aux && str)
-			aux = ft_strdup(str);
-		free(str);
-		return(aux);
-	}
-	if (closing_q(line, line[*i], *i, NULL))
-	{
-		if (str)
-			str = ft_strjoin(aux, str);
-		else
-			str = ft_strdup(aux);
-		if (aux)
-			free(aux);
-		aux = find_string(line, i, len);
-		c = 0;
-		if (aux && aux[0] == s)
-			aux = annalysing_quotes(aux, &c, ft_strlen(aux) - 1);
-		else if (aux && aux[0] != s)
-		{
-			c++;
-			aux = annalysing_quotes(aux, &(c), ft_strlen(aux));
-		}
-		if (str && aux)
-		{
-			aux = ft_strjoin(str, aux);
-			free (str);
-		}
-		else if (str && !aux)
-			aux = ft_strdup(str);
-	}
-	else
-	{
-		/*a = *i;
-		while (*i < len)
-			(*i)++;*/
-		if (aux && str)
-			aux = ft_strjoin(aux, str);
-	}
-	return (aux);
-}
-
-char	*create_string(char *line)
-{
-	char	*str;
-	char	*aux;
-	int		i;
-	int		len;
-	int		a;
-
-	i = 0;
-	str = NULL;
-	len = ft_strlen(line);
-	while (line[i] != 34 && line[i] != 39 && line[i] != '\0')
-		i++;
-	if (line[i] == '\0')
-	{
-		str = ft_strdup(line);
+		if (!str)
+			str = ft_strdup(line);
 		return (str);
 	}
-	if (i > 0 && !closing_q(line, line[i], i, NULL))
+	if (closing_q2(line, line[*i], *i, len))
 	{
-		i++;
-		while (line[i] != 34 && line[i] != 39 && line[i] != '\0')
-			i++;
-		str = ft_substr(line, 0, i);
-		if (line[i] == '\0')
-			return (str);
+		aux = find_string(line, i, len);
+		if (aux && aux[0] == s)
+		{
+			c = 1;
+			aux = create_string3(aux, &c, ft_strlen(aux) - 1, c);
+		}
+		else if (aux && aux[0] != s)
+		{
+			c = 0;
+			aux = create_string3(aux, &c, ft_strlen(aux), c);
+		}
 	}
-	else if (i > 0 && closing_q(line, line[i], i, NULL))
-		str = ft_substr(line, 0, i);
-	aux = annalysing_quotes(line, &i, len);
+	else
+	{
+		a = *i;
+		while (line[*i] != 34 && line[*i] != 39 && *i < len)
+			(*i)++;
+		aux = ft_substr(line, a, *i - a + 1);
+	}
 	if (str && aux)
 		str = ft_strjoin(str, aux);
 	else if (!str && aux)
 		str = ft_strdup(aux);
-	else if (!aux)
+	free(aux);
+	if (*i == len)
+		return (str);
+	if (s == 34)
+		s = 39;
+	else if (s == 39)
+		s = 34;
+	a = *i;
+	while (line[*i] != 34 && line[*i] != 39 && *i < len)
+		(*i)++;
+	if (a < *i)
+		str = ft_strjoin(str ,ft_substr(line, a, *i - a));
+	s = line[*i];
+	if (*i == len)
+		return (str);
+	if (closing_q2(line, line[*i], *i, len))
 	{
-		a = i;
-		while (line[i] != '\0')
-			i++;
-		str = ft_substr(line, a, i - a);
+		aux = find_string(line, i, len);
+		if (aux && aux[0] == s)
+		{
+			c = 1;
+			aux = create_string3(aux, &c, ft_strlen(aux) - 1, c);
+		}
+		else if (aux && aux[0] != s)
+		{
+			c = 0;
+			aux = create_string3(aux, &c, ft_strlen(aux), c);
+		}
 	}
+	else
+	{
+		a = *i;
+		while (line[*i] != 34 && line[*i] != 39 && *i < len)
+			(*i)++;
+		aux = ft_substr(line, a, *i - a + 1);
+	}
+	if (str && aux)
+		str = ft_strjoin(str, aux);
+	else if (!str && aux)
+		str = ft_strdup(aux);
+	free(aux);
+	return(str);
+}
+
+char	*create_string2(char *line, int len)
+{
+	int		i;
+	char	*str;
+
+	i = 0;
+	while (line[i] != 34 && line[i] != 39 && i == len)
+		i++;
+	if (i == len)
+	{
+		str = ft_strdup(line);
+		return (str);
+	}
+	str = create_string3(line, &i, len, 0);
+	return (str);
+}
+
+char	*create_string(char *line)
+{
+	int		len;
+	char	*str;
+
+	len = ft_strlen(line);
+	str = create_string2(line, len);
+	//free(line);
 	printf("%s\n", str);
 	return (str);
 }
