@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/20 19:17:19 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/21 09:20:53 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*annalysing_quotes(char *line, int *i, int len)
 		return  (line);
 	s = line[*i];
 	if (b != *i)
-		str = ft_substr(line, a, *i - a);
+		str = ft_substr(line, a, *i - a + 1);
 	if (closing_q(line, line[*i], *i, NULL))
 	{
 		aux = find_string(line, i, len);
@@ -80,9 +80,9 @@ char	*annalysing_quotes(char *line, int *i, int len)
 			free (str);
 		}
 	}
-	if (str && !aux)
+	else if (str && !aux)
 			aux = ft_strdup(str);
-	if (line[*i] == '\0')
+	if (*i == len)
 		return(aux);
 	a = *i;
 	if (s == 34)
@@ -92,8 +92,8 @@ char	*annalysing_quotes(char *line, int *i, int len)
 	while (line[*i] != s && *i < len)
 		(*i)++;
 	if (*i > a)
-		str = ft_substr(line, a, *i - a);
-	if (line[*i] == '\0')
+		str = ft_substr(line, a, *i - a + 1);
+	if (*i == len)
 	{
 		if (str && aux)
 			aux = ft_strjoin(aux, str);
@@ -129,10 +129,11 @@ char	*annalysing_quotes(char *line, int *i, int len)
 	}
 	else
 	{
-		a = *i;
+		/*a = *i;
 		while (*i < len)
-			(*i)++;
-		aux = ft_substr(line, a, *i - a + 1);
+			(*i)++;*/
+		if (aux && str)
+			aux = ft_strjoin(aux, str);
 	}
 	return (aux);
 }
