@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/03 08:20:24 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/21 16:30:29 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "libft/incs/libft.h"
 # include "libft/incs/ft_printf.h"
 # include "libft/incs/get_next_line.h"
+# include "incs/parse_lexer.h"
+# include "incs/lists_structs.h"
+# include "incs/exec_redirects.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdlib.h>
@@ -32,71 +35,6 @@
 # define TRUE 1
 # define FALSE 0
 # define BUFFER_PATH 100
-
-typedef enum io
-{
-    STDIN,
-    STDOUT,
-    STDERR,
-} io;
-
-typedef	struct	s_envlst
-{
-	char			*key;
-	char			*value;
-	struct s_envlst	*next;
-} t_envlst;
-
-typedef enum types
-{
-    pipem = 1,
-    red_in = 2,
-    red_out = 3,
-    command = 4,
-    file = 5,
-	here_doc = 6,
-	app_out = 7,
-	s_quotes = 87,
-	d_quotes = 82,
-}	check;
-
-typedef struct ast_tree
-{
-	int	node;
-	int	type;
-	int quotes;
-	char **command;
-	char *file;
-	struct ast_tree *left;
-	struct ast_tree *rigth;
-	struct ast_tree *prev;
-}	t_ast;
-
-typedef struct	lexer_list
-{
-	char				*str;
-	int					number;
-	int					type;
-	struct	lexer_list	*next;
-	struct	lexer_list	*prev;
-}	t_lexer;
-
-typedef	struct s_root
-{
-	t_lexer		*lexer;
-	t_ast		*tree;
-	char		**env_array;
-	t_envlst	*env_lst;
-	char		*user;
-	char		*prompt;
-	char		*line;
-	int		in;
-	int		out;
-	int		*pipes;
-	int		status;
-	int		num_pipes;
-} t_root;
-
 
 /* env funcs*/
 
@@ -122,57 +60,39 @@ void		free_env_node(t_envlst *node);
 /*utils*/
 char		*transform(char cwd[]);
 int			is_equal(char *command, char *key);
-char		*get_pwd();
+char		*get_pwd(void);
 
 /*signal*/
-void		sig_int(int sig, siginfo_t *info, void *context);
+void		sig_int(int sig);
+void		sig_int2(int sig);
 
 /*prompt*/
-void		redisplay_prompt();
+void		redisplay_prompt(void);
 char		*get_prompt(t_root *root);
 
 /*built in*/
-int		built_in_router(t_root *root);
-int		cd(t_root *root);
-int		echo(t_root *root);
-int		pwd();
-int		export(t_root *root);
-int		unset(t_root *root);
-
-
-/*parsing*/
-int		get_file(t_lexer **lexer, t_ast *node);
-char	**treat_string(t_lexer **lexer, t_ast *aux);
-t_ast	*create_treenode(t_lexer **lexer, t_ast *aux, int check);
-void	print_tree(t_ast *node, int i);
-int		parsing_str(t_lexer **lexer, t_ast **tree);
-
-/*command*/
-char	*get_path(char **envp);
-char	*find_path(char *final, char **paths);
-int		do_command(t_ast *tree, int in, int out, char *envp[]);
+int			built_in_router(t_root *root);
+int			cd(t_root *root);
+int			echo(t_root *root);
+int			pwd(t_root *root);
+int			export(t_root *root);
+int			unset(t_root *root);
+int			env(t_root *root);
+int			ft_exit(t_root *root);
 
 /*error_exit file*/
-int		error_process(char *str, t_ast *node, int error);
-void	free_tree(t_ast **node, int a);
-void	free_str_split(char **str);
-void	close_fd(t_ast *tree, int *pipes);
-int		error_syntax(char *str, int error);
-void	free_lexer(t_lexer **lexer);
-
-/*pipes*/
-int	counting_pipes(t_ast *tree);
-int	*creating_pipes(t_ast *tree, int pipes);
-int	child_in(t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	child_out(t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	child_mid(t_ast *tree, int in, int out, int *pipes, char *envp[]);
-int	doing_pipes(t_ast **tree, int in, int out, char *envp[]);
-
-/*lexical*/
-int	lexical_annalysis(t_lexer **node, char *str);
+int			error_process(char *str, t_ast *node, int error);
+t_ast		*free_tree(t_ast *node, int a);
+void		free_str_split(char **str);
+void		close_fd(t_ast *tree, int *pipes);
+int			error_syntax(char *str, int error);
+t_lexer		*free_lexer(t_lexer *lexer);
+void		free_all(t_root *root);
 
 /*main*/
-int	input_file(t_ast *node, int *fd);
-int	output_file(t_ast *node, int *fd);
+void		checking_next_node(t_ast **tree);
+
+/*main heitor*/
+int			is_built(char **commands, int i);
 
 #endif

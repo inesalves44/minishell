@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:11:12 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 18:44:01 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:39:35 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ void	refresh_pwd_env(t_root *root)
 
 int	cd(t_root *root)
 {
-	char	*path;
-
-	path = NULL;
 	if (get_array_size(root->tree->command) == 1)
+	{
+		change_to_home(root);
+		return (0);
+	}
+	if (is_equal(root->tree->command[1], "~"))
 	{
 		change_to_home(root);
 		return (0);

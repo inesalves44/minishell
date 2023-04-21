@@ -6,11 +6,20 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/06 16:00:17 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:19:47 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_status = 0;
+
+void	init_all(t_root *root, char **envp)
+{
+	init_envp(root, envp);
+	root->status = 0;
+	root->status_old = 0;
+}
 
 void	free_array(char **array)
 {
@@ -24,84 +33,86 @@ void	free_array(char **array)
 	}
 	free(array);
 }
-
-int	free_all(t_root *root)
+void	free_all(t_root *root)
 {
+	if (root->tree != NULL)
+		root->tree = free_tree(root->tree, 0);
+	if (root->lexer != NULL)
+		root->lexer = free_lexer(root->lexer);
 	free_envp_lst(root);
 	free_array(root->env_array);
-	if (root->tree->command)
-		free_array(root->tree->command);
+	/* if (root->tree->command)
+		free_array(root->tree->command); */
 	free(root->user);
 	free(root->prompt);
 	free(root->line);
 	rl_clear_history();
 	printf("exit\n");
-	exit(0);
 }
 
 int	built_in_router(t_root *root)
 {
 	if (is_equal(root->tree->command[0], "cd"))
-		cd(root);
+		return (cd(root));
 	if (is_equal(root->tree->command[0], "echo"))
-		echo(root);
+		return (echo(root));
 	if (is_equal(root->tree->command[0], "env"))
-		print_envlsts(root);
+		return (env(root));
 	if (is_equal(root->tree->command[0], "export"))
-		export(root);
+		return (export(root));
 	if (is_equal(root->tree->command[0], "pwd"))
-		pwd(root);
+		return (pwd(root));
 	if (is_equal(root->tree->command[0], "exit"))
-		free_all(root);
+		return (ft_exit(root));
 	if (is_equal(root->tree->command[0], "unset"))
-		unset(root);
+		return (unset(root));
 	return (FALSE);
 }
+
 
 int main(int argc, char const *argv[], char *envp[])
 {
 	t_root	root;
 
 	root.prompt = NULL;
-
-	/*temporary tree initialization*/
-	root.tree = malloc(sizeof(t_ast));
-	root.tree->file = NULL;
-	root.tree->command = NULL;
-	root.tree->left = NULL;
-	root.tree->node = 0;
-	root.tree->prev = NULL;
-	root.tree->quotes = 0;
-	root.tree->rigth = NULL;
-	root.tree->type = 0;
-
 	root.line = NULL;
 	(void)argc;
 	(void)argv;
-	struct sigaction	sig;
 
-	sigemptyset(&sig.sa_mask);
-	sig.sa_sigaction = sig_int;
-	sig.sa_flags = SA_SIGINFO;
-
-	init_envp(&root, envp);
+	init_all(&root, envp);
 	root.user = get_env_value(&root, "USER");
-	sigaction(SIGINT, &sig, NULL);
 	signal(SIGQUIT, SIG_IGN);
-
+	root.tree = NULL;
+	root.lexer = NULL;
 	while (1)
 	{
+		signal(SIGINT, sig_int);
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
-		if (root.line == NULL)
-			free_all(&root);
-    	root.tree->command = ft_split(root.line, ' ');
-		if (ft_strlen(root.line) > 0)
-			built_in_router(&root);
+    	if (!lexical_annalysis(&root.lexer, root.line))
+		{
+			root.tree = NULL;
+			if (g_status == 130)
+				root.status_old = 130;
+			else
+				root.status_old = root.status;
+			if(!parsing_str(&root.lexer, &root.tree))
+			{
+				root.in = 0;
+				root.out = 1;
+				root.status = 0;
+				root.status = checking_processes(&root);
+			//	printf("\n status: %d\n", root.status);
+			}
+		}
 		add_history(root.line);
 		free(root.line);
+		root.line = NULL;
 		free(root.prompt);
-		free_array(root.tree->command);
-		root.tree->command = NULL;
+		if (root.tree != NULL)
+			root.tree = free_tree(root.tree, 0);
+		if (root.lexer != NULL)
+			root.lexer = free_lexer(root.lexer);
 	}
+	free_all(&root);
 }
