@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/19 00:21:02 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/22 14:50:32 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,43 @@ int	check_signal(char *main, int *i, t_lexer **node)
 
 char	*treating_quotes(char *str, char s, int *b)
 {
-	int		i;
 	int		j;
+	int		a;
+	int		c;
 	int		len;
 	char	*test;
+	char	*aux;
+	char	*aux2;
 
 	j = *b;
-	i = j + 1;
-	while (str[i] != s)
-		i++;
-	len = i - j - 1;
-	test = ft_substr(str, j + 1, len);
-	*b = i;
+	len = ft_strlen(str) - 1;
+	while (str[len] != s)
+		len--;
+	test = ft_substr(str, j + 1, len - j - 1);
+	j = 0;
+	while (test[j] != s && test[j] != '\0')
+		j++;
+	if (j == (int)ft_strlen (test))
+	{
+		*b = len;
+		return (test);
+	}
+	c = j;
+	j++;
+	a = 0;
+	while (test[j] != s && test[j] != '\0')
+	{
+		if (test[j] != ' ')
+			a++;
+		j++;
+	}
+	if (a == 0)
+		aux = ft_substr(test, 0, c);
+	aux2 = malloc(sizeof(char) * 2);
+	aux2[0] = ' ';
+	aux2[1] = '\0';
+	aux = ft_strjoin(aux, aux2); 
+	test = ft_strjoin(aux, ft_substr(test, j + 1, len));
+	*b = len;
 	return (test);
 }
