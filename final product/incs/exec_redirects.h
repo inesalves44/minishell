@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 17:49:28 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:42:00 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ int		input_file(t_root *root);
 int		output_file(t_root *root);
 int		checking_redirects(t_root *root, int *status);
 
-/*command*/
+/*==================command=============================*/
 int		checking_processes(t_root *root);
 char	*get_path(char **envp);
 char	*find_path(char *final, char **paths);
 int		do_command(t_root *root);
+int		check_expander(t_root *r, t_ast **tree);
 
-/*pipes*/
+/*==================pipes==============================*/
 int		counting_pipes(t_ast *tree);
 int		*creating_pipes(t_ast *tree, int pipes);
 int		child_in(t_root *root);

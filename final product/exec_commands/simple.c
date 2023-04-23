@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/20 17:30:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:11:18 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,58 +20,50 @@ void	checking_next_node(t_ast **tree)
 		(*tree) = (*tree)->rigth;
 }
 
-int	check_expander(t_root *r, t_ast **tree)
+int	simple_commands(t_root *r, int *status)
 {
-	char	*value;
-	int		i;
+	pid_t	pid;
 
-	value = NULL;
-	if ((*tree)->type == file)
+	if (checking_redirects(r, status))
+		return (*status);
+	checking_next_node(&r->tree);
+	if (r->tree->type != command || r->tree->command[0] == NULL)
+		return (0);
+	if (r->tree && r->tree->type == command && !is_built(r->tree->command, 0))
 	{
-		if ((*tree)->prev->type != here_doc && (*tree)->file[0] == '$' && (*tree)->squotes[0] == -1)
-		{
-			value = get_env_value(r, (*tree)->file + 1);
-			free((*tree)->file);
-			(*tree)->file = NULL;
-			(*tree)->file = ft_strdup(value);
-			free(value);
-		}
+		pid = fork();
+		if (pid == 0)
+			do_command(r);
+		waitpid(pid, status, 0);
 	}
-	else if ((*tree)->type == command)
+	else if (r->tree && r->tree->type == command && \
+	is_built(r->tree->command, 0))
+		built_in_router(r);
+	return (0);
+}
+
+void	ending_cleaning(t_ast **tree)
+{
+	while ((*tree)->prev)
+		*tree = (*tree)->prev;
+	while (*tree)
 	{
-		i = 0;
-		while ((*tree)->command[i])
+		if ((*tree)->type == here_doc)
 		{
-			if (!ft_strncmp("$", (*tree)->command[i], 1) && (*tree)->squotes[i] == -1)
-			{
-				value = get_env_value(r, (*tree)->command[i] + 1);
-				if (is_equal((*tree)->command[i] + 1, "?"))
-				{
-					free((*tree)->command[i]);
-					(*tree)->command[i] = NULL;
-					(*tree)->command[i] = ft_strdup(ft_itoa(r->status_old));
-				}
-				else if (value)
-				{
-					free((*tree)->command[i]);
-					(*tree)->command[i] = NULL;
-					(*tree)->command[i] = ft_strdup(value);
-					free(value);
-				}
-			}
-			i++;	
+			unlink(".here_doc");
+			break ;
 		}
+		if (!(*tree)->rigth)
+			break ;
+		*tree = (*tree)->rigth;
 	}
-	if ((*tree)->left)
-		check_expander(r, &(*tree)->left);
-	if ((*tree)->rigth)
-		check_expander(r, &(*tree)->rigth);
-	return(0);
+	if ((*tree)->prev)
+		while ((*tree)->prev)
+			*tree = (*tree)->prev;
 }
 
 int	checking_processes(t_root *root)
 {
-	pid_t	pid;
 	int		status;
 	t_ast	*aux;
 
@@ -83,36 +75,10 @@ int	checking_processes(t_root *root)
 	root->tree = aux;
 	if (!counting_pipes(root->tree))
 	{
-		if (checking_redirects(root, &status))
-			return (status);
-		checking_next_node(&root->tree);
-		if (root->tree->type != command || root->tree->command[0] == NULL)
-			return (0);
-		if (root->tree && root->tree->type == command && !is_built(root->tree->command, 0))
-		{
-			pid = fork();
-			if (pid == 0)
-				do_command(root);
-			waitpid(pid, &status, 0);
-		}
-		else if (root->tree && root->tree->type == command && is_built(root->tree->command, 0))
-			built_in_router(root);
+		simple_commands(root, &status);
 		while (root->tree->prev)
 			root->tree = root->tree->prev;
-		while (root->tree)
-		{
-			if (root->tree->type == here_doc)
-			{
-				unlink(".here_doc");
-				break ;
-			}
-			if (!root->tree->rigth)
-				break ;
-			root->tree = root->tree->rigth;
-		}
-		if (root->tree->prev)
-			while (root->tree->prev)
-				root->tree = root->tree->prev;
+		ending_cleaning(&(root->tree));
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 	}

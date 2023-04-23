@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/19 00:40:31 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:30:44 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 char	*get_path(char **envp)
 {
 	char	*key;
+
 	while (*envp)
 	{
 		key = get_key_from_str(*envp);
@@ -33,7 +34,7 @@ char	*get_path(char **envp)
 		free(key);
 		envp++;
 	}
-	return ft_strdup("-");
+	return (ft_strdup("-"));
 }
 
 char	*find_path(char *final, char **paths)
@@ -63,9 +64,9 @@ char	*find_path(char *final, char **paths)
 
 int	do_command(t_root *root)
 {
-	char **paths;
-	char *envp2;
-	char *cmd_path;
+	char	**paths;
+	char	*envp2;
+	char	*cmd_path;
 
 	cmd_path = NULL;
 	dup2(root->in, 0);
@@ -77,11 +78,11 @@ int	do_command(t_root *root)
 		cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (error_process(":command not found", root->tree, 127));
+		exit (e_pro(":command not found", root->tree, 127));
 	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		exit (error_process("execve error", root->tree, 1));
+		exit (e_pro("execve error", root->tree, 1));
 	}
 	exit (0);
 }
