@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/20 15:28:48 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:17:32 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,15 @@ int main(int argc, char const *argv[], char *envp[])
 	root.line = NULL;
 	(void)argc;
 	(void)argv;
-	struct sigaction	sig;
-
-	sigemptyset(&sig.sa_mask);
-	sig.sa_sigaction = sig_int;
-	sig.sa_flags = SA_SIGINFO;
 
 	init_all(&root, envp);
 	root.user = get_env_value(&root, "USER");
-	sigaction(SIGINT, &sig, NULL);
 	signal(SIGQUIT, SIG_IGN);
 	root.tree = NULL;
 	root.lexer = NULL;
 	while (1)
 	{
+		signal(SIGINT, sig_int);
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
     	if (!lexical_annalysis(&root.lexer, root.line))

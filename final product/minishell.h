@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 12:28:09 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:16:24 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int			is_equal(char *command, char *key);
 char		*get_pwd(void);
 
 /*signal*/
-void		sig_int(int sig, siginfo_t *info, void *context);
+void		sig_int(int sig);
+void		sig_int2(int sig);
 
 /*prompt*/
 void		redisplay_prompt(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 12:11:18 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:13:15 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	simple_commands(t_root *r, int *status)
 		pid = fork();
 		if (pid == 0)
 			do_command(r);
+		signal(SIGINT, sig_int2);
 		waitpid(pid, status, 0);
 	}
 	else if (r->tree && r->tree->type == command && \

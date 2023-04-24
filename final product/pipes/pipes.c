@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 12:43:19 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:22:10 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,10 @@ int	doing_pipes(t_root *root)
 	close_fd(root->tree, root->pipes);
 	waitpid(pid, &status, 0);
 	while (i-- >= 0)
+	{
+		signal(SIGINT, sig_int2);
 		waitpid(0, NULL, 0);
+	}
 	while (root->tree->prev)
 		root->tree = root->tree->prev;
 	while (root->tree)
