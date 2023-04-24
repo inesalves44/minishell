@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 18:06:55 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:13:29 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,6 @@ int	parsing_str(t_lexer **l, t_ast **t)
 			return (2);
 	}
 	finish_parse(l, t);
-	print_tree(*t, 1);
+	//print_tree(*t, 1);
 	return (0);
 }
