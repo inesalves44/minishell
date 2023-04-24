@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 17:21:17 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:12:12 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ int	doing_pipes(t_root *root)
 	close_fd(root->tree, root->pipes);
 	waitpid(pid, &status, 0);
 	while (i-- >= 0)
+	{
+		signal(SIGINT, sig_int2);
 		waitpid(0, NULL, 0);
+	}
 	deleting_tempfiles(root->tree);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
