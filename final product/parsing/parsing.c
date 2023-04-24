@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 18:13:29 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:02:58 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,28 @@ int	first_objects(t_lexer **lexer, t_ast **tree)
 	return (0);
 }
 
+t_ast	*create_nodeaux(t_ast **tree, int check)
+{
+	t_ast	*node;
+
+	node = malloc(sizeof(t_ast));
+	if (node)
+	{
+		node->type = check;
+		node->command = NULL;
+		node->file = NULL;
+		node->dquotes = NULL;
+		node->squotes = NULL;
+		node->left = NULL;
+		node->rigth = NULL;
+		if (tree)
+			node->prev = *tree;
+		else
+			node->prev = NULL;
+	}
+	return (node);
+}
+
 int	when_pipe(t_lexer **lexer, t_ast **tree)
 {
 	if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
@@ -56,6 +78,8 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 	else if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
 	{
 		(*tree)->rigth = create_treenode(lexer, tree, command, 2);
+		if ((*tree)->left == NULL)
+			(*tree)->left = create_nodeaux(tree, command);
 		return (0);
 	}
 	else if ((*tree)->rigth != NULL)

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 18:12:12 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:10:52 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	first_pipes(t_root *r, int i)
 			r->tree = r->tree->left;
 		if (r->tree->type == pipem)
 			r->tree = r->tree->rigth;
-		if (r->tree->command[0] != NULL && is_built(r->tree->command, 1))
+		if (r->tree->command && r->tree->command[0] != NULL && is_built(r->tree->command, 1))
 		{
 			if ((r->out == r->pipes[2 * i + 1] && i > 0) || \
 			(r->out == r->pipes[1] && i == 0))
@@ -31,7 +31,7 @@ void	first_pipes(t_root *r, int i)
 			}
 			built_in_router(r);
 		}
-		else if (r->tree->command[0] != NULL && !is_built(r->tree->command, 0))
+		else if (r->tree->command && r->tree->command[0] != NULL && !is_built(r->tree->command, 0))
 			if (fork() == 0)
 				child_in(r);
 	}

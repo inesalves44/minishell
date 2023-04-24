@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 11:56:42 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:07:58 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	check_expander(t_root *r, t_ast **t)
 		&& (*t)->squotes[0] == -1)
 			file_expander(t, r);
 	}
-	else if ((*t)->type == command && !is_equal((*t)->command[0], "export"))
+	else if ((*t)->type == command && (*t)->command && !is_equal((*t)->command[0], "export"))
 		command_expander(t, r);
 	if ((*t)->left)
 		check_expander(r, &(*t)->left);

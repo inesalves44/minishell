@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:20:35 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 11:23:52 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:14:39 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_ast	*free_tree(t_ast *node, int a)
 {
 	while (node->prev != NULL && a == 0)
 		node = node->prev;
-	if (node->type == command)
+	if (node->type == command && node->command != NULL)
 		free_str_split(node->command);
 	else if (node->type == file)
 		free(node->file);

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/22 14:46:42 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:23:08 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ char	*create_string3(char *line, int *i, int len, int c)
 		{
 			c = 1;
 			aux = create_string3(aux, &c, ft_strlen(aux) - 1, c);
-			aux = add_quotes(s, aux);
+			if (aux)
+				aux = add_quotes(s, aux);
 		}
 		else if (aux && aux[0] != s)
 		{
@@ -126,7 +127,8 @@ char	*create_string3(char *line, int *i, int len, int c)
 		{
 			c = 1;
 			aux = create_string3(aux, &c, ft_strlen(aux) - 1, c);
-			aux = add_quotes(s, aux);
+			if (aux)
+				aux = add_quotes(s, aux);
 		}
 		else if (aux && aux[0] != s)
 		{
