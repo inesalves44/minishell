@@ -176,6 +176,7 @@ char	*create_string(char *line)
 
 	len = ft_strlen(line);
 	a = 0;
+	i = 0;
 	while (line[i] != '\0')
 	{
 		if (line[i] == 34 || line[i] == 39)

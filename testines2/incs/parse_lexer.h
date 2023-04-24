@@ -55,6 +55,6 @@ int			check_signal(char *main, int *i, t_lexer **node);
 char		*treating_quotes(char *str, char s, int *b);
 int			lexical_annalysis(t_lexer **node, char *str);
 char		*create_string(char *line);
-int	closing_q2(char *str, char c, int i, int len);
+int			closing_q2(char *str, char c, int i, int len);
 
 #endif

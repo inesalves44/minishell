@@ -98,7 +98,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 	return (new);
 }
 
-
+/*
 void	print_tree(t_ast *node, int i)
 {
 	int j;
@@ -156,4 +156,4 @@ void	print_tree(t_ast *node, int i)
 		printf("rigth node\n");
 		print_tree(node->rigth, i);
 	}
-}
+}*/
