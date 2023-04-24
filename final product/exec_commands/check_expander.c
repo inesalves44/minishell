@@ -65,7 +65,7 @@ int	check_expander(t_root *r, t_ast **t)
 		&& (*t)->squotes[0] == -1)
 			file_expander(t, r);
 	}
-	else if ((*t)->type == command)
+	else if ((*t)->type == command && !is_equal((*t)->command[0], "export"))
 		command_expander(t, r);
 	if ((*t)->left)
 		check_expander(r, &(*t)->left);

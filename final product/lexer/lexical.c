@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/22 14:36:07 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 16:28:47 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,36 @@ t_lexer	*first_node(char *main, int *i, char **test)
 
 int check_spaces(char *test)
 {
-	int	i;
+	int		i;
+	char	s;
 
 	i = 0;
 	while (test[i] != '\0')
 	{
-		if (test[i] == ' ')
-			return (1);
+		if (test[i] == 34 || test[i] == 39)
+		{
+			s = test[i];
+			i++;
+			while (test[i] != s)
+			{
+				if (test[i] != ' ')
+					return (0);
+				i++;	
+			}
+		}
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	check_firstnode(char *main, int *i, t_lexer **node)
 {
 	char	*test;
-	char	**split;
 	int		a;
 
 	a = 0;
 	*node = NULL;
+	test = NULL;
 	while (main[*i] == ' ')
 		(*i)++;
 	if (check_signal1(main, i, node))
@@ -59,17 +69,7 @@ int	check_firstnode(char *main, int *i, t_lexer **node)
 		return (0);
 	if (endofquotes(main[*i]) && closing_q(main, main[*i], *i, &a))
 	{
-		test = treating_quotes(main, main[*i], i);
-		if (check_spaces(test))
-		{
-			split = ft_split(test, ' ');
-			*node = lexical_node(split[0], main[*i] + '0', *i);
-			(*node)->next = lexical_node(split[1], main[*i] + '0', *i);
-			(*node)->next->prev = *node;
-			*node = (*node)->next;
-		}
-		else
-			*node = lexical_node(test, main[*i] + '0', *i);
+		*node = treating_quotes(main, main[*i], i);
 		(*i)++;
 	}
 	else
@@ -101,30 +101,44 @@ t_lexer	*node_str(char *str, int *i, int j)
 {
 	t_lexer	*node;
 	char	*test;
-	char	**split;
+	char	*aux;
 	int		a;
 
 	a = 0;
+	test = NULL;
 	if (endofquotes(str[*i]) && closing_q(str, str[*i], *i, &a) && str[*i - 1] == ' ')
 	{
-		test = treating_quotes(str, str[*i], i);
-		if (check_spaces(test))
-		{
-			split = ft_split(test, ' ');
-			node = lexical_node(split[0], str[*i] + '0', *i);
-			node->next = lexical_node(split[1], str[*i] + '0', *i);
-			node->next->prev = node;
-			node = node->next;
-		}
-		else
-			node = lexical_node(test, str[*i] + '0', *i);
+		node = treating_quotes(str, str[*i], i);
 		//(*i)++;
 	}
 	else
 	{
-		while (!endofstring(str[*i]))
+		while (!endofstring(str[*i]) && !endofquotes(str[*i]))
 			(*i)++;
 		test = ft_substr(str, j, *i - j);
+		if (endofquotes(str[*i]))
+		{
+			char s = str[*i];
+			int len  = 0;
+			int	a = *i;
+			if (closing_q2(str, str[*i], *i, ft_strlen(str)))
+			{
+				(*i)++;
+				len = ft_strlen(str) - 1;
+				while (str[len] != s)
+					len--;
+				aux = ft_substr(str, *i, len - *i);
+				(*i) = len + 1;
+			}
+			else
+			{
+				while (!endofstring(str[*i]) && !endofquotes(str[*i]))
+					(*i)++;
+				aux = ft_substr(str, a + 1, len - *i - 1);
+			}
+			test = ft_strjoin(test, aux);
+			free(aux);
+		}
 		(*i)--;
 		node = lexical_node(test, 0, j);
 	}

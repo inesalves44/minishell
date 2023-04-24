@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 11:45:35 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:06:55 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	first_objects(t_lexer **lexer, t_ast **tree)
 		if (is_file((*lexer)->type) || (*lexer)->type == pipem)
 		{
 			if (*tree == NULL)
-				*tree = create_treenode(lexer, NULL, (*lexer)->type);
+				*tree = create_treenode(lexer, NULL, (*lexer)->type, 0);
 			else
-				(*tree)->rigth = create_treenode(lexer, tree, (*lexer)->type);
+				(*tree)->rigth = create_treenode(lexer, tree, (*lexer)->type, 0);
 		}
 		if (*tree && (*tree)->rigth)
 		{
@@ -41,9 +41,7 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 {
 	if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
 	{
-		(*tree)->left = create_treenode(lexer, tree, command);
-		/*if ((*lexer)->next != NULL)
-			*lexer = (*lexer)->next;*/
+		(*tree)->left = create_treenode(lexer, tree, command, 1);
 		if (*lexer && is_file((*lexer)->type))
 		{
 			while (is_file((*lexer)->type))
@@ -57,7 +55,7 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 	}
 	else if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
 	{
-		(*tree)->rigth = create_treenode(lexer, tree, command);
+		(*tree)->rigth = create_treenode(lexer, tree, command, 2);
 		return (0);
 	}
 	else if ((*tree)->rigth != NULL)
@@ -102,7 +100,7 @@ int	parsing_str(t_lexer **l, t_ast **t)
 {
 	first_objects(l, t);
 	if (*t == NULL)
-		*t = create_treenode(l, NULL, command);
+		*t = create_treenode(l, NULL, command, 0);
 	else
 	{
 		if ((is_file((*l)->type)) && (*l)->next == NULL)
@@ -113,5 +111,6 @@ int	parsing_str(t_lexer **l, t_ast **t)
 			return (2);
 	}
 	finish_parse(l, t);
+	print_tree(*t, 1);
 	return (0);
 }

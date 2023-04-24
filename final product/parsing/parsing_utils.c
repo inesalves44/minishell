@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/17 21:32:15 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:03:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	**newstring(t_lexer **lexer, t_ast **tree)
 	return (new);
 }
 
-char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
+char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree, int test)
 {
 	char	**new;
 	int		len;
@@ -84,7 +84,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 			len = length_lexer(*lexer, *aux, 1);
 		else
 		{
-			if ((*aux)->left == NULL)
+			if (test == 1)
 				len = length_lexer(*lexer, *aux, 2);
 			else
 				len = length_lexer(*lexer, *aux, 3);
@@ -98,7 +98,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 	return (new);
 }
 
-/*
+
 void	print_tree(t_ast *node, int i)
 {
 	int j;
@@ -156,4 +156,4 @@ void	print_tree(t_ast *node, int i)
 		printf("rigth node\n");
 		print_tree(node->rigth, i);
 	}
-}*/
+}

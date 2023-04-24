@@ -174,6 +174,8 @@ char	*create_string(char *line)
 	int		i;
 	char	*str;
 
+	if (line[0] == '\0')
+		return (NULL);
 	len = ft_strlen(line);
 	a = 0;
 	i = 0;
@@ -183,8 +185,6 @@ char	*create_string(char *line)
 			a++;
 		i++;
 	}
-	if (!line)
-		return (NULL);
 	if (a == len)
 	{
 		write(2, "syntax error\n", 13);

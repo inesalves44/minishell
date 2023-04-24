@@ -6,13 +6,13 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 12:33:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 12:33:55 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 16:11:28 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int counting_pipes(t_ast *tree)
+int	counting_pipes(t_ast *tree)
 {
 	int	pipes;
 
@@ -32,7 +32,7 @@ int counting_pipes(t_ast *tree)
 
 int	*creating_pipes(t_ast *tree, int pipes)
 {
-	int *array;
+	int	*array;
 	int	i;
 
 	(void)tree;
@@ -51,9 +51,9 @@ int	*creating_pipes(t_ast *tree, int pipes)
 
 int	child_in(t_root *root)
 {
-	char *envp2;
-	char **paths;
-	char *cmd_path;
+	char	*envp2;
+	char	**paths;
+	char	*cmd_path;
 
 	dup2(root->in, 0);
 	dup2(root->out, 1);

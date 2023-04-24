@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 12:42:00 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:53:37 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@ int		*creating_pipes(t_ast *tree, int pipes);
 int		child_in(t_root *root);
 int		child_out(t_root *root);
 int		doing_pipes(t_root *root);
+int		checking_redirects_pipes(t_root *root, int i, int max);
+t_ast	*checking_unfinishpipes(t_ast *tree);
+void	deleting_tempfiles(t_ast *t);
 
 #endif

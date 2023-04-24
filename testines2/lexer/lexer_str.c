@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/22 14:46:42 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:01:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ char	*create_string(char *line)
 	int		i;
 	char	*str;
 
+	i = 0;
 	len = ft_strlen(line);
 	a = 0;
 	while (line[i] != '\0')

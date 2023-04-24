@@ -6,20 +6,20 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 11:47:16 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:07:48 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, t_ast **node)
+void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, t_ast **node, int test)
 {
 	if (check == command)
 	{
 		if (!aux)
-			(*node)->command = treat_string(lexer, NULL, node);
+			(*node)->command = treat_string(lexer, NULL, node, test);
 		else
-			(*node)->command = treat_string(lexer, aux, node);
+			(*node)->command = treat_string(lexer, aux, node, test);
 	}
 	else
 		(*node)->command = NULL;
@@ -34,7 +34,7 @@ void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, t_ast **node)
 		(*node)->file = NULL;
 }
 
-t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
+t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check, int test)
 {
 	t_ast	*node;
 
@@ -43,7 +43,7 @@ t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
 	{
 		node->node = (*lexer)->number;
 		node->type = check;
-		find_filecomand(lexer, aux, check, &node);
+		find_filecomand(lexer, aux, check, &node, test);
 		node->left = NULL;
 		node->rigth = NULL;
 		if (aux)
@@ -69,7 +69,7 @@ int	leftnode_file(t_lexer **lexer, t_ast **tree, int i)
 {
 	if (get_file(lexer, *tree))
 		return (2);
-	(*tree)->left = create_treenode(lexer, tree, file);
+	(*tree)->left = create_treenode(lexer, tree, file, 0);
 	if (i != (*lexer)->number)
 	{
 		while ((*lexer)->number != i)
@@ -101,7 +101,7 @@ int	when_file(t_lexer **lexer, t_ast **tree)
 	}
 	if ((*tree)->rigth == NULL && (*tree)->left->node != (*lexer)->number)
 	{
-		(*tree)->rigth = create_treenode(lexer, tree, command);
+		(*tree)->rigth = create_treenode(lexer, tree, command, 2);
 		return (0);
 	}
 	else if ((*tree)->rigth != NULL)
