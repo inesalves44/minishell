@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 12:32:29 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:55:25 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	*find_string(char *line, int *i, int len)
 		(*i)++;
 		len1--;
 	}
-	aux = ft_substr(line, *i, len1 - *i + 1);
+	if (len1 > *i)
+		aux = ft_substr(line, *i, len1 - *i + 1);
 	*i = test + 1;
 	return (aux);
 }
@@ -165,13 +166,35 @@ char	*create_string3(char *line, int *i, int len)
 	return(str);
 }
 
-char	*create_string2(char *line, int len)
+char	*treat_begin(char *line, int len)
 {
 	int		i;
-	//int		a;
+	int		len1;
 	char	*str;
 
 	i = 0;
+	len1 = len - 1;
+	while (line[i] == 34 || line[i] == 39)
+		i++;
+	while (line[len1] != 34 && line[len1] != 39)
+		len1--;
+	if (len1 + 1 == i)
+	{
+		str = ft_substr(line, i, len);
+		return (str);
+	}
+	return (NULL);
+}
+
+char	*create_string2(char *line, int len)
+{
+	int		i;
+	char	*str;
+	char	*aux;
+
+	i = 0;
+	aux = NULL;
+	str = NULL;
 	while (line[i] != 34 && line[i] != 39 && i < len)
 		i++;
 	if (i == len)
@@ -179,18 +202,13 @@ char	*create_string2(char *line, int len)
 		str = ft_strdup(line);
 		return (str);
 	}
-	/*else
-	{
-		a = i;
-		while ((line[i] == 34 || line[i] != 39) && i < len)
-			i++;
-		if (i == len)
-		{
-			str = ft_substr(line, 0, a + 1);
-			return (str);
-		}
-	}*/
-	str = create_string3(line, &i, len);
+	if (i > 0)
+		aux = ft_substr(line, 0, i);
+	str = treat_begin(line, len);
+	if (!str)
+		str = create_string3(line, &i, len);
+	if (aux)
+		str = ft_strjoin(aux, str);
 	return (str);
 }
 
