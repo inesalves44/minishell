@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:46:37 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 19:07:32 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 19:33:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char	*test2(char *str, int *i, char *test, char s)
 		while (str[len] != s)
 			len--;
 		aux = ft_substr(str, *i, len - *i);
-		(*i) = len + 1;
 	}
 	else
 	{
@@ -64,6 +63,7 @@ char	*test2(char *str, int *i, char *test, char s)
 		test = lexer_strjoin(test, aux);
 		free(aux);
 	}
+	(*i) = len + 1;
 	return (test);
 }
 

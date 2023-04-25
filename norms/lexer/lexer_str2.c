@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:40:42 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 18:57:13 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 20:08:31 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,18 @@ char	*aux_quotes(char *line, int *i, int len, char s)
 			(*i)++;
 		aux = ft_substr(line, a, *i - a);
 	}
+	return (aux);
+}
+
+char	*add_quotes(char s, char *aux)
+{
+	char	*str;
+
+	str = (char *)malloc(sizeof(char) * 2);
+	str[0] = s;
+	str[1] = '\0';
+	aux = ft_strjoin(str, aux);
+	aux = ft_strjoin(aux, str);
+	free(str);
 	return (aux);
 }
