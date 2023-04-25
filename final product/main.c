@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/24 11:17:32 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/25 11:15:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	free_array(char **array)
 }
 void	free_all(t_root *root)
 {
-	if (root->tree != NULL)
+	/*if (root->tree != NULL)
 		root->tree = free_tree(root->tree, 0);
 	if (root->lexer != NULL)
-		root->lexer = free_lexer(root->lexer);
+		root->lexer = free_lexer(root->lexer);*/
 	free_envp_lst(root);
 	free_array(root->env_array);
 	/* if (root->tree->command)
@@ -102,7 +102,6 @@ int main(int argc, char const *argv[], char *envp[])
 				root.out = 1;
 				root.status = 0;
 				root.status = checking_processes(&root);
-			//	printf("\n status: %d\n", root.status);
 			}
 		}
 		add_history(root.line);
@@ -110,7 +109,7 @@ int main(int argc, char const *argv[], char *envp[])
 		root.line = NULL;
 		free(root.prompt);
 		if (root.tree != NULL)
-			root.tree = free_tree(root.tree, 0);
+			free_tree(&(root.tree), 0);
 		if (root.lexer != NULL)
 			root.lexer = free_lexer(root.lexer);
 	}

@@ -6,36 +6,34 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:20:35 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 20:14:39 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 11:16:04 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_ast	*free_tree(t_ast *node, int a)
+void	free_tree(t_ast **t, int a)
 {
-	while (node->prev != NULL && a == 0)
-		node = node->prev;
-	if (node->type == command && node->command != NULL)
-		free_str_split(node->command);
-	else if (node->type == file)
-		free(node->file);
-	if (node->type == command || node->type == file)
-	{
-		free(node->dquotes);
-		free(node->squotes);
-	}
-	if (node->prev != NULL)
-		node->prev = NULL;
-	if (node->rigth != NULL)
-		free_tree((node->rigth), 1);
-	if (node->left != NULL)
-		free_tree((node->left), 1);
-	node->rigth = NULL;
-	node->left = NULL;
-	free(node);
-	node = NULL;
-	return (NULL);
+	while ((*t)->prev != NULL && a == 0)
+		*t = (*t)->prev;
+	if ((*t)->type == command && (*t)->command)
+		free_str_split((*t)->command);
+	else if ((*t)->type == file && (*t)->file != NULL)
+		free((*t)->file);
+	if ((*t)->dquotes != NULL)
+		free((*t)->dquotes);
+	if ((*t)->squotes != NULL)
+		free((*t)->squotes);
+	if ((*t)->prev != NULL)
+		(*t)->prev = NULL;
+	if ((*t)->rigth)
+		free_tree(&((*t)->rigth), 1);
+	if ((*t)->left)
+		free_tree(&((*t)->left), 1);
+	(*t)->rigth = NULL;
+	(*t)->left = NULL;
+	free((*t));
+	(*t) = NULL;
 }
 
 t_lexer	*free_lexer(t_lexer *lexer)

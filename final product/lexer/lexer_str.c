@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 20:23:08 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 11:12:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,10 +193,5 @@ char	*create_string(char *line)
 		return (NULL);
 	}
 	str = create_string2(line, len);
-	free(line);
-	line = NULL;
-	line = ft_strdup(str);
-	free(str);
-	str = NULL;
-	return (line);
+	return (str);
 }
