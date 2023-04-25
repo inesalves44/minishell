@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 11:12:21 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 12:32:02 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,11 @@ t_lexer	*node_str(char *str, int *i, int j)
 					(*i)++;
 				aux = ft_substr(str, a + 1, len - *i - 1);
 			}
-			test = ft_strjoin(test, aux);
-			free(aux);
+			if (aux)
+			{
+				test = ft_strjoin(test, aux);
+				free(aux);
+			}
 		}
 		(*i)--;
 		node = lexical_node(test, 0, j);

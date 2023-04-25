@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 11:12:05 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 12:32:29 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,98 +56,111 @@ char	*add_quotes(char s, char *aux)
 	return (aux);
 }
 
-char	*create_string3(char *line, int *i, int len, int c)
+char	*start_str(char *line, int *i, int len)
 {
 	int		a;
+	char	*str;
+
+	a = *i;
+	str = NULL;
+	while (line[*i] != 34 && line[*i] != 39 && *i < len)
+		(*i)++;
+	if (a < *i)
+		str = ft_substr(line, a, *i - a);
+	if (*i == len)
+		if (!str)
+			str = ft_strdup(line);
+	return (str);
+}
+
+char	*aux_quotes(char *line, int *i, int len, char s)
+{
+	char	*aux;
+	int		c;
+	int		a;
+
+	aux = NULL;
+	if (closing_q2(line, line[*i], *i, len))
+	{
+		aux = find_string(line, i, len);
+		if (aux && aux[0] == s)
+		{
+			c = 1;
+			aux = create_string3(aux, &c, ft_strlen(aux) - 1);
+			if (aux)
+				aux = add_quotes(s, aux);
+		}
+		else if (aux && aux[0] != s)
+		{
+			c = 0;
+			aux = create_string3(aux, &c, ft_strlen(aux));
+		}
+	}
+	else
+	{
+		a = *i;
+		(*i)++;
+		while (line[*i] != 34 && line[*i] != 39 && *i < len)
+			(*i)++;
+		aux = ft_substr(line, a, *i - a);
+	}
+	return (aux);
+}
+
+char	change_q(char s)
+{
+	if (s == 34)
+		s = 39;
+	else if (s == 39)
+		s = 34;
+	return(s);
+}
+
+char	*mid_str(char *line, int *i, char *str, int len)
+{
+	int		a;
+
+	a = *i;
+	while (line[*i] != 34 && line[*i] != 39 && *i < len)
+		(*i)++;
+	if (a < *i)
+		str = ft_strjoin(str ,ft_substr(line, a, *i - a));
+	return (str);
+}
+
+char	*complete_strlexer(char *str, char *aux)
+{
+	if (str && aux)
+		str = ft_strjoin(str, aux);
+	else if (!str && aux)
+		str = ft_strdup(aux);
+	return (str);
+}
+
+char	*create_string3(char *line, int *i, int len)
+{
 	char	*aux;
 	char	*str;
 	char	s;
 
 	str = NULL;
 	aux = NULL;
-	a = *i;
-	while (line[*i] != 34 && line[*i] != 39 && *i < len)
-		(*i)++;
-	if (a < *i)
-		str = ft_substr(line, a, *i - a);
-	s = line[*i];
+	str = start_str(line, i, len);
 	if (*i == len)
-	{
-		if (!str)
-			str = ft_strdup(line);
 		return (str);
-	}
-	if (closing_q2(line, line[*i], *i, len))
-	{
-		aux = find_string(line, i, len);
-		if (aux && aux[0] == s)
-		{
-			c = 1;
-			aux = create_string3(aux, &c, ft_strlen(aux) - 1, c);
-			if (aux)
-				aux = add_quotes(s, aux);
-		}
-		else if (aux && aux[0] != s)
-		{
-			c = 0;
-			aux = create_string3(aux, &c, ft_strlen(aux), c);
-		}
-	}
-	else
-	{
-		a = *i;
-		(*i)++;
-		while (line[*i] != 34 && line[*i] != 39 && *i < len)
-			(*i)++;
-		aux = ft_substr(line, a, *i - a);
-	}
-	if (str && aux)
-		str = ft_strjoin(str, aux);
-	else if (!str && aux)
-		str = ft_strdup(aux);
+	s = line[*i];
+	aux = aux_quotes(line, i, len, s);
+	str = complete_strlexer(str, aux);
 	free(aux);
 	if (*i == len)
 		return (str);
-	if (s == 34)
-		s = 39;
-	else if (s == 39)
-		s = 34;
-	a = *i;
-	while (line[*i] != 34 && line[*i] != 39 && *i < len)
-		(*i)++;
-	if (a < *i)
-		str = ft_strjoin(str ,ft_substr(line, a, *i - a));
-	s = line[*i];
+	s = change_q(s);
+	str = mid_str(line, i, str, len);
 	if (*i == len)
 		return (str);
-	if (closing_q2(line, line[*i], *i, len))
-	{
-		aux = find_string(line, i, len);
-		if (aux && aux[0] == s)
-		{
-			c = 1;
-			aux = create_string3(aux, &c, ft_strlen(aux) - 1, c);
-			if (aux)
-				aux = add_quotes(s, aux);
-		}
-		else if (aux && aux[0] != s)
-		{
-			c = 0;
-			aux = create_string3(aux, &c, ft_strlen(aux), c);
-		}
-	}
-	else
-	{
-		a = *i;
-		(*i)++;
-		while (line[*i] != 34 && line[*i] != 39 && *i < len)
-			(*i)++;
-		aux = ft_substr(line, a, *i - a);
-	}
-	if (str && aux)
-		str = ft_strjoin(str, aux);
-	else if (!str && aux)
-		str = ft_strdup(aux);
+	s = line[*i];
+	aux = aux_quotes(line, i, len, s);
+	str = complete_strlexer(str, aux);
 	free(aux);
 	return(str);
 }
@@ -155,17 +168,29 @@ char	*create_string3(char *line, int *i, int len, int c)
 char	*create_string2(char *line, int len)
 {
 	int		i;
+	//int		a;
 	char	*str;
 
 	i = 0;
-	while (line[i] != 34 && line[i] != 39 && i == len)
+	while (line[i] != 34 && line[i] != 39 && i < len)
 		i++;
 	if (i == len)
 	{
 		str = ft_strdup(line);
 		return (str);
 	}
-	str = create_string3(line, &i, len, 0);
+	/*else
+	{
+		a = i;
+		while ((line[i] == 34 || line[i] != 39) && i < len)
+			i++;
+		if (i == len)
+		{
+			str = ft_substr(line, 0, a + 1);
+			return (str);
+		}
+	}*/
+	str = create_string3(line, &i, len);
 	return (str);
 }
 

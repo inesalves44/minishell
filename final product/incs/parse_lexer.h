@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:21:16 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 10:04:29 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 12:09:07 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,19 @@ int		check_signal1(char *main, int *i, t_lexer **node);
 int		check_signal(char *main, int *i, t_lexer **node);
 t_lexer	*treating_quotes(char *str, char s, int *b);
 int		lexical_annalysis(t_lexer **node, char *str);
-char	*create_string(char *line);
 int		closing_q2(char *str, char c, int i, int len);
+
+/*lexer_ str*/
+char	*find_string(char *line, int *i, int len);
+char	*create_string(char *line);
+char	*add_quotes(char s, char *aux);
+char	*start_str(char *line, int *i, int len);
+char	*aux_quotes(char *line, int *i, int len, char s);
+char	*mid_str(char *line, int *i, char *str, int len);
+char	*complete_strlexer(char *str, char *aux);
+char	change_q(char s);
+char	*create_string3(char *line, int *i, int len);
+char	*create_string2(char *line, int len);
+char	*create_string(char *line);
 
 #endif
