@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 20:15:08 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 13:20:52 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@ char	*first_quotes(char *str, char s, int *b, int *j)
 		len--;
 	test = ft_substr(str, (*j) + 1, len - (*j) - 1);
 	*b = len;
-	*j = 0;
-	while (test[*j] != s && test[*j] != '\0')
-		(*j)++;
+	if (*b == (int)ft_strlen(str) - 1)
+		*j = ft_strlen(test);
+	else
+	{
+		*j = 0;
+		while (test[*j] != s && test[*j] != '\0')
+			(*j)++;
+	}
 	return (test);
 }
 

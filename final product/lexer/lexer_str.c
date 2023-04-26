@@ -6,24 +6,11 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 18:57:59 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/25 20:08:41 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*add_quotes(char s, char *aux)
-{
-	char	*str;
-
-	str = (char *)malloc(sizeof(char) * 2);
-	str[0] = s;
-	str[1] = '\0';
-	aux = ft_strjoin(str, aux);
-	aux = ft_strjoin(aux, str);
-	free(str);
-	return (aux);
-}
 
 char	*create_string3(char *line, int *i, int len)
 {
@@ -73,6 +60,20 @@ char	*treat_begin(char *line, int len)
 	return (NULL);
 }
 
+char	*treat_end(char *line, int len, int i)
+{
+	int		a;
+	char	*str;
+
+	a = i;
+	str = NULL;
+	while (line[i] == 34 || line[i] == 39)
+		i++;
+	if (i == len && i > a)
+		str = ft_strdup(&line[a]);
+	return (str);
+}
+
 char	*create_string2(char *line, int len)
 {
 	int		i;
@@ -92,6 +93,7 @@ char	*create_string2(char *line, int len)
 	if (i > 0)
 		aux = ft_substr(line, 0, i);
 	str = treat_begin(line, len);
+	str = treat_end(line, len, i);
 	if (!str)
 		str = create_string3(line, &i, len);
 	if (aux)

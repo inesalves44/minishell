@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:40:42 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 18:57:13 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 13:20:32 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ char	*find_string(char *line, int *i, int len)
 		len1--;
 	test = len1;
 	find_string2(line, i, &len1);
-	if (len1 > *i)
+	if (len1 >= *i)
 		aux = ft_substr(line, *i, len1 - *i + 1);
+	else
+		aux = ft_strdup("");
 	*i = test + 1;
 	return (aux);
 }
@@ -55,14 +57,14 @@ char	*auxquotes2(char *line, int *i, int len, char s)
 	char	*aux;
 
 	aux = find_string(line, i, len);
-	if (aux && aux[0] == s)
+	if (aux && aux[0] == s && aux[ft_strlen(aux) - 1] == s)
 	{
 		c = 1;
 		aux = create_string3(aux, &c, ft_strlen(aux) - 1);
 		if (aux)
 			aux = add_quotes(s, aux);
 	}
-	else if (aux && aux[0] != s)
+	else if (aux)
 	{
 		c = 0;
 		aux = create_string3(aux, &c, ft_strlen(aux));
@@ -86,5 +88,18 @@ char	*aux_quotes(char *line, int *i, int len, char s)
 			(*i)++;
 		aux = ft_substr(line, a, *i - a);
 	}
+	return (aux);
+}
+
+char	*add_quotes(char s, char *aux)
+{
+	char	*str;
+
+	str = (char *)malloc(sizeof(char) * 2);
+	str[0] = s;
+	str[1] = '\0';
+	aux = ft_strjoin(str, aux);
+	aux = ft_strjoin(aux, str);
+	free(str);
 	return (aux);
 }

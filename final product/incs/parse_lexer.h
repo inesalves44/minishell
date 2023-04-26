@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:21:16 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 18:30:50 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 11:29:37 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		get_file(t_lexer **lexer, t_ast *node);
 int		pipes_lexer(t_lexer *lexer);
 int		length_lexer(t_lexer *lexer, t_ast *aux, int i);
 char	**newstring(t_lexer **lexer, t_ast **tree);
-char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree, int test);
+char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree);
 void	print_tree(t_ast *node, int i);
 /*parsing uitls2*/
 int		check_nodespart2(t_ast *tree, t_lexer *lexer, int red);
@@ -38,11 +38,13 @@ void	array_quotes(t_ast **tree, t_lexer **lexer, int j);
 char	**create_array(t_lexer **lexer, int len, t_ast **tree);
 /*parsing utils 3*/
 void	find_filecomand(t_lexer **lexer, t_ast **aux, int check, \
-t_ast **node, int test);
-t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check, int test);
+t_ast **node);
+t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check);
 void	passing_file(t_lexer **lexer);
 int		leftnode_file(t_lexer **lexer, t_ast **tree, int i);
 int		when_file(t_lexer **lexer, t_ast **tree);
+/*parsing4*/
+t_ast	*create_nodeaux(t_ast **tree, int check);
 
 /*===================lexical=====================================*/
 /*lexical*/

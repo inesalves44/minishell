@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 20:19:44 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 11:22:17 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,20 +108,6 @@ int	lexical_annalysis(t_lexer **node, char *line)
 	}
 	add_index(node);
 	free(str);
-	int test2 = 1;
-	while (*node)
-	{
-		printf("------------number: %d-----------\n", (*node)->number);
-		printf("value of node: %d\n", (*node)->type);
-		if ((*node)->str)
-			printf("string of the node: %s\n", (*node)->str);
-		test2++;
-		if (!(*node)->next)
-			break ;
-		(*node) = (*node)->next;
-	}
-	while ((*node)->prev)
-		(*node) = (*node)->prev;
 	return (0);
 }
 

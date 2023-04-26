@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 14:30:48 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 13:22:46 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	first_objects(t_lexer **lexer, t_ast **tree)
 		if (is_file((*lexer)->type) || (*lexer)->type == pipem)
 		{
 			if (*tree == NULL)
-				*tree = create_treenode(lexer, NULL, (*lexer)->type, 0);
+				*tree = create_treenode(lexer, NULL, (*lexer)->type);
 			else
-				(*tree)->rigth = create_treenode(lexer, tree, (*lexer)->type, 0);
+				(*tree)->rigth = create_treenode(lexer, tree, (*lexer)->type);
 		}
 		if (*tree && (*tree)->rigth)
 		{
@@ -37,33 +37,11 @@ int	first_objects(t_lexer **lexer, t_ast **tree)
 	return (0);
 }
 
-t_ast	*create_nodeaux(t_ast **tree, int check)
-{
-	t_ast	*node;
-
-	node = malloc(sizeof(t_ast));
-	if (node)
-	{
-		node->type = check;
-		node->command = NULL;
-		node->file = NULL;
-		node->dquotes = NULL;
-		node->squotes = NULL;
-		node->left = NULL;
-		node->rigth = NULL;
-		if (tree)
-			node->prev = *tree;
-		else
-			node->prev = NULL;
-	}
-	return (node);
-}
-
 int	when_pipe(t_lexer **lexer, t_ast **tree)
 {
 	if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
 	{
-		(*tree)->left = create_treenode(lexer, tree, command, 1);
+		(*tree)->left = create_treenode(lexer, tree, command);
 		if (*lexer && is_file((*lexer)->type))
 		{
 			while (is_file((*lexer)->type))
@@ -77,9 +55,9 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 	}
 	else if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
 	{
-		(*tree)->rigth = create_treenode(lexer, tree, command, 2);
 		if ((*tree)->left == NULL)
 			(*tree)->left = create_nodeaux(tree, command);
+		(*tree)->rigth = create_treenode(lexer, tree, command);
 		return (0);
 	}
 	else if ((*tree)->rigth != NULL)
@@ -124,7 +102,7 @@ int	parsing_str(t_lexer **l, t_ast **t)
 {
 	first_objects(l, t);
 	if (*t == NULL)
-		*t = create_treenode(l, NULL, command, 0);
+		*t = create_treenode(l, NULL, command);
 	else
 	{
 		if ((is_file((*l)->type)) && (*l)->next == NULL)
