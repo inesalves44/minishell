@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:46:37 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 13:19:30 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 15:10:42 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,20 @@ t_lexer	*node_str(char *str, int *i, int j)
 	if (test)
 		free (test);
 	return (node);
+}
+
+int	split_check(char **split)
+{
+	int	b;
+	int	i;
+
+	i = 0;
+	b = 0;
+	while (split[i])
+	{
+		if (!ft_strncmp(split[i], " ", 1))
+			b++;
+		i++;
+	}
+	return (b);
 }
