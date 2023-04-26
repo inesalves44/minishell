@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 20:50:04 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 23:49:18 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_lexer	*nodes_split2(char **split, char s, int i, int a)
 	return (node);
 }
 
-t_lexer	*nodes_split(char *test, char s)
+t_lexer	*nodes_split(char *test, char s, int a)
 {
 	t_lexer	*node;
 	char	**split;
@@ -48,10 +48,17 @@ t_lexer	*nodes_split(char *test, char s)
 
 	i = 0;
 	node = NULL;
+	while (test[i] != '\0')
+	{
+		if (test[i] == s)
+			a++;
+		i++;
+	}
+	i = 0;
 	split = ft_split(test, s);
 	while (split[i])
 		i++;
-	if (i == 1 || !split_check(split))
+	if (i == 1 || !split_check(split) || a == 1)
 	{
 		free_str_split(split);
 		return (NULL);
@@ -76,7 +83,7 @@ char	*first_quotes(char *str, int *b, int *j, t_lexer **node)
 	test = ft_substr(str, (*j) + 1, len - (*j) - 1);
 	if (len == (int)ft_strlen(str) - 1)
 	{
-		*node = nodes_split(test, s);
+		*node = nodes_split(test, s, 0);
 		*j = ft_strlen(test);
 		*b = len;
 	}

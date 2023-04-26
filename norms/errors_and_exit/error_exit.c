@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:35:44 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 21:01:01 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 23:57:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	error_syntax(char *str, int error)
 {
 	write(2, "minishell: ", 11);
 	write(2, "syntax error near unexpected token ", 35);
-	write(2, str, ft_strlen(str));
+	if (!ft_strncmp(str, "'newline'", 9))
+		write(2, str, ft_strlen(str));
+	else
+		write(2, &str[0], 1);
 	write(2, "\n", 1);
 	return (error);
 }
