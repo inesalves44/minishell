@@ -6,23 +6,22 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 15:15:28 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:50:04 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_lexer	*nodes_split2(char **split, char s)
+t_lexer	*nodes_split2(char **split, char s, int i, int a)
 {
 	t_lexer	*node;
-	int		i;
-	int		a;
 
-	i = 0;
-	a = 0;
+	node = NULL;
 	while (split[i])
 	{
-		if (ft_strncmp(split[i], " ", 1))
+		if (!ft_strncmp(split[i], " ", 1) && ft_strlen(split[i]) == 1)
+			i++;
+		else
 		{
 			if (!node)
 				node = lexical_node(split[i], s + '0', a);
@@ -33,9 +32,11 @@ t_lexer	*nodes_split2(char **split, char s)
 				node = node->next;
 			}
 			a++;
+			i++;
 		}
-		i++;
 	}
+	while (node->prev)
+		node = node->prev;
 	return (node);
 }
 
@@ -55,8 +56,7 @@ t_lexer	*nodes_split(char *test, char s)
 		free_str_split(split);
 		return (NULL);
 	}
-	i = 0;
-	node = nodes_split2(split, s);
+	node = nodes_split2(split, s, 0, 0);
 	free_str_split(split);
 	return (node);
 }
@@ -136,10 +136,7 @@ t_lexer	*treating_quotes(char *str, char s, int *b)
 	}
 	test = second_quotes(&j, test, s, str);
 	split = ft_split(test, ' ');
-	node = lexical_node(split[0], str[*b] + '0', *b);
-	node->next = lexical_node(split[1], str[*b] + '0', *b);
-	node->next->prev = node;
-	node = node->next;
+	node = nodes_split2(split, s, 0, 0);
 	free(test);
 	free_str_split(split);
 	return (node);

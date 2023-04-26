@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:47:21 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 18:59:45 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:09:52 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,20 @@ char	*complete_strlexer(char *str, char *aux)
 	else if (!str && aux)
 		str = ft_strdup(aux);
 	return (str);
+}
+
+int	aux_space(char *aux)
+{
+	int	i;
+	int	a;
+
+	i = 0;
+	a = 0;
+	while (aux[i] != '\0')
+	{
+		if (aux[i] != ' ')
+			a++;
+		i++;
+	}
+	return (a);
 }

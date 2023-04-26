@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:38:09 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/23 12:27:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:19:38 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	input_file(t_root *r)
 		{
 			write(1, ">", 1);
 			buf = get_next_line(0);
-			write(r->in, buf, ft_strlen(buf));
 			if (ft_strlen(buf) == (ft_strlen(r->tree->left->file) + 1) && \
 		!ft_strncmp(buf, r->tree->left->file, ft_strlen(r->tree->left->file)))
 				break ;
+			write(r->in, buf, ft_strlen(buf));
 			free(buf);
 		}
 		r->in = open(".here_doc", O_RDONLY);

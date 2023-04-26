@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 11:13:15 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:33:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int	checking_processes(t_root *root)
 
 	status = 0;
 	aux = root->tree;
-	check_expander(root, &aux);
+	if (check_expander(root, &aux))
+		return (root->status);
 	while (aux->prev)
 		aux = aux->prev;
 	root->tree = aux;
