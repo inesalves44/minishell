@@ -6,138 +6,97 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 10:09:23 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:40:16 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	file_expander(t_ast **tree, t_root *r)
+int	check_dollar(char *str)
 {
-	char	*value;
+	int	i;
 
-	value = NULL;
-	value = get_env_value(r, (*tree)->file + 1);
-	if (!value)
-		return (e_pro(": ambiguous redirect", *tree, 1, 0));
-	free((*tree)->file);
-	(*tree)->file = NULL;
-	(*tree)->file = ft_strdup(value);
-	free(value);
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
-char	**final_str(char **split, t_ast **tree, int len, int i)
+void	find_auxs(char **aux, char **aux2, t_ast **tree)
 {
-	int		a;
-	int		b;
-	int		j;
-	char	**final;
-
-	final = (char **)malloc(sizeof(char *) * (len + 1));
-	j = 0;
-	b = 0;
-	while (j < len)
-	{
-		if (i == j)
-		{
-			a = 0;
-			while (split[a])
-			{
-				final[j] = ft_strdup(split[a]);
-				a++;
-				j++;
-			}
-			b++;
-		}
-		else
-		{
-			final[j] = ft_strdup((*tree)->command[b]);
-			b++;
-			j++;
-		}
-	}
-	final[j] = 0;
-	return (final);
-}
-
-char	**complete_command(char **final, int len)
-{
-	char	**str;
-	int		j;
-
-	str = NULL;
-	str = (char **)malloc(sizeof(char *) * (len + 1));
-	j = 0;
-	while (j < len)
-	{
-		str[j] = ft_strdup(final[j]);
-		j++;
-	}
-	str[j] = 0;
-	return (str);
-}
-
-void	command_expander2(char *value, t_ast **tree, int i)
-{
-	char	**split;
-	char	**final;
-	int		j;
-	int		len;
-
-	j = 0;
-	split = NULL;
-	final = NULL;
-	if (value)
-		split = ft_split(value, ' ');
-	while (split[j])
-		j++;
-	len = j;
-	j = 0;
-	while ((*tree)->command[j])
-		j++;
-	len = len + j - 1;
-	final = final_str(split, tree, len, i);
-	free_str_split((*tree)->command);
-	(*tree)->command = NULL;
-	(*tree)->command = complete_command(final, len);
-	free_str_split(split);
-	free_str_split(final);
-}
-
-void	command_expander(t_ast **t, t_root *r)
-{
-	char	*value;
-	int		i;
-
-	value = NULL;
+	int	i;
+	int	a;
+	
 	i = 0;
-	while ((*t)->command[i])
+	a = 0;
+	while ((*tree)->file[i] != '\0')
 	{
-		if (!ft_strncmp("$", (*t)->command[i], 1) && (*t)->squotes[i] == -1)
+		if ((*tree)->file[i] == '$')
 		{
-			value = get_env_value(r, (*t)->command[i] + 1);
-			if (is_equal((*t)->command[i] + 1, "?"))
-			{
-				free((*t)->command[i]);
-				(*t)->command[i] = NULL;
-				(*t)->command[i] = ft_strdup(ft_itoa(r->status_old));
-			}
-			else if (value)
-				command_expander2(value, t, i);
-			else if(!value)
-				(*t)->command[i] = ft_strdup("");
-			free(value);
+			a = i;
+			i++;
+			while ((*tree)->file[i] != '\0' && (*tree)->file[i] != '$')
+				i++;
+			break ;
 		}
 		i++;
 	}
+	*aux = ft_substr((*tree)->file, a, i - 1);
+	if (i > 0)
+		*aux2 = ft_substr((*tree)->file, 0, a);
+}
+
+char	*new_file(char *value, char *aux2)
+{
+	char	*new;
+
+	new = NULL;
+	if (aux2 && value)
+		new = ft_strjoin(aux2, value);
+	else if (!aux2 && value)
+		new = ft_strdup(value);
+	else if (!value && aux2)
+		new = ft_strdup(aux2);
+	return (new);
+}
+
+int	file_expander(t_ast **tree, t_root *r)
+{
+	char	*value;
+	char	*aux;
+	char	*aux2;
+
+	value = NULL;
+	aux = NULL;
+	aux2 = NULL;
+	find_auxs(&aux, &aux2, tree);
+	value = get_env_value(r, aux + 1);
+	if (!value && !aux2)
+	{
+		free(aux);
+		if (aux2)
+			free(aux2);
+		return (e_pro(": ambiguous redirect", *tree, 1, 0));
+	}
+	free((*tree)->file);
+	(*tree)->file = NULL;
+	(*tree)->file = new_file(value, aux2);
+	free(value);
+	free(aux);
+	if (aux2)
+		free(aux2);
+	return (0);
 }
 
 int	check_expander(t_root *r, t_ast **t)
 {
 	if ((*t)->type == file)
 	{
-		if ((*t)->prev->type != here_doc && (*t)->file[0] == '$' \
+		if ((*t)->prev->type != here_doc && check_dollar((*t)->file)\
 		&& (*t)->squotes[0] == -1)
 			r->status = file_expander(t, r);
 	}

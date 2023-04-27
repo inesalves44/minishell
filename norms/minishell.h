@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 09:17:35 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 14:24:20 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int			ft_exit(t_root *root);
 
 /*error_exit file*/
 int			e_pro(char *str, t_ast *node, int error, int type);
-void	free_tree(t_ast **t, int a);
+void		free_tree(t_ast **t, int a);
 void		free_str_split(char **str);
 void		close_fd(t_ast *tree, int *pipes);
 int			error_syntax(char *str, int error);

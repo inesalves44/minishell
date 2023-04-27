@@ -7,7 +7,7 @@ OBJS = main.o \
 	   signals/signal_handler.o exec_commands/command.o lexer/lexical.o lexer/lexer_part2.o lexer/lexer_utils.o lexer/lexer_utils2.o lexer/lexer_str.o \
 	   lexer/lexer_part3.o exec_commands/simple.o exec_commands/check_expander.o pipes/pipes_utils.o pipes/pipes_red.o pipes/incomp_pipes.o \
 	   pipes/pipes.o parsing/parsing.o parsing/parsing_utils.o parsing/parsing_utils2.o parsing/parsing_utils3.o lexer/lexer_str3.o lexer/lexer_str2.o \
-	   errors_and_exit/error_exit.o errors_and_exit/free_pl.o redirects/redirects.o parsing/parsing_utils4.o
+	   errors_and_exit/error_exit.o errors_and_exit/free_pl.o redirects/redirects.o parsing/parsing_utils4.o exec_commands/expander_command.o exec_commands/expander_commands2.o
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g #-fsanitize=address
