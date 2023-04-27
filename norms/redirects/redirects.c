@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:38:09 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 18:19:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 09:20:00 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	input_file(t_root *r)
 	else
 		r->in = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (r->in < 0)
-		return (e_pro(": no such file or directory", r->tree->left, 1));
+		return (e_pro(": no such file or directory", r->tree->left, 1, 0));
 	if (r->tree->type == here_doc)
 	{
 		while (1)
@@ -36,7 +36,7 @@ int	input_file(t_root *r)
 		}
 		r->in = open(".here_doc", O_RDONLY);
 		if (r->in < 0)
-			return (e_pro(": no such file or directory", r->tree->left, 1));
+			return (e_pro(": no such file or directory", r->tree->left, 1, 0));
 	}
 	return (0);
 }
@@ -49,7 +49,7 @@ int	output_file(t_root *r)
 		r->out = \
 		open(r->tree->left->file, O_APPEND | O_CREAT | O_RDWR, 0000666);
 	if (r->out < 0)
-		return (e_pro(": no such file or directory", r->tree->left, 1));
+		return (e_pro(": no such file or directory", r->tree->left, 1, 0));
 	return (0);
 }
 

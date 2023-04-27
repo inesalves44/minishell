@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 15:00:15 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:51:08 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_firstnode(char *main, int *i, t_lexer **node)
 	return (0);
 }
 
-void	add_index(t_lexer **node)
+void	add_index(t_lexer **node, char **str)
 {
 	int	i;
 
@@ -71,10 +71,13 @@ void	add_index(t_lexer **node)
 	}
 	while ((*node)->prev)
 		*node = (*node)->prev;
+	free(*str);
+	*str = NULL;
 }
 
 int	start_lexer(char **str, char *line, int *i, t_lexer **node)
 {
+	*i = 0;
 	*str = create_string(line);
 	if (*str == NULL)
 		return (1);
@@ -89,7 +92,6 @@ int	lexical_annalysis(t_lexer **node, char *line)
 	int		j;
 	char	*str;
 
-	i = 0;
 	if (start_lexer(&str, line, &i, node))
 		return (2);
 	while (str[i] != '\0')
@@ -103,11 +105,12 @@ int	lexical_annalysis(t_lexer **node, char *line)
 		{
 			(*node)->next->prev = *node;
 			*node = (*node)->next;
+			while ((*node)->next)
+				(*node) = (*node)->next;
 		}
 		i++;
 	}
-	add_index(node);
-	free(str);
+	add_index(node, &str);
 	return (0);
 }
 

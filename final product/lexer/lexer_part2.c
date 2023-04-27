@@ -6,23 +6,22 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 15:15:28 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 23:49:18 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_lexer	*nodes_split2(char **split, char s)
+t_lexer	*nodes_split2(char **split, char s, int i, int a)
 {
 	t_lexer	*node;
-	int		i;
-	int		a;
 
-	i = 0;
-	a = 0;
+	node = NULL;
 	while (split[i])
 	{
-		if (ft_strncmp(split[i], " ", 1))
+		if (!ft_strncmp(split[i], " ", 1) && ft_strlen(split[i]) == 1)
+			i++;
+		else
 		{
 			if (!node)
 				node = lexical_node(split[i], s + '0', a);
@@ -33,13 +32,15 @@ t_lexer	*nodes_split2(char **split, char s)
 				node = node->next;
 			}
 			a++;
+			i++;
 		}
-		i++;
 	}
+	while (node->prev)
+		node = node->prev;
 	return (node);
 }
 
-t_lexer	*nodes_split(char *test, char s)
+t_lexer	*nodes_split(char *test, char s, int a)
 {
 	t_lexer	*node;
 	char	**split;
@@ -47,16 +48,22 @@ t_lexer	*nodes_split(char *test, char s)
 
 	i = 0;
 	node = NULL;
+	while (test[i] != '\0')
+	{
+		if (test[i] == s)
+			a++;
+		i++;
+	}
+	i = 0;
 	split = ft_split(test, s);
 	while (split[i])
 		i++;
-	if (i == 1 || !split_check(split))
+	if (i == 1 || !split_check(split) || a == 1)
 	{
 		free_str_split(split);
 		return (NULL);
 	}
-	i = 0;
-	node = nodes_split2(split, s);
+	node = nodes_split2(split, s, 0, 0);
 	free_str_split(split);
 	return (node);
 }
@@ -76,7 +83,7 @@ char	*first_quotes(char *str, int *b, int *j, t_lexer **node)
 	test = ft_substr(str, (*j) + 1, len - (*j) - 1);
 	if (len == (int)ft_strlen(str) - 1)
 	{
-		*node = nodes_split(test, s);
+		*node = nodes_split(test, s, 0);
 		*j = ft_strlen(test);
 		*b = len;
 	}
@@ -136,10 +143,7 @@ t_lexer	*treating_quotes(char *str, char s, int *b)
 	}
 	test = second_quotes(&j, test, s, str);
 	split = ft_split(test, ' ');
-	node = lexical_node(split[0], str[*b] + '0', *b);
-	node->next = lexical_node(split[1], str[*b] + '0', *b);
-	node->next->prev = node;
-	node = node->next;
+	node = nodes_split2(split, s, 0, 0);
 	free(test);
 	free_str_split(split);
 	return (node);

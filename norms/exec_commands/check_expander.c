@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 18:50:54 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:09:23 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	file_expander(t_ast **tree, t_root *r)
 	value = NULL;
 	value = get_env_value(r, (*tree)->file + 1);
 	if (!value)
-		return (e_pro(": ambiguous redirect", *tree, 1));
+		return (e_pro(": ambiguous redirect", *tree, 1, 0));
 	free((*tree)->file);
 	(*tree)->file = NULL;
 	(*tree)->file = ft_strdup(value);

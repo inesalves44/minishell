@@ -6,19 +6,18 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:35:44 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 23:57:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 09:32:23 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	e_pro(char *str, t_ast *node, int error)
+int	e_pro(char *str, t_ast *node, int error, int type)
 {
 	write(2, "minishell: ", 11);
-	if (node->prev && (node->prev->type == red_in || \
-	node->prev->type == red_out || node->prev->type == app_out))
+	if (node->prev && type == 0)
 		write(2, node->file, ft_strlen(node->file));
-	else if (node && node->type == command)
+	else if (node && node->type == command && type == 1)
 		write(2, node->command[0], ft_strlen(node->command[0]));
 	write(2, " : ", 1);
 	write(2, str, ft_strlen(str));

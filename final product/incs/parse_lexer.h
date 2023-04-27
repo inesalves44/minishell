@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:21:16 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 15:10:30 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:10:08 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_ast	*create_nodeaux(t_ast **tree, int check);
 /*lexical*/
 t_lexer	*first_node(char *main, int *i, char **test);
 int		check_firstnode(char *main, int *i, t_lexer **node);
-void	add_index(t_lexer **node);
+void	add_index(t_lexer **node, char **str);
 int		start_lexer(char **str, char *line, int *i, t_lexer **node);
 int		lexical_annalysis(t_lexer **node, char *line);
 
@@ -88,5 +88,6 @@ char	change_q(char s);
 char	*create_string3(char *line, int *i, int len);
 char	*create_string2(char *line, int len);
 char	*create_string(char *line);
+int		aux_space(char *aux);
 
 #endif
