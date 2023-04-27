@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 09:17:35 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:56:57 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char		*get_pwd(void);
 /*signal*/
 void		sig_int(int sig);
 void		sig_int2(int sig);
+void		sig_quit(int sig);
 
 /*prompt*/
 void		redisplay_prompt(void);

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 16:58:59 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 18:01:41 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:56:56 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_all_num(char *cmd)
 	int	i;
 
 	i = 0;
+	if (cmd[i] == '+' || cmd[i] == '-')
+		i++;
 	while (cmd[i])
 	{
 		if (!ft_isdigit(cmd[i]))

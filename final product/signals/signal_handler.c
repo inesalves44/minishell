@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:23:45 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/24 11:16:23 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:26:38 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,15 @@ void	sig_int2(int sig)
 	{
 		write(1, "\n", 1);
 		g_status = 130;
+	}
+}
+
+void	sig_quit(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: (core dumped)", STDERR);
+		kill(0, SIGINT);
+		g_status = 131;
 	}
 }

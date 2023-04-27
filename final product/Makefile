@@ -3,7 +3,7 @@ OBJS = main.o \
 	   envs/init_envs.o envs/env_utils.o envs/get_value.o envs/free_env_utils.o \
 	   prompt/get_prompt.o prompt/prompt_utils.o \
 	   built-in/built_cd.o built-in/built_echo.o  built-in/built_pwd.o built-in/built_exit.o \
-	   built-in/built_export.o built-in/built_unset.o built-in/built_env.o utils/utils.o built-in/echo_utils.o \
+	   built-in/built_export.o built-in/built_unset.o built-in/built_env.o utils/utils.o \
 	   signals/signal_handler.o exec_commands/command.o lexer/lexical.o lexer/lexer_part2.o lexer/lexer_utils.o lexer/lexer_utils2.o lexer/lexer_str.o \
 	   lexer/lexer_part3.o exec_commands/simple.o exec_commands/check_expander.o pipes/pipes_utils.o pipes/pipes_red.o pipes/incomp_pipes.o \
 	   pipes/pipes.o parsing/parsing.o parsing/parsing_utils.o parsing/parsing_utils2.o parsing/parsing_utils3.o lexer/lexer_str3.o lexer/lexer_str2.o \

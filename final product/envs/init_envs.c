@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:37:54 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 15:56:57 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/27 12:48:10 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*get_key_from_str(char *env)
 	int		size;
 
 	size = ft_keylen(env);
+	if (size == 0)
+		return (NULL);
 	temp_key = ft_calloc(sizeof(char), size + 1);
 	ft_memcpy(temp_key, env, size);
 	return (temp_key);

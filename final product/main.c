@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/27 09:35:17 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:09:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,23 @@ int main(int argc, char const *argv[], char *envp[])
 
 	init_all(&root, envp);
 	root.user = get_env_value(&root, "USER");
-	signal(SIGQUIT, SIG_IGN);
 	root.tree = NULL;
 	root.lexer = NULL;
 	while (1)
 	{
 		signal(SIGINT, sig_int);
+		signal(SIGQUIT, SIG_IGN);
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
+ 		if (root.line == NULL)
+			break ;
     	if (!lexical_annalysis(&root.lexer, root.line))
 		{
 			root.tree = NULL;
 			if (g_status == 130)
 				root.status_old = 130;
+			else if (g_status == 131)
+				root.status_old = 131;
 			else
 				root.status_old = root.status;
 			if(!parsing_str(&root.lexer, &root.tree))
