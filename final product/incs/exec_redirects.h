@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 15:53:37 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:36:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ char	*get_path(char **envp);
 char	*find_path(char *final, char **paths);
 int		do_command(t_root *root);
 int		check_expander(t_root *r, t_ast **tree);
+void	command_expander(t_ast **t, t_root *r);
+int		check_dollar(char *str);
+void	command_expander2(char *value, t_ast **tree, int i);
 
 /*==================pipes==============================*/
 int		counting_pipes(t_ast *tree);

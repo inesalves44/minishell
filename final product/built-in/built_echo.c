@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/27 11:57:00 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:51:05 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 static int	do_print_echo(t_root *root, char *cmd)
 {
 	size_t	i;
-	size_t	end;
 
 	i = 0;
-	end = 0;
 	while (i < ft_strlen(cmd))
 	{
 		ft_putchar_fd(cmd[i], root->out);

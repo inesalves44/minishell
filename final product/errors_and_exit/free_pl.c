@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   free_pl.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:20:35 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 11:16:04 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:32:09 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
 
 void	free_tree(t_ast **t, int a)
 {
@@ -38,7 +51,23 @@ void	free_tree(t_ast **t, int a)
 
 t_lexer	*free_lexer(t_lexer *lexer)
 {
-	if (lexer->next != NULL)
+	t_lexer	*to_delete;
+
+	while (lexer->prev)
+	{
+		lexer = lexer->prev;
+	}
+	while (lexer)
+	{
+		to_delete = lexer;
+		lexer = lexer->next;
+		free(to_delete->str);
+		free(to_delete);
+	}
+	return (NULL);
+}
+
+	/* if (lexer->next != NULL)
 	{
 		while (lexer)
 		{
@@ -61,5 +90,29 @@ t_lexer	*free_lexer(t_lexer *lexer)
 	else
 		free(lexer);
 	lexer = NULL;
-	return (lexer);
+	return (lexer); */
+
+void	mini_free(t_root *root)
+{
+	if (root->tree != NULL)
+		free_tree(&(root->tree), 0);
+	if (root->lexer != NULL)
+		root->lexer = free_lexer(root->lexer);
+	free(root->prompt);
+	free(root->line);
+}
+
+void	free_all(t_root *root)
+{
+	free_envp_lst(root);
+	free_array(root->env_array);
+	if (root->tree != NULL)
+		free_tree(&(root->tree), 0);
+	if (root->lexer != NULL)
+		root->lexer = free_lexer(root->lexer);
+	free(root->user);
+	free(root->prompt);
+	free(root->line);
+	rl_clear_history();
+	printf("exit\n");
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   incomp_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:34:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 17:13:33 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:35:51 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 	char	*new;
 	t_lexer	*node;
 	t_ast	*aux;
-	int 	i;
+	int		i;
 
 	aux = NULL;
 	new = create_completepipe(tree, &i);
