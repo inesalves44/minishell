@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 14:28:46 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 15:47:45 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/28 12:36:27 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ void	command_expander2(char *value, t_ast **tree, int i)
 	j = 0;
 	split = NULL;
 	final = NULL;
-	if (value)
-		split = ft_split(value, ' ');
+	split = ft_split(value, ' ');
 	while (split[j])
 		j++;
 	len = j;

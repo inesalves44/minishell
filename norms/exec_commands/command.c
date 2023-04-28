@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 09:31:54 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/28 13:41:49 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*find_path(char *final, char **paths)
 	char	*cmd;
 	int		i;
 
-	if (access(final, F_OK) == 0)
+	if (access(final, F_OK) == 0 && !is_equal(final, "cat"))
 	{
 		cmd = ft_strdup(final);
 		return (cmd);

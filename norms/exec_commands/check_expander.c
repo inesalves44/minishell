@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 15:40:16 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/28 09:29:07 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,31 @@ int	check_dollar(char *str)
 	return (0);
 }
 
-void	find_auxs(char **aux, char **aux2, t_ast **tree)
+void	find_auxs(char **aux, char **aux2, t_ast **t, t_root *r)
 {
 	int	i;
 	int	a;
 	
 	i = 0;
 	a = 0;
-	while ((*tree)->file[i] != '\0')
+	while ((*t)->file[i] != '\0')
 	{
-		if ((*tree)->file[i] == '$')
+		if ((*t)->file[i] == '$')
 		{
 			a = i;
 			i++;
-			while ((*tree)->file[i] != '\0' && (*tree)->file[i] != '$')
+			while ((*t)->file[i] != '\0' && (*t)->file[i] != '$' && (*t)->file[i] != ' ')
 				i++;
 			break ;
 		}
 		i++;
 	}
-	*aux = ft_substr((*tree)->file, a, i - 1);
+	if ((*t)->file[a + 1] == '?')
+		*aux = ft_strdup(ft_itoa(r->status_old));
+	else
+		*aux = ft_substr((*t)->file, a, i - 1);
 	if (i > 0)
-		*aux2 = ft_substr((*tree)->file, 0, a);
+		*aux2 = ft_substr((*t)->file, 0, a);
 }
 
 char	*new_file(char *value, char *aux2)
@@ -73,7 +76,7 @@ int	file_expander(t_ast **tree, t_root *r)
 	value = NULL;
 	aux = NULL;
 	aux2 = NULL;
-	find_auxs(&aux, &aux2, tree);
+	find_auxs(&aux, &aux2, tree, r);
 	value = get_env_value(r, aux + 1);
 	if (!value && !aux2)
 	{
