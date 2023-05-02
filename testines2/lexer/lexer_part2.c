@@ -6,95 +6,145 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/22 14:50:32 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 23:49:18 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_lexer	*sign_node(int *i, char s, char *str)
+t_lexer	*nodes_split2(char **split, char s, int i, int a)
 {
 	t_lexer	*node;
 
 	node = NULL;
-	if (str[*i] == str[*i + 1] && str[*i] == '<' && str[*i] == '>')
+	while (split[i])
 	{
-		if (s == '<')
-			node = lexical_node(NULL, here_doc, *i);
+		if (!ft_strncmp(split[i], " ", 1) && ft_strlen(split[i]) == 1)
+			i++;
 		else
-			node = lexical_node(NULL, app_out, *i);
-		(*i)++;
-		return (node);
+		{
+			if (!node)
+				node = lexical_node(split[i], s + '0', a);
+			else
+			{
+				node->next = lexical_node(split[i], s + '0', a);
+				node->next->prev = node;
+				node = node->next;
+			}
+			a++;
+			i++;
+		}
 	}
-	if (s == '|')
-		node = lexical_node(NULL, pipem, *i);
-	else if (s == '<')
-		node = lexical_node(NULL, red_in, *i);
-	else if (s == '>')
-		node = lexical_node(NULL, red_out, *i);
+	while (node->prev)
+		node = node->prev;
 	return (node);
 }
 
-int	check_signal1(char *main, int *i, t_lexer **node)
+t_lexer	*nodes_split(char *test, char s, int a)
 {
-	if (main[*i] == '|')
-		return (error_syntax(&main[*i], 2));
-	*node = sign_node(i, main[*i], main);
-	if (*node != NULL)
-		(*i)++;
-	return (0);
+	t_lexer	*node;
+	char	**split;
+	int		i;
+
+	i = 0;
+	node = NULL;
+	while (test[i] != '\0')
+	{
+		if (test[i] == s)
+			a++;
+		i++;
+	}
+	i = 0;
+	split = ft_split(test, s);
+	while (split[i])
+		i++;
+	if (i == 1 || !split_check(split) || a == 1)
+	{
+		free_str_split(split);
+		return (NULL);
+	}
+	node = nodes_split2(split, s, 0, 0);
+	free_str_split(split);
+	return (node);
 }
 
-int	check_signal(char *main, int *i, t_lexer **node)
+char	*first_quotes(char *str, int *b, int *j, t_lexer **node)
 {
-	if (main[*i] == ' ' || main[*i] == '\0')
-		return (0);
-	if (endofstring(main[*i]) && !node_type(*node, main[*i]))
-		(*node)->next = sign_node(i, main[*i], main);
-	else if (endofstring(main[*i]) && node_type(*node, main[*i]))
-		return (error_syntax(&main[*i], 2));
-	return (0);
-}
-
-char	*treating_quotes(char *str, char s, int *b)
-{
-	int		j;
-	int		a;
-	int		c;
-	int		len;
 	char	*test;
-	char	*aux;
-	char	*aux2;
+	char	s;
+	int		len;
 
-	j = *b;
+	s = str[*b];
+	*j = *b;
+	test = NULL;
 	len = ft_strlen(str) - 1;
 	while (str[len] != s)
 		len--;
-	test = ft_substr(str, j + 1, len - j - 1);
-	j = 0;
-	while (test[j] != s && test[j] != '\0')
-		j++;
-	if (j == (int)ft_strlen (test))
+	test = ft_substr(str, (*j) + 1, len - (*j) - 1);
+	if (len == (int)ft_strlen(str) - 1)
 	{
+		*node = nodes_split(test, s, 0);
+		*j = ft_strlen(test);
 		*b = len;
-		return (test);
 	}
-	c = j;
-	j++;
-	a = 0;
-	while (test[j] != s && test[j] != '\0')
+	else
 	{
-		if (test[j] != ' ')
+		*j = 0;
+		while (test[*j] != s && test[*j] != '\0')
+			(*j)++;
+		*b = len;
+	}
+	return (test);
+}
+
+char	*second_quotes(int *j, char *test, char s, char *str)
+{
+	int		a;
+	int		c;
+	char	*aux;
+	char	*aux2;
+
+	c = *j;
+	(*j)++;
+	a = 0;
+	while (test[*j] != s && test[*j] != '\0')
+	{
+		if (test[*j] != ' ')
 			a++;
-		j++;
+		(*j)++;
 	}
 	if (a == 0)
 		aux = ft_substr(test, 0, c);
 	aux2 = malloc(sizeof(char) * 2);
 	aux2[0] = ' ';
 	aux2[1] = '\0';
-	aux = ft_strjoin(aux, aux2); 
-	test = ft_strjoin(aux, ft_substr(test, j + 1, len));
-	*b = len;
+	aux = ft_strjoin(aux, aux2);
+	test = lexer_strjoin(aux, ft_substr(test, *j + 1, ft_strlen(str) - 1));
+	free(aux2);
 	return (test);
+}
+
+t_lexer	*treating_quotes(char *str, char s, int *b)
+{
+	t_lexer	*node;
+	int		j;
+	char	*test;
+	char	**split;
+
+	node = NULL;
+	test = first_quotes(str, b, &j, &node);
+	if (j == (int)ft_strlen (test) || \
+	!closing_q2(test, test[j], j, ft_strlen(test)))
+	{
+		if (!node)
+			node = lexical_node(test, str[*b] + '0', *b);
+		free(test);
+		return (node);
+	}
+	test = second_quotes(&j, test, s, str);
+	split = ft_split(test, ' ');
+	node = nodes_split2(split, s, 0, 0);
+	free(test);
+	free_str_split(split);
+	return (node);
 }

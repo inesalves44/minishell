@@ -6,19 +6,24 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 18:01:52 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:51:55 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	has_error(char *key, char *value)
+static int	has_error(char *key)
 {
 	int		i;
 
 	i = -1;
 	if (!key)
+	{
+		ft_putstr_fd("minishell: export: `", STDERR);
+		ft_putstr_fd("=", STDERR);
+		ft_putstr_fd("\': not a valid identifier\n", STDERR);
 		return (TRUE);
+	}
 	while (key[++i])
 	{
 		if (!ft_isalnum(key[i]))
@@ -26,7 +31,6 @@ static int	has_error(char *key, char *value)
 			ft_putstr_fd("minishell: export: `", STDERR);
 			ft_putstr_fd(key, STDERR);
 			ft_putstr_fd("=", STDERR);
-			ft_putstr_fd(value, STDERR);
 			ft_putstr_fd("\': not a valid identifier\n", STDERR);
 			return (TRUE);
 		}
@@ -46,17 +50,17 @@ static void	print_export(t_root *root)
 		key = get_key_from_str(root->env_array[i]);
 		if (key)
 		{
-			ft_putstr_fd("declare -x ", STDOUT);
-			ft_putstr_fd(key, STDOUT);
+			ft_putstr_fd("declare -x ", root->out);
+			ft_putstr_fd(key, root->out);
 			value = get_value_from_str(root->env_array[i]);
 			if (value)
 			{
-				ft_putstr_fd("=\"", STDOUT);
-				ft_putstr_fd(value, STDOUT);
-				ft_putstr_fd("\"", STDOUT);
+				ft_putstr_fd("=\"", root->out);
+				ft_putstr_fd(value, root->out);
+				ft_putstr_fd("\"", root->out);
 				free(value);
 			}
-			ft_putstr_fd("\n", STDOUT);
+			ft_putstr_fd("\n", root->out);
 		}
 		free(key);
 		i++;
@@ -86,7 +90,7 @@ int	export(t_root *root)
 		{
 			key = get_key_from_str(root->tree->command[cmd]);
 			value = get_value_from_str(root->tree->command[cmd]);
-			if (has_error(key, value))
+			if (has_error(key))
 				ret = 1;
 			else
 				do_change(root, key, value);

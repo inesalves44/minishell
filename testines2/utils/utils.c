@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:36:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/19 10:43:14 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:13:16 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	get_array_size(char **array)
 
 int	is_equal(char *command, char *key)
 {
+	if (command == NULL)
+		return (FALSE);
 	if (ft_strncmp(command, key, ft_strlen(key)) == 0 && \
 		ft_strlen(command) == ft_strlen(key))
 		return (TRUE);
@@ -55,6 +57,8 @@ char	*get_pwd(void)
 
 int	is_built(char **commands, int i)
 {
+	if (commands == NULL)
+		return (FALSE);
 	if (commands[0] == NULL)
 		return (FALSE);
 	if (is_equal(commands[0], "cd") && i != 1)

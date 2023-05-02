@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:11:12 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 17:39:35 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:42:02 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,38 @@ void	refresh_pwd_env(t_root *root)
 	free(path);
 }
 
-int	cd(t_root *root)
+int	check_home(t_root *root)
 {
 	if (get_array_size(root->tree->command) == 1)
 	{
 		change_to_home(root);
-		return (0);
+		return (1);
 	}
 	if (is_equal(root->tree->command[1], "~"))
 	{
 		change_to_home(root);
-		return (0);
+		return (1);
 	}
+	return (0);
+}
+
+int	cd(t_root *root)
+{
+	char	*old_pwd;
+
+	if (check_home(root))
+		return (0);
 	if (has_more_params_error(get_array_size(root->tree->command)))
 		return (1);
 	else
 	{
 		if (chdir(root->tree->command[1]) == 0)
+		{
+			old_pwd = get_env_value(root, "PWD");
+			change_value(root, "OLDPWD", old_pwd);
+			free(old_pwd);
 			refresh_pwd_env(root);
+		}
 		else
 		{
 			ft_putstr_fd("minishell: cd: ", STDERR);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/19 10:43:28 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:46:27 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 
 # define TRUE 1
 # define FALSE 0
-# define BUFFER_PATH 100
+# define BUFFER_PATH 4000
 
 /* env funcs*/
 
@@ -63,7 +63,9 @@ int			is_equal(char *command, char *key);
 char		*get_pwd(void);
 
 /*signal*/
-void		sig_int(int sig, siginfo_t *info, void *context);
+void		sig_int(int sig);
+void		sig_int2(int sig);
+void		sig_quit(int sig);
 
 /*prompt*/
 void		redisplay_prompt(void);
@@ -80,13 +82,14 @@ int			env(t_root *root);
 int			ft_exit(t_root *root);
 
 /*error_exit file*/
-int			error_process(char *str, t_ast *node, int error);
-t_ast		*free_tree(t_ast *node, int a);
+int			e_pro(char *str, t_ast *node, int error, int type);
+void		free_tree(t_ast **t, int a);
 void		free_str_split(char **str);
 void		close_fd(t_ast *tree, int *pipes);
 int			error_syntax(char *str, int error);
 t_lexer		*free_lexer(t_lexer *lexer);
 void		free_all(t_root *root);
+void		mini_free(t_root *root);
 
 /*main*/
 void		checking_next_node(t_ast **tree);

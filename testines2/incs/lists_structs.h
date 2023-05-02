@@ -13,7 +13,7 @@
 #ifndef LISTS_STRUCTS_H
 # define LISTS_STRUCTS_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
 typedef enum s_io
 {

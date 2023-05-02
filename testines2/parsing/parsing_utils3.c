@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 11:47:16 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/26 10:45:25 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ t_ast	*create_treenode(t_lexer **lexer, t_ast **aux, int check)
 		node->node = (*lexer)->number;
 		node->type = check;
 		find_filecomand(lexer, aux, check, &node);
+		if (check != file && check != command)
+		{
+			node->dquotes = NULL;
+			node->squotes = NULL;
+		}
 		node->left = NULL;
 		node->rigth = NULL;
 		if (aux)

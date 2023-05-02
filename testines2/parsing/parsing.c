@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 11:45:35 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 09:06:51 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 	if ((*tree)->left == NULL && (*lexer)->number < (*tree)->node)
 	{
 		(*tree)->left = create_treenode(lexer, tree, command);
-		/*if ((*lexer)->next != NULL)
-			*lexer = (*lexer)->next;*/
 		if (*lexer && is_file((*lexer)->type))
 		{
 			while (is_file((*lexer)->type))
@@ -57,6 +55,8 @@ int	when_pipe(t_lexer **lexer, t_ast **tree)
 	}
 	else if ((*tree)->rigth == NULL && (*lexer)->number > (*tree)->node)
 	{
+		if ((*tree)->left == NULL)
+			(*tree)->left = create_nodeaux(tree, command);
 		(*tree)->rigth = create_treenode(lexer, tree, command);
 		return (0);
 	}
@@ -113,5 +113,6 @@ int	parsing_str(t_lexer **l, t_ast **t)
 			return (2);
 	}
 	finish_parse(l, t);
+	//print_tree(*t, 1);
 	return (0);
 }

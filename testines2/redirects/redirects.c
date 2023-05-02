@@ -6,49 +6,50 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:38:09 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 18:01:06 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/04/27 09:20:00 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	input_file(t_root *root)
+int	input_file(t_root *r)
 {
 	char	*buf;
 
-	if (root->tree->type == red_in)
-		root->in = open(root->tree->left->file, O_RDONLY);
+	if (r->tree->type == red_in)
+		r->in = open(r->tree->left->file, O_RDONLY);
 	else
-		root->in = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-	if (root->in < 0)
-		return (error_process(": no such file or directory", root->tree->left, 1));
-	if (root->tree->type == here_doc)
+		r->in = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	if (r->in < 0)
+		return (e_pro(": no such file or directory", r->tree->left, 1, 0));
+	if (r->tree->type == here_doc)
 	{
 		while (1)
 		{
 			write(1, ">", 1);
 			buf = get_next_line(0);
-			write(root->in, buf, ft_strlen(buf));
-			if (ft_strlen(buf) == (ft_strlen(root->tree->left->file) + 1) && \
-				!ft_strncmp(buf, root->tree->left->file, ft_strlen(root->tree->left->file)))
+			if (ft_strlen(buf) == (ft_strlen(r->tree->left->file) + 1) && \
+		!ft_strncmp(buf, r->tree->left->file, ft_strlen(r->tree->left->file)))
 				break ;
+			write(r->in, buf, ft_strlen(buf));
 			free(buf);
 		}
-		root->in = open(".here_doc", O_RDONLY);
-		if (root->in < 0)
-			return (error_process(": no such file or directory", root->tree->left, 1));
+		r->in = open(".here_doc", O_RDONLY);
+		if (r->in < 0)
+			return (e_pro(": no such file or directory", r->tree->left, 1, 0));
 	}
 	return (0);
 }
 
-int	output_file(t_root *root)
+int	output_file(t_root *r)
 {
-	if (root->tree->type == red_out)
-		root->out = open(root->tree->left->file, O_CREAT | O_TRUNC | O_RDWR, 0000666);
+	if (r->tree->type == red_out)
+		r->out = open(r->tree->left->file, O_CREAT | O_TRUNC | O_RDWR, 0000666);
 	else
-		root->out = open(root->tree->left->file, O_APPEND | O_CREAT | O_RDWR, 0000666);
-	if (root->out < 0)
-		return (error_process(": no such file or directory", root->tree->left, 1));
+		r->out = \
+		open(r->tree->left->file, O_APPEND | O_CREAT | O_RDWR, 0000666);
+	if (r->out < 0)
+		return (e_pro(": no such file or directory", r->tree->left, 1, 0));
 	return (0);
 }
 
