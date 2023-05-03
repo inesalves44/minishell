@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 16:58:59 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/27 11:56:56 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:58:16 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ int	ft_exit(t_root *root)
 			temp_exit = 2;
 		}
 	}
-	free_all(root);
+	free_all(root, 0);
 	exit(temp_exit);
 }

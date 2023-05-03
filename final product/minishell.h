@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:08:03 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:46:27 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:51:09 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ int			ft_exit(t_root *root);
 
 /*error_exit file*/
 int			e_pro(char *str, t_ast *node, int error, int type);
+int			e_pro_fork(char *str, t_root *r, int error, int type);
 void		free_tree(t_ast **t, int a);
 void		free_str_split(char **str);
 void		close_fd(t_ast *tree, int *pipes);
 int			error_syntax(char *str, int error);
 t_lexer		*free_lexer(t_lexer *lexer);
-void		free_all(t_root *root);
+void		free_all(t_root *root, int i);
 void		mini_free(t_root *root);
 
 /*main*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_pl.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:20:35 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:32:09 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:02:36 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	mini_free(t_root *root)
 	free(root->line);
 }
 
-void	free_all(t_root *root)
+void	free_all(t_root *root, int i)
 {
 	free_envp_lst(root);
 	free_array(root->env_array);
@@ -113,6 +113,9 @@ void	free_all(t_root *root)
 	free(root->user);
 	free(root->prompt);
 	free(root->line);
+	if (root->pipes)
+		free(root->pipes);
 	rl_clear_history();
-	printf("exit\n");
+	if (i == 0)
+		printf("exit\n");
 }

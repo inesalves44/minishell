@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:35:44 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 09:32:23 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:02:39 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@ int	e_pro(char *str, t_ast *node, int error, int type)
 	write(2, " : ", 1);
 	write(2, str, ft_strlen(str));
 	write(2, "\n\n", 1);
+	return (error);
+}
+
+int	e_pro_fork(char *str, t_root *r, int error, int type)
+{
+	write(2, "minishell: ", 11);
+	if (r->tree->prev && type == 0)
+		write(2, r->tree->file, ft_strlen(r->tree->file));
+	else if (r->tree && r->tree->type == command && type == 1)
+		write(2, r->tree->command[0], ft_strlen(r->tree->command[0]));
+	write(2, " : ", 1);
+	write(2, str, ft_strlen(str));
+	write(2, "\n\n", 1);
+	free_all(r, 1);
 	return (error);
 }
 

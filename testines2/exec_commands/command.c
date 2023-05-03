@@ -6,18 +6,11 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 09:33:40 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:51:38 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/* char	*get_path(char **envp)
-{
-	while (ft_strncmp("PATH", *envp, 4))
-		envp++;
-	return (*envp + 5);
-} */
 
 char	*get_path(char **envp)
 {
@@ -73,16 +66,15 @@ int	do_command(t_root *root)
 	dup2(root->out, 1);
 	envp2 = get_path(root->env_array);
 	paths = ft_split(envp2, ':');
-	//free(envp2);
 	if (root->tree->command[0] != NULL)
 		cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (e_pro(":command not found", root->tree, 127, 1));
+		exit (e_pro_fork(":command not found", root, 127, 1));
 	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		exit (e_pro("execve error", root->tree, 1, 1));
+		exit (e_pro_fork("execve error", root, 1, 1));
 	}
 	exit (0);
 }

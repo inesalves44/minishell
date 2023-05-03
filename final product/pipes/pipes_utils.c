@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 12:33:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 09:33:49 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:00:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ int	child_in(t_root *root)
 	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (e_pro(" command not found", root->tree, 127, 1));
+		exit (e_pro_fork(" command not found", root, 127, 1));
 	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		exit (e_pro("execve error", NULL, 1, 1));
+		exit (e_pro_fork("execve error", NULL, 1, 1));
 	}
 	exit (0);
 }
@@ -86,11 +86,11 @@ int	child_out(t_root *root)
 	cmd_path = find_path(root->tree->command[0], paths);
 	free_array(paths);
 	if (!cmd_path)
-		exit (e_pro(" command not found", root->tree, 127, 1));
+		exit (e_pro_fork(" command not found", root, 127, 1));
 	if (execve(cmd_path, root->tree->command, root->env_array) < 0)
 	{
 		free(cmd_path);
-		exit (e_pro("execve error", NULL, 1, 1));
+		exit (e_pro_fork("execve error", NULL, 1, 1));
 	}
 	exit (0);
 }

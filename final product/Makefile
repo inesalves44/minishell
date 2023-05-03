@@ -10,7 +10,7 @@ OBJS = main.o \
 	   errors_and_exit/error_exit.o errors_and_exit/free_pl.o redirects/redirects.o parsing/parsing_utils4.o exec_commands/expander_command.o exec_commands/expander_commands2.o exec_commands/expander_command1.o
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -g -fsanitize=address
 GREEN		:=	\033[0;32m
 RED			:=	\033[1;31m
 WHITE		:=	\033[1;37m
