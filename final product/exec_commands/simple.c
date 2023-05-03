@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:59:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:07:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	simple_commands(t_root *r, int *status)
 	}
 	else if (r->tree && r->tree->type == command && \
 	is_built(r->tree->command, 0))
-		built_in_router(r);
+		*status = built_in_router(r);
 	return (0);
 }
 
