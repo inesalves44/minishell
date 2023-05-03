@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:20:35 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:17:08 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 19:15:13 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ void	mini_free(t_root *root)
 		free_tree(&(root->tree), 0);
 	if (root->lexer != NULL)
 		root->lexer = free_lexer(root->lexer);
+	if (root->pipes)
+		free(root->pipes);
+	root->pipes = NULL;
 	free(root->prompt);
 	free(root->line);
 }

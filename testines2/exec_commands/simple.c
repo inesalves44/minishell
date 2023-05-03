@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:34:36 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:25:33 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,12 @@ void	ending_cleaning(t_ast **tree)
 int	checking_processes(t_root *root)
 {
 	int		status;
-	t_ast	*aux;
 
 	status = 0;
-	aux = root->tree;
-	if (check_expander(root, &aux))
+	if (check_expander(root))
 		return (root->status);
-	while (aux->prev)
-		aux = aux->prev;
-	root->tree = aux;
+	while (root->tree->prev)
+		root->tree = root->tree->prev;
 	if (!counting_pipes(root->tree))
 	{
 		simple_commands(root, &status);

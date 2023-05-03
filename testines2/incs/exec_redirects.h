@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:34:18 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:14:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int		checking_processes(t_root *root);
 char	*get_path(char **envp);
 char	*find_path(char *final, char **paths);
 int		do_command(t_root *root);
-int		check_expander(t_root *r, t_ast **tree);
-void	command_expander(t_ast **t, t_root *r);
+int		check_expander(t_root *r);
+void	command_expander(t_root *r);
 int		check_dollar(char *str);
 void	command_expander2(char *value, int *i, t_root *r);
 void	get_quotes(t_root *r, char **split);

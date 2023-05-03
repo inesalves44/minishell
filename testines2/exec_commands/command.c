@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:34:40 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:52:36 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,4 @@ void	get_quotes2(int **squotes, int **dquotes, t_root *r, char **split)
 	a_dquotes = get_doublequotes(r, split);
 	*squotes = a_squotes;
 	*dquotes = a_dquotes;
-	free(a_dquotes);
-	free(a_squotes);
 }

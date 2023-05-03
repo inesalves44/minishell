@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:55:59 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:08:58 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ char	*create_string3(char *line, int *i, int len)
 	str2 = create_string4(line, i, len, &s);
 	if (*i == len)
 		return (str2);
-	s = change_q(s);
 	str = ft_strdup(str2);
 	free(str2);
 	str2 = mid_str(line, i, str, len);
+	if (!str2)
+		str2 = ft_strdup(str);
 	free(str);
 	if (*i == len)
 		return (str2);
@@ -53,7 +54,6 @@ char	*treat_end(char *line, int len, int i)
 		str = ft_strdup(&line[a]);
 	return (str);
 }
-
 
 char	*treat_begin(char *line, int len)
 {

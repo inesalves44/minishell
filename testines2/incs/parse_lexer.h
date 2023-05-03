@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:21:16 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:57:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:15:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char	*lexer_strjoin(char *s1, char *s2);
 
 /*lexer_part2*/
 t_lexer	*treating_quotes(char *str, char s, int *b);
+t_lexer	*nodes_split2(char **split, char s, int i, int a);
+t_lexer	*nodes_split(char *test, char s, int a);
 
 /*lexer part3*/
 int		check_spaces(char *test);
@@ -94,5 +96,9 @@ char	*treat_end(char *line, int len, int i);
 
 char	*create_string4(char *line, int *i, int len, char *s);
 char	*final_aux(char *line, char *aux, int len, int *i);
+
+/*lexer_str4*/
+t_lexer	*treating_quotes2(char s, char *test);
+int		get_lenlexer(char *str, char s);
 
 #endif

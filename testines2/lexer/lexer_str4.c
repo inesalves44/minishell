@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:53:08 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:57:54 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:26:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*create_string4(char *line, int *i, int len, char *s)
 	if (str)
 		free(str);
 	free(aux);
+	*s = change_q(*s);
 	return (str2);
 }
 
@@ -43,11 +44,34 @@ char	*final_aux(char *line, char *aux, int len, int *i)
 	str = treat_end(line, len, *i);
 	if (!str)
 		str = create_string3(line, i, len);
-	if (aux)
+	if (aux && str)
 		str1 = ft_strjoin(aux, str);
-	else
+	else if (!aux && str)
 		str1 = ft_strdup(str);
+	else if (aux && !str)
+		str1 = ft_strdup(aux);
 	if (str)
 		free(str);
 	return (str1);
+}
+
+int	get_lenlexer(char *str, char s)
+{
+	int	len;
+
+	len = ft_strlen(str) - 1;
+	while (str[len] != s)
+		len--;
+	return (len);
+}
+
+t_lexer	*treating_quotes2(char s, char *test)
+{
+	char	**split;
+	t_lexer	*node;
+
+	split = ft_split(test, ' ');
+	node = nodes_split2(split, s, 0, 0);
+	free_str_split(split);
+	return (node);
 }

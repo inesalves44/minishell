@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:51:51 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 23:49:18 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:14:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,7 @@ char	*first_quotes(char *str, int *b, int *j, t_lexer **node)
 	s = str[*b];
 	*j = *b;
 	test = NULL;
-	len = ft_strlen(str) - 1;
-	while (str[len] != s)
-		len--;
+	len = get_lenlexer(str, s);
 	test = ft_substr(str, (*j) + 1, len - (*j) - 1);
 	if (len == (int)ft_strlen(str) - 1)
 	{
@@ -94,6 +92,7 @@ char	*first_quotes(char *str, int *b, int *j, t_lexer **node)
 			(*j)++;
 		*b = len;
 	}
+	(*b)++;
 	return (test);
 }
 
@@ -129,22 +128,24 @@ t_lexer	*treating_quotes(char *str, char s, int *b)
 	t_lexer	*node;
 	int		j;
 	char	*test;
-	char	**split;
+	char	*test1;
 
 	node = NULL;
 	test = first_quotes(str, b, &j, &node);
 	if (j == (int)ft_strlen (test) || \
-	!closing_q2(test, test[j], j, ft_strlen(test)))
+	!closing_q2(test, test[j], j, ft_strlen(test)) || str[*b] == ' ' \
+	|| str[*b] == 39 || str[*b] == 34)
 	{
+		(*b)--;
 		if (!node)
 			node = lexical_node(test, str[*b] + '0', *b);
 		free(test);
 		return (node);
 	}
-	test = second_quotes(&j, test, s, str);
-	split = ft_split(test, ' ');
-	node = nodes_split2(split, s, 0, 0);
+	test1 = second_quotes(&j, test, s, str);
 	free(test);
-	free_str_split(split);
+	node = treating_quotes2(s, test1);
+	*b = j;
+	free(test1);
 	return (node);
 }
