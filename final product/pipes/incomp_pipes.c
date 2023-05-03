@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   incomp_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:34:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:35:51 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:46:36 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,10 @@ char	*complete_str(void)
 	return (NULL);
 }
 
-char	*create_completepipe(t_ast *tree, int *i)
+char	*create_completepipe(t_ast *tree, int *i, char *str)
 {
-	char	*str;
 	char	*new;
 
-	str = NULL;
 	new = NULL;
 	*i = 0;
 	while (1)
@@ -70,7 +68,7 @@ t_ast	*checking_unfinishpipes(t_ast *tree)
 	int		i;
 
 	aux = NULL;
-	new = create_completepipe(tree, &i);
+	new = create_completepipe(tree, &i, NULL);
 	if (!new && i == 1)
 		return (NULL);
 	else if (!new && i == 0)

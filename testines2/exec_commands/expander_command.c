@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 12:06:43 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/02 19:51:40 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:35:06 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	command_expander(t_ast **t, t_root *r)
 		{
 			value = command_expander_2(r, i);
 			if (!is_equal(value, ""))
-				command_expander2(value, t, &i);
+				command_expander2(value, &i, r);
 			else
 				(*t)->command[i] = ft_strdup("");
 			if (value)
@@ -85,4 +85,28 @@ void	command_expander(t_ast **t, t_root *r)
 		}
 		i++;
 	}
+}
+
+void	get_quotes(t_root *r, char **split)
+{
+	int	*squotes;
+	int	*dquotes;
+
+	r->a = 0;
+	r->b = 0;
+	r->j = 0;
+	get_quotes2(&squotes, &dquotes, r, split);
+	free(r->tree->dquotes);
+	free(r->tree->squotes);
+	r->j = 0;
+	r->tree->squotes = (int *)malloc(sizeof(int) * r->len);
+	r->tree->dquotes = (int *)malloc(sizeof(int) * r->len);
+	while (r->j < r->len)
+	{
+		r->tree->squotes[r->j] = squotes[r->j];
+		r->tree->dquotes[r->j] = dquotes[r->j];
+		(r->j)++;
+	}
+	free(squotes);
+	free(dquotes);
 }

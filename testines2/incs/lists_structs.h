@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lists_structs.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:25:55 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/18 17:59:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:24:56 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ typedef struct s_root
 	int			status;
 	int			status_old;
 	int			num_pipes;
+	int			len;
+	int			a;
+	int			b;
+	int			j;
+	int			i;
 }	t_root;
 
 #endif

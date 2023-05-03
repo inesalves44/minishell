@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 13:41:49 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:33:40 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,32 @@ int	do_command(t_root *root)
 		exit (e_pro("execve error", root->tree, 1, 1));
 	}
 	exit (0);
+}
+
+void	get_quotes2(int **squotes, int **dquotes, t_root *r, char **split)
+{
+	start_ints(&r->a, &r->j, &r->b);
+	*squotes = (int *)malloc(sizeof(int) * r->len);
+	*dquotes = (int *)malloc(sizeof(int) * r->len);
+	while (r->j < r->len)
+	{
+		if (r->i == r->j)
+		{
+			while (split[r->a])
+			{
+				*squotes[r->j] = r->tree->squotes[r->b];
+				*dquotes[r->j] = r->tree->dquotes[r->b];
+				r->a++;
+				r->j++;
+			}
+			r->b++;
+		}
+		else
+		{
+			*squotes[r->j] = r->tree->squotes[r->b];
+			*dquotes[r->j] = r->tree->dquotes[r->b];
+			r->j++;
+			r->b++;
+		}
+	}
 }

@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:48:05 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:42:56 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	first_pipes_2(t_root *r, int i)
+{
+	if ((r->out == r->pipes[2 * i + 1] && i > 0) \
+	|| (r->out == r->pipes[1] && i == 0))
+	{
+		r->isbuilt = open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+		r->out = r->isbuilt;
+	}
+	built_in_router(r);
+}
 
 void	first_pipes(t_root *r, int i)
 {
@@ -20,18 +31,11 @@ void	first_pipes(t_root *r, int i)
 			r->tree = r->tree->left;
 		if (r->tree->type == pipem)
 			r->tree = r->tree->rigth;
-		if (r->tree->command && r->tree->command[0] != NULL && is_built(r->tree->command, 1))
-		{
-			if ((r->out == r->pipes[2 * i + 1] && i > 0) || \
-			(r->out == r->pipes[1] && i == 0))
-			{
-				r->isbuilt = \
-				open(".temp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-				r->out = r->isbuilt;
-			}
-			built_in_router(r);
-		}
-		else if (r->tree->command && r->tree->command[0] != NULL && !is_built(r->tree->command, 0))
+		if (r->tree->command && r->tree->command[0] != NULL \
+		&& is_built(r->tree->command, 1))
+			first_pipes_2(r, i);
+		else if (r->tree->command && r->tree->command[0] != NULL && \
+		!is_built(r->tree->command, 0))
 			if (fork() == 0)
 				child_in(r);
 	}
@@ -64,6 +68,13 @@ void	init_varpipes(t_root *root, int *i, pid_t *pid)
 	root->pipes = creating_pipes(root->tree, root->num_pipes);
 	root->isbuilt = 0;
 	*pid = 0;
+	while (*i < root->num_pipes)
+	{
+		root->in = 0;
+		root->out = 1;
+		first_pipes(root, *i);
+		(*i)++;
+	}
 }
 
 int	doing_pipes(t_root *root)
@@ -76,13 +87,7 @@ int	doing_pipes(t_root *root)
 	if (root->tree == NULL)
 		return (130);
 	init_varpipes(root, &i, &pid);
-	while (i < root->num_pipes)
-	{
-		root->in = 0;
-		root->out = 1;
-		first_pipes(root, i);
-		i++;
-	}
+	//herewas the loop
 	final_pipe(root, &pid, i);
 	close_fd(root->tree, root->pipes);
 	signal(SIGQUIT, sig_quit);

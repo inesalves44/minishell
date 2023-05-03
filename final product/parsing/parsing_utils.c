@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:04:40 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:39:25 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:36:00 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	**treat_string(t_lexer **lexer, t_ast **aux, t_ast **tree)
 	}
 	return (new);
 }
-
+/*
 void	print_tree(t_ast *node, int i)
 {
 	int	j;
@@ -154,3 +154,4 @@ void	print_tree(t_ast *node, int i)
 		print_tree(node->rigth, i);
 	}
 }
+*/

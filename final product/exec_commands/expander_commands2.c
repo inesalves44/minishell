@@ -6,43 +6,50 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 14:28:46 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 12:36:27 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:49:40 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	**final_str(char **split, t_ast **tree, int len, int i)
+void	start_ints(int *a, int *j, int *b)
 {
-	int		a;
-	int		b;
-	int		j;
-	char	**final;
+	*j = 0;
+	*a = 0;
+	*b = 0;
+}
 
-	final = (char **)malloc(sizeof(char *) * (len + 1));
-	j = 0;
-	b = 0;
-	while (j < len)
+char	**final_str2(t_root *r, int i, char **split, char **final)
+{
+	start_ints(&r->a, &r->j, &r->b);
+	while (r->j < r->len)
 	{
-		if (i == j)
+		if (i == r->j)
 		{
-			a = 0;
-			while (split[a])
+			while (split[r->a])
 			{
-				final[j] = ft_strdup(split[a]);
-				a++;
-				j++;
+				final[r->j] = ft_strdup(split[r->a]);
+				r->a++;
+				r->j++;
 			}
-			b++;
+			r->b++;
 		}
 		else
 		{
-			final[j] = ft_strdup((*tree)->command[b]);
-			b++;
-			j++;
+			final[r->j] = ft_strdup(r->tree->command[r->b]);
+			r->b++;
+			r->j++;
 		}
 	}
-	final[j] = 0;
+	return (final);
+}
+
+char	**final_str(char **split, t_root *r, int i)
+{
+	char	**final;
+
+	final = (char **)malloc(sizeof(char *) * (r->len + 1));
+	final = final_str2(r, i, split, final);
 	return (final);
 }
 
@@ -63,28 +70,30 @@ char	**complete_command(char **final, int len)
 	return (str);
 }
 
-void	command_expander2(char *value, t_ast **tree, int i)
+void	command_expander2(char *value, int *i, t_root *r)
 {
 	char	**split;
 	char	**final;
-	int		j;
-	int		len;
 
-	j = 0;
+	r->j = 0;
 	split = NULL;
 	final = NULL;
 	split = ft_split(value, ' ');
-	while (split[j])
-		j++;
-	len = j;
-	j = 0;
-	while ((*tree)->command[j])
-		j++;
-	len = len + j - 1;
-	final = final_str(split, tree, len, i);
-	free_str_split((*tree)->command);
-	(*tree)->command = NULL;
-	(*tree)->command = complete_command(final, len);
-	free_str_split(split);
+	while (split[r->j])
+		r->j++;
+	r->len = r->j;
+	r->j = 0;
+	while (r->tree->command[r->j])
+		r->j++;
+	r->len = r->len + r->j - 1;
+	final = final_str(split, r, *i);
+	final[r->len] = 0;
+	r->i = *i;
+	get_quotes(r, split);
+	free_str_split(r->tree->command);
+	r->tree->command = NULL;
+	r->tree->command = complete_command(final, r->len);
+	//free_str_split(split);
 	free_str_split(final);
+	*i = 0;
 }
