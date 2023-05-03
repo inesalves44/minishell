@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:53:08 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 17:26:22 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 23:14:15 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*final_aux(char *line, char *aux, int len, int *i)
 	char	*str1;
 
 	str = NULL;
+	str1 = NULL;
 	str = treat_begin(line, len);
 	str = treat_end(line, len, *i);
 	if (!str)
