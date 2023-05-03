@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/05/03 11:36:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:44:19 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 int	g_status = 0;
 
-void	init_all(t_root *root, char **envp)
+void	init_all(t_root *root, int argc, char const *argv[], char **envp)
 {
+	(void)argc;
+	(void)argv;
 	root->lexer = NULL;
 	root->tree = NULL;
 	root->env_array = NULL;
 	root->env_lst = NULL;
 	root->prompt = NULL;
-	root->user = NULL;
 	root->prompt = NULL;
 	root->line = NULL;
 	root->pipes = NULL;
 	root->status = 0;
 	root->status_old = 0;
 	init_envp(root, envp);
+	root->user = get_env_value(root, "USER");
 }
 
 void	get_status(t_root *root)
@@ -49,21 +51,40 @@ static void	go_process(t_root *root)
 	root->status = checking_processes(root);
 }
 
+static int	is_empty_line(char *line, t_root *root)
+{
+	char	*trim_line;
+
+	(void)root;
+	trim_line = ft_strtrim(line, " ");
+	if (ft_strlen(trim_line) == 0)
+	{
+		free(root->prompt);
+		free(root->line);
+		root->line = NULL;
+		root->prompt = NULL;
+		free(trim_line);
+		return (1);
+	}
+	free(trim_line);
+	return (0);
+}
+
 int	main(int argc, char const *argv[], char *envp[])
 {
 	t_root	root;
 
-	(void)argc;
-	(void)argv;
-	init_all(&root, envp);
-	root.user = get_env_value(&root, "USER");
+	init_all(&root, argc, argv, envp);
 	while (1)
 	{
 		signal(SIGINT, sig_int);
+		signal(SIGQUIT, SIG_IGN);
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
 		if (root.line == NULL)
 			break ;
+		if (is_empty_line(root.line, &root))
+			continue ;
 		add_history(root.line);
 		if (!lexical_annalysis(&root.lexer, root.line))
 		{
