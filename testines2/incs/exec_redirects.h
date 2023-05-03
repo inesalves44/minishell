@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:22:20 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:34:18 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	start_ints(int *a, int *j, int *b);
 /*expander 1*/
 char	*creatingvalue2(char *cmd, char **temp);
 char	**creatingvalue(char **split);
+int		*get_singlequotes(t_root *r, char **split);
 
 /*==================pipes==============================*/
 int		counting_pipes(t_ast *tree);

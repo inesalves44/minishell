@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 15:21:16 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 18:10:08 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:57:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,10 @@ char	*create_string3(char *line, int *i, int len);
 char	*create_string2(char *line, int len);
 char	*create_string(char *line);
 int		aux_space(char *aux);
+char	*treat_begin(char *line, int len);
+char	*treat_end(char *line, int len, int i);
+
+char	*create_string4(char *line, int *i, int len, char *s);
+char	*final_aux(char *line, char *aux, int len, int *i);
 
 #endif

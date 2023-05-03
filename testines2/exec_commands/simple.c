@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 18:02:57 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 11:09:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:34:36 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,31 @@ int	checking_processes(t_root *root)
 		return (status);
 	}
 	return (status);
+}
+
+int	*get_singlequotes(t_root *r, char **split)
+{
+	int	*a_squotes;
+
+	a_squotes = (int *)malloc(sizeof(int) * r->len);
+	while (r->j < r->len)
+	{
+		if (r->i == r->j)
+		{
+			while (split[r->a])
+			{
+				a_squotes[r->j] = r->tree->squotes[r->b];
+				r->a++;
+				r->j++;
+			}
+			r->b++;
+		}
+		else
+		{
+			a_squotes[r->j] = r->tree->squotes[r->b];
+			r->j++;
+			r->b++;
+		}
+	}
+	return (a_squotes);
 }
