@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:47:21 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 18:09:52 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:03:35 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*start_str(char *line, int *i, int len)
 	str = NULL;
 	while (line[*i] != 34 && line[*i] != 39 && *i < len)
 		(*i)++;
+	if (a == *i)
+		return (NULL);
 	if (a < *i)
 		str = ft_substr(line, a, *i - a);
 	if (*i == len)
@@ -41,22 +43,31 @@ char	change_q(char s)
 char	*mid_str(char *line, int *i, char *str, int len)
 {
 	int		a;
+	char	*aux;
 
+	aux = NULL;
 	a = *i;
 	while (line[*i] != 34 && line[*i] != 39 && *i < len)
 		(*i)++;
 	if (a < *i)
-		str = lexer_strjoin(str, ft_substr(line, a, *i - a));
+	{
+		aux = ft_substr(line, a, *i - a);
+		str = ft_strjoin(str, aux);
+		free(aux);
+	}
 	return (str);
 }
 
 char	*complete_strlexer(char *str, char *aux)
 {
+	char	*str2;
+	
+	str2 = NULL;
 	if (str && aux)
-		str = lexer_strjoin(str, aux);
+		str2 = ft_strjoin(str, aux);
 	else if (!str && aux)
-		str = ft_strdup(aux);
-	return (str);
+		str2 = ft_strdup(aux);
+	return (str2);
 }
 
 int	aux_space(char *aux)

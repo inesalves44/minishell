@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 14:28:46 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 09:49:40 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 12:36:30 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	command_expander2(char *value, int *i, t_root *r)
 	free_str_split(r->tree->command);
 	r->tree->command = NULL;
 	r->tree->command = complete_command(final, r->len);
-	//free_str_split(split);
+	free_str_split(split);
 	free_str_split(final);
 	*i = 0;
 }

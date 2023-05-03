@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:45:50 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 10:51:38 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 12:32:17 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,20 @@ int	do_command(t_root *root)
 
 void	get_quotes2(int **squotes, int **dquotes, t_root *r, char **split)
 {
+	int	*a_squotes;
+	int	*a_dquotes;
+
 	start_ints(&r->a, &r->j, &r->b);
-	*squotes = (int *)malloc(sizeof(int) * r->len);
-	*dquotes = (int *)malloc(sizeof(int) * r->len);
+	a_squotes = (int *)malloc(sizeof(int) * r->len);
+	a_dquotes = (int *)malloc(sizeof(int) * r->len);
 	while (r->j < r->len)
 	{
 		if (r->i == r->j)
 		{
 			while (split[r->a])
 			{
-				*squotes[r->j] = r->tree->squotes[r->b];
-				*dquotes[r->j] = r->tree->dquotes[r->b];
+				a_squotes[r->j] = r->tree->squotes[r->b];
+				a_dquotes[r->j] = r->tree->dquotes[r->b];
 				r->a++;
 				r->j++;
 			}
@@ -99,10 +102,12 @@ void	get_quotes2(int **squotes, int **dquotes, t_root *r, char **split)
 		}
 		else
 		{
-			*squotes[r->j] = r->tree->squotes[r->b];
-			*dquotes[r->j] = r->tree->dquotes[r->b];
+			a_squotes[r->j] = r->tree->squotes[r->b];
+			a_dquotes[r->j] = r->tree->dquotes[r->b];
 			r->j++;
 			r->b++;
 		}
 	}
+	*squotes = a_squotes;
+	*dquotes = a_dquotes;
 }

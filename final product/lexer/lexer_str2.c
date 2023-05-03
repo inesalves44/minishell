@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:40:42 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 13:20:32 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:16:15 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,24 @@ char	*auxquotes2(char *line, int *i, int len, char s)
 {
 	int		c;
 	char	*aux;
+	char	*aux1;
 
 	aux = find_string(line, i, len);
+	aux1 = NULL;
 	if (aux && aux[0] == s && aux[ft_strlen(aux) - 1] == s)
 	{
 		c = 1;
-		aux = create_string3(aux, &c, ft_strlen(aux) - 1);
-		if (aux)
-			aux = add_quotes(s, aux);
+		aux1 = create_string3(aux, &c, ft_strlen(aux) - 1);
+		if (aux1)
+			aux1 = add_quotes(s, aux1);
 	}
 	else if (aux)
 	{
 		c = 0;
-		aux = create_string3(aux, &c, ft_strlen(aux));
+		aux1 = create_string3(aux, &c, ft_strlen(aux));
 	}
-	return (aux);
+	free(aux);
+	return (aux1);
 }
 
 char	*aux_quotes(char *line, int *i, int len, char s)
@@ -94,12 +97,23 @@ char	*aux_quotes(char *line, int *i, int len, char s)
 char	*add_quotes(char s, char *aux)
 {
 	char	*str;
+	char	*aux2;
 
 	str = (char *)malloc(sizeof(char) * 2);
 	str[0] = s;
 	str[1] = '\0';
-	aux = ft_strjoin(str, aux);
-	aux = ft_strjoin(aux, str);
+	aux2 = NULL;
+	aux2 = ft_strdup(aux);
+	free(aux);
+	aux = NULL;
+	aux = ft_strjoin(str, aux2);
+	free(aux2);
+	aux2 = NULL;
+	aux2 = ft_strdup(aux);
+	free(aux);
+	aux = NULL;
+	aux = ft_strjoin(aux2, str);
 	free(str);
+	free(aux2);
 	return (aux);
 }

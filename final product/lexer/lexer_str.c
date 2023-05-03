@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/25 20:08:41 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:53:17 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,38 @@ char	*create_string3(char *line, int *i, int len)
 {
 	char	*aux;
 	char	*str;
+	char	*str2;
 	char	s;
 
 	str = NULL;
+	str2 = NULL;
 	aux = NULL;
 	str = start_str(line, i, len);
 	if (*i == len)
 		return (str);
 	s = line[*i];
 	aux = aux_quotes(line, i, len, s);
-	str = complete_strlexer(str, aux);
+	str2 = complete_strlexer(str, aux);
+	if (str)
+		free(str);
 	free(aux);
 	if (*i == len)
-		return (str);
+		return (str2);
 	s = change_q(s);
-	str = mid_str(line, i, str, len);
+	str = ft_strdup(str2);
+	free(str2);
+	str2 = mid_str(line, i, str, len);
+	free(str);
 	if (*i == len)
-		return (str);
+		return (str2);
 	s = line[*i];
 	aux = aux_quotes(line, i, len, s);
-	str = complete_strlexer(str, aux);
+	str = ft_strdup(str2);
+	free(str2);
+	str2 = complete_strlexer(str, aux);
 	free(aux);
-	return (str);
+	free(str);
+	return (str2);
 }
 
 char	*treat_begin(char *line, int len)
@@ -78,11 +88,13 @@ char	*create_string2(char *line, int len)
 {
 	int		i;
 	char	*str;
+	char	*str1;
 	char	*aux;
 
 	i = 0;
 	aux = NULL;
 	str = NULL;
+	str1 = NULL;
 	while (line[i] != 34 && line[i] != 39 && i < len)
 		i++;
 	if (i == len)
@@ -97,8 +109,10 @@ char	*create_string2(char *line, int len)
 	if (!str)
 		str = create_string3(line, &i, len);
 	if (aux)
-		str = lexer_strjoin(aux, str);
-	return (str);
+		str1 = ft_strjoin(aux, str);
+	free(aux);
+	free(str);
+	return (str1);
 }
 
 char	*create_string(char *line)

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/02 16:42:56 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:22:56 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	init_varpipes(t_root *root, int *i, pid_t *pid)
 {
 	*i = 0;
 	root->num_pipes = counting_pipes(root->tree);
-	root->pipes = creating_pipes(root->tree, root->num_pipes);
+	creating_pipes(root, root->num_pipes);
 	root->isbuilt = 0;
 	*pid = 0;
 	while (*i < root->num_pipes)

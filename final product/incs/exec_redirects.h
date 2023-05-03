@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 09:33:59 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:22:20 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**creatingvalue(char **split);
 
 /*==================pipes==============================*/
 int		counting_pipes(t_ast *tree);
-int		*creating_pipes(t_ast *tree, int pipes);
+int		creating_pipes(t_root *r, int pipes);
 int		child_in(t_root *root);
 int		child_out(t_root *root);
 int		doing_pipes(t_root *root);

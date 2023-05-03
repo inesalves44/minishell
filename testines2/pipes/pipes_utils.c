@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 12:33:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 11:00:45 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:21:56 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,21 @@ int	counting_pipes(t_ast *tree)
 	return (pipes);
 }
 
-int	*creating_pipes(t_ast *tree, int pipes)
+int	creating_pipes(t_root *r, int pipes)
 {
-	int	*array;
 	int	i;
 
-	(void)tree;
-	array = (int *)malloc(sizeof(int) * 2 * pipes);
-	if (!array)
-		return (NULL);
+	r->pipes = (int *)malloc(sizeof(int) * 2 * pipes);
+	if (!r->pipes)
+		return (1);
 	i = 0;
 	while (i < pipes)
 	{
-		if (pipe(array + (2 * i)) < 0)
-			return (NULL);
+		if (pipe(r->pipes + (2 * i)) < 0)
+			return (1);
 		i++;
 	}
-	return (array);
+	return (0);
 }
 
 int	child_in(t_root *root)

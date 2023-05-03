@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 12:06:43 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 09:35:06 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 12:40:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ char	*create_test(char **s, char *temp, t_root *r, int i)
 {
 	int		j;
 	char	*test;
+	char	*aux;
 
 	j = 0;
 	test = NULL;
+	aux = ft_itoa(r->status_old);
 	while (s[j])
 	{
 		if (j > 0 && s[j][0] == '?' && s[j - 1][0] == '$')
-			temp = ft_strdup(ft_itoa(r->status_old));
+			temp = ft_strdup(aux);
 		else if (j == 1 && r->tree->command[i][0] != '$')
 			temp = ft_strdup(s[j]);
 		else if (j > 0 && s[j - 1][0] == '$' && s[j][0] != 34 && s[j][0] != 39)
@@ -46,6 +48,7 @@ char	*create_test(char **s, char *temp, t_root *r, int i)
 	}
 	if (temp)
 		free(temp);
+	free(aux);
 	return (test);
 }
 

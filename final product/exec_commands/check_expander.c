@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/28 18:41:14 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:11:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,15 @@ int	check_expander(t_root *r, t_ast **t)
 		!is_equal((*t)->command[0], "export"))
 		command_expander(t, r);
 	if ((*t)->left)
+	{
+		r->tree = r->tree->left;
 		check_expander(r, &(*t)->left);
+	}
 	if ((*t)->rigth)
+	{
+		r->tree = r->tree->rigth;
 		check_expander(r, &(*t)->rigth);
+	}
 	if (r->status)
 		return (r->status);
 	return (0);

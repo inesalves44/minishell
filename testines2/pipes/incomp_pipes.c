@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:34:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/02 15:46:36 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:03:05 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*create_completepipe(t_ast *tree, int *i, char *str)
 		{
 			if (!tree->rigth)
 			{
+				signal(SIGINT, SIG_IGN);
 				str = complete_str();
 				*i = 1;
 				if (!str)

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/05/03 10:58:00 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:36:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,18 @@ int	g_status = 0;
 
 void	init_all(t_root *root, char **envp)
 {
+	root->lexer = NULL;
+	root->tree = NULL;
+	root->env_array = NULL;
+	root->env_lst = NULL;
+	root->prompt = NULL;
+	root->user = NULL;
 	root->prompt = NULL;
 	root->line = NULL;
-	init_envp(root, envp);
+	root->pipes = NULL;
 	root->status = 0;
 	root->status_old = 0;
-	root->tree = NULL;
-	root->lexer = NULL;
+	init_envp(root, envp);
 }
 
 void	get_status(t_root *root)
@@ -55,9 +60,10 @@ int	main(int argc, char const *argv[], char *envp[])
 	while (1)
 	{
 		signal(SIGINT, sig_int);
-		signal(SIGQUIT, SIG_IGN);
 		root.prompt = get_prompt(&root);
 		root.line = readline(root.prompt);
+		if (root.line == NULL)
+			break ;
 		add_history(root.line);
 		if (!lexical_annalysis(&root.lexer, root.line))
 		{
