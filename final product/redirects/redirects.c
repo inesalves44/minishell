@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:38:09 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 10:39:48 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 12:26:15 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ void	here_doc_loop(t_root *r)
 	buf = NULL;
 	while (1)
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		write(1, ">", 1);
 		buf = get_next_line(0);
+		if (buf == NULL)
+			break ;
 		if (ft_strlen(buf) == (ft_strlen(r->tree->left->file) + 1) && \
 		!ft_strncmp(buf, r->tree->left->file, ft_strlen(r->tree->left->file)))
 			break ;

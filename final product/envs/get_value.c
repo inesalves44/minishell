@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 22:35:27 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/18 15:53:27 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:59:53 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	change_value(t_root *root, char *key, char *new_value)
 		{
 			free(root->env_lst->value);
 			root->env_lst->value = ft_strdup(new_value);
+			free(new_value);
 			root->env_lst = head;
 			return (1);
 		}
