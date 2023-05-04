@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 14:22:56 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 22:47:20 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	first_pipes(t_root *r, int i)
 {
 	if (!checking_redirects_pipes(r, i, r->num_pipes + 1))
 	{
-		if (i != r->num_pipes)
+		if (i != r->num_pipes && r->tree->left)
 			r->tree = r->tree->left;
 		if (r->tree->type == pipem)
 			r->tree = r->tree->rigth;
@@ -50,9 +50,9 @@ void	final_pipe(t_root *r, pid_t *pid, int i)
 	r->out = 1;
 	if (!checking_redirects_pipes(r, i, r->num_pipes + 1))
 	{
-		if (r->tree->command[0] != NULL && is_built(r->tree->command, 1))
+		if (r->tree->command && r->tree->command[0] != NULL && is_built(r->tree->command, 1))
 			built_in_router(r);
-		else if (r->tree->command[0] != NULL && !is_built(r->tree->command, 0))
+		else if (r->tree->command && r->tree->command[0] != NULL && !is_built(r->tree->command, 0))
 		{
 			*pid = fork();
 			if (*pid == 0)
@@ -83,7 +83,7 @@ int	doing_pipes(t_root *root)
 	int		i;
 	pid_t	pid;
 
-	root->tree = checking_unfinishpipes(root->tree);
+	checking_unfinishpipes(root);
 	if (root->tree == NULL)
 		return (130);
 	init_varpipes(root, &i, &pid);

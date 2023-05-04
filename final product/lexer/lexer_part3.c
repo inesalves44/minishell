@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:46:37 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/26 23:44:40 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 00:14:43 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ t_lexer	*node_str(char *str, int *i, int j)
 		node = treating_quotes(str, str[*i], i);
 	else
 	{
+		(*i)++;
 		while (!endofstring(str[*i]) && !endofquotes(str[*i]))
 			(*i)++;
 		test = ft_substr(str, j, *i - j);

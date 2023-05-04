@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:34:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 22:19:36 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:13:30 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*complete_str(void)
 	while (1)
 	{
 		write(1, ">", 1);
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		str = get_next_line(0);
 		if (!str)
 			return (NULL);
@@ -28,6 +30,7 @@ char	*complete_str(void)
 			i++;
 		if (str[i] != '\n')
 			return (str);
+		free(str);
 	}
 	return (NULL);
 }
@@ -45,7 +48,6 @@ char	*create_completepipe(t_ast *tree, int *i, char *str)
 			if (!tree->rigth)
 			{
 				str = complete_str();
-				//signal(SIGINT, SIG_IGN);
 				*i = 1;
 				if (!str)
 					return (NULL);

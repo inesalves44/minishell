@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/02 20:02:39 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 09:58:58 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,11 @@ int	start_lexer(char **str, char *line, int *i, t_lexer **node)
 	if (*str == NULL)
 		return (1);
 	if (check_firstnode(*str, i, node))
+	{
+		free(*str);
+		*str = NULL;
 		return (2);
+	}
 	return (0);
 }
 
@@ -97,7 +101,7 @@ int	lexical_annalysis(t_lexer **node, char *line)
 	while (str[i] != '\0')
 	{
 		j = i;
-		if (check_signal(str, &i, node))
+		if (check_signal3(&str, &i, node))
 			return (2);
 		if (!(*node)->next && str[i] != ' ')
 			(*node)->next = node_str(str, &i, j);

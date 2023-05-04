@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:38:09 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/27 09:20:00 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/03 22:38:17 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	input_file(t_root *r)
 		r->in = open(".here_doc", O_RDONLY);
 		if (r->in < 0)
 			return (e_pro(": no such file or directory", r->tree->left, 1, 0));
+		free(buf);
 	}
 	return (0);
 }
