@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:34:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 10:13:30 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:38:11 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,26 +89,3 @@ void	checking_unfinishpipes(t_root *r)
 		free(new);
 	}
 }
-
-/*t_ast	*checking_unfinishpipes(t_ast *tree)
-{
-	char	*new;
-	t_lexer	*node;
-	t_ast	*aux;
-	int		i;
-
-	aux = NULL;
-	new = create_completepipe(tree, &i, NULL);
-	if (!new && i == 1)
-		return (NULL);
-	else if (!new && i == 0)
-		return (tree);
-	lexical_annalysis(&node, new);
-	parsing_str(&node, &aux);
-	tree->rigth = aux;
-	aux->prev = tree;
-	while (tree->prev)
-		tree = tree->prev;
-	free(new);
-	return (tree);
-}*/

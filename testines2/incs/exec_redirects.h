@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 22:09:02 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:37:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ int		doing_pipes(t_root *root);
 int		checking_redirects_pipes(t_root *root, int i, int max);
 void	checking_unfinishpipes(t_root *r);
 void	deleting_tempfiles(t_ast *t);
+/*pipes but expander*/
+int		check_dollar(char *str);
 
 #endif

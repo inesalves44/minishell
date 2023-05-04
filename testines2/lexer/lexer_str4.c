@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:53:08 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 09:59:19 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:27:35 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_lexer	*treating_quotes2(char s, char *test)
 	free_str_split(split);
 	return (node);
 }
+
 int	check_signal3(char **str, int *i, t_lexer **node)
 {
 	if (check_signal(*str, i, node))

@@ -6,25 +6,11 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 09:34:01 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:38:49 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	check_dollar(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '$')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 void	loop_aux_file(int *a, int *i, t_root *r)
 {
@@ -84,7 +70,6 @@ int	file_expander(t_root *r)
 	char	*aux2;
 	int		a;
 
-	value = NULL;
 	find_auxs(&aux, &aux2, r, &a);
 	if (r->tree->file[a + 1] != '?')
 		value = get_env_value(r, aux + 1);
@@ -132,7 +117,6 @@ int	check_expander(t_root *r)
 		return (r->status);
 	return (0);
 }
-
 
 /*
 void	find_auxs(char **aux, char **aux2, t_ast **t, t_root *r)

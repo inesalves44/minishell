@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 00:14:18 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:27:22 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ char	*treat_end(char *line, int len, int i)
 		i++;
 	if (i == len && i > a)
 		str = ft_strdup(&line[a]);
-	
 	return (str);
 }
 
