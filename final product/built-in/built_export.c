@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/05/04 10:29:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:55:53 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	has_error(char *key)
 	int		i;
 
 	i = -1;
-	if (!key || ft_strlen(key) == 0)
+	if (!key || ft_strlen(key) == 0 || key[0] == '$')
 	{
 		ft_putstr_fd("minishell: export: `", STDERR);
 		ft_putstr_fd("=", STDERR);
@@ -60,12 +60,39 @@ void	do_change(t_root *root, char *key, char *value)
 {
 	if (!change_value(root, key, value))
 		ft_lstadd_back_env(&root->env_lst, ft_lstnew_env(key, value));
+	else
+	{
+		free(key);
+		free(value);
+	}
+}
+
+int	do_export(t_root *root, char *cmd, int i)
+{
+	char	*key;
+	char	*value;
+	char	*value1;
+
+	if (ft_strchr(cmd, '$'))
+		value1 = command_expander_2(root, i);
+	else
+		value1 = ft_strdup(cmd);
+	key = get_key_from_str(value1);
+	value = get_value_from_str(value1);
+	free(value1);
+	if (has_error(key))
+	{
+		free(key);
+		free(value);
+		return (1);
+	}
+	else
+		do_change(root, key, value);
+	return (0);
 }
 
 int	export(t_root *root)
 {
-	char	*key;
-	char	*value;
 	int		cmd;
 	int		ret;
 
@@ -77,16 +104,7 @@ int	export(t_root *root)
 	{
 		while (root->tree->command[cmd])
 		{
-			key = get_key_from_str(root->tree->command[cmd]);
-			value = get_value_from_str(root->tree->command[cmd]);
-			if (has_error(key))
-			{
-				ret = 1;
-				free(key);
-				free(value);
-			}
-			else
-				do_change(root, key, value);
+			ret = do_export(root, root->tree->command[cmd], cmd);
 			cmd++;
 		}
 		refresh_env_array(root);

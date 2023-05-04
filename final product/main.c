@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 09:48:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/05/04 13:30:07 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:02:59 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,21 @@ static int	is_empty_line(char *line, t_root *root)
 	char	*trim_line;
 
 	(void)root;
-	trim_line = ft_strtrim(line, " ");
-	if (ft_strlen(trim_line) == 0)
+	trim_line = NULL;
+	if (ft_strlen(line) > 0)
 	{
-		free(root->prompt);
-		free(root->line);
-		root->line = NULL;
-		root->prompt = NULL;
+		trim_line = ft_strtrim(line, " ");
+		if (ft_strlen(trim_line) == 0)
+		{
+			free(root->prompt);
+			free(root->line);
+			root->line = NULL;
+			root->prompt = NULL;
+			free(trim_line);
+			return (1);
+		}
 		free(trim_line);
-		return (1);
 	}
-	free(trim_line);
 	return (0);
 }
 

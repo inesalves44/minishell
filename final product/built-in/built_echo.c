@@ -6,11 +6,29 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:25:58 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/04/28 18:51:05 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:31:53 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	is_valid_option(char *op)
+{
+	int	i;
+
+	i = 2;
+	if (ft_strncmp(op, "-n", 2) == 0)
+	{
+		while (op[i])
+		{
+			if (op[i] != 'n')
+				break ;
+			i++;
+		}
+		return (1);
+	}
+	return (0);
+}
 
 static int	do_print_echo(t_root *root, char *cmd)
 {
@@ -30,7 +48,8 @@ static int	loop_echo(t_root *root)
 	int	cmd;
 
 	cmd = 1;
-	while (is_equal(root->tree->command[cmd], "-n") && root->tree->command[cmd])
+	while (is_valid_option(root->tree->command[cmd]) && \
+		root->tree->command[cmd])
 			cmd++;
 	while (root->tree->command[cmd])
 	{
@@ -39,7 +58,7 @@ static int	loop_echo(t_root *root)
 		if (root->tree->command[cmd])
 			ft_putchar_fd(' ', root->out);
 	}
-	if (!is_equal(root->tree->command[1], "-n"))
+	if (!is_valid_option(root->tree->command[1]))
 		ft_putchar_fd('\n', root->out);
 	return (0);
 }
