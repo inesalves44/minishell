@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:00 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/02 16:45:58 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:25:31 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ char	**create_split2(char **split, char **split3, int i, int len)
 
 	j = 0;
 	split2 = ft_calloc(sizeof(char *), len + 1);
-	//split2 = (char **)malloc(sizeof(char *) * (len));
 	while (i < len - 1)
 	{
 		split2[i] = ft_strdup("$");

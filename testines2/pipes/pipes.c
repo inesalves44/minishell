@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 10:38:30 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:25:16 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	doing_pipes(t_root *root)
 	if (root->tree == NULL)
 		return (130);
 	init_varpipes(root, &i, &pid);
-	//herewas the loop
 	final_pipe(root, &pid, i);
 	close_fd(root->tree, root->pipes);
 	signal(SIGQUIT, sig_quit);

@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 12:06:43 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 10:35:25 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:29:42 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*create_test(char **s, char *temp, t_root *r, int i)
 	while (s[j])
 	{
 		if (j > 0 && s[j][0] == '?' && s[j - 1][0] == '$')
-			temp = ft_strdup(aux);
+			temp = create_test3(s, j, aux);
 		else if (j == 1 && r->tree->command[i][0] != '$')
 			temp = ft_strdup(s[j]);
 		else if (j > 0 && s[j - 1][0] == '$' && s[j][0] != 34 && s[j][0] != 39)
@@ -60,10 +60,8 @@ char	*command_expander_2(t_root *r, int i)
 
 	split2 = ft_split(r->tree->command[i], '$');
 	split = creatingvalue(split2);
-	//free_str_split(split2);
-	//test = ft_strdup(""); 
 	test = create_test(split, NULL, r, i);
-	free_str_split(split); //back with this line
+	free_str_split(split);
 	return (test);
 }
 
@@ -76,7 +74,8 @@ void	command_expander(t_root *r)
 	i = 0;
 	while (r->tree->command[i])
 	{
-		if (check_dollar(r->tree->command[i]) && r->tree->squotes[i] == -1 && !is_equal(r->tree->command[i], "$"))
+		if (check_dollar(r->tree->command[i]) && r->tree->squotes[i] == -1 && \
+		!is_equal(r->tree->command[i], "$"))
 		{
 			value = command_expander_2(r, i);
 			if (!is_equal(value, ""))

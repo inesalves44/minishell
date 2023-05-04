@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:58:38 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 09:58:58 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:32:03 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,49 +117,3 @@ int	lexical_annalysis(t_lexer **node, char *line)
 	add_index(node, &str);
 	return (0);
 }
-
-	/*int test2 = 1;
-	while (*node)
-	{
-		printf("------------number: %d-----------\n", (*node)->number);
-		printf("value of node: %d\n", (*node)->type);
-		if ((*node)->str)
-			printf("string of the node: %s\n", (*node)->str);
-		test2++;
-		if (!(*node)->next)
-			break ;
-		(*node) = (*node)->next;
-	}
-	while ((*node)->prev)
-		(*node) = (*node)->prev;*/
-
-	/*str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	while (a < len)
-	{
-		str[a] = main[i];
-		a++;
-		i++;
-	}
-	str[a] = '\0';*/
-
-/*	char	*treating_str1(char *main, int i, int j)
-{
-	char	*str;
-	int		len;
-
-	len = j - i;
-	str = ft_substr(main, i, len);
-	return (str);
-}*/
-
-/*//(char *)malloc(sizeof(char) * (len));
-	a = 0;
-	while (a < len - 1)
-	{
-		test[a] = str[j + 1];
-		a++;
-		j++;
-	}
-	test[a] = '\0';*/
