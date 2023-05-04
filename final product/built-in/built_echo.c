@@ -17,7 +17,7 @@ static int	is_valid_option(char *op)
 	int	i;
 
 	i = 2;
-	if (ft_strncmp(op, "-n", 2) == 0)
+	if (op && ft_strncmp(op, "-n", 2) == 0)
 	{
 		while (op[i])
 		{

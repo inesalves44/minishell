@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirects.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:47:25 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 13:47:04 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:30:50 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ void	deleting_tempfiles(t_ast *t);
 /*pipes but expander*/
 int		check_dollar(char *str);
 char	*command_expander_2(t_root *r, int i);
-
+char	*create_test3(char **s, int j, char *aux);
 #endif

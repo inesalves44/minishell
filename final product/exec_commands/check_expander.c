@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 13:31:42 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:10:05 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ int	check_expander(t_root *r)
 			r->status = file_expander(r);
 	}
 	else if (r->tree->type == command && r->tree->command && \
-		!is_equal(r->tree->command[0], "export"))
+		!is_equal(r->tree->command[0], "export") && \
+		!is_equal(r->tree->command[0], "unset"))
 		command_expander(r);
 	if (r->tree->left)
 	{
