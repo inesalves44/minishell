@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:20:08 by idias-al          #+#    #+#             */
-/*   Updated: 2023/04/24 20:01:46 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/06 20:19:03 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ int	get_output(t_root *root, int i, int max)
 int	checking_redirects_pipes(t_root *root, int i, int max)
 {
 	if (checking_redirects(root, &(root->status)))
+	{
+		root->tree = root->tree->rigth;
 		return (root->status);
+	}
 	if (root->in == 0)
 		root->in = get_input(root, i, max);
 	if (root->out == 1)
