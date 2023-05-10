@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:34:29 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 15:10:05 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:29:26 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	find_auxs(char **aux, char **aux2, t_root *r, int *a)
 	if (r->tree->file[*a + 1] == '?')
 		*aux = ft_strdup(n);
 	else
-		*aux = ft_substr(r->tree->file, *a, i - 1);
+		*aux = ft_substr(r->tree->file, *a, i);
 	if (i > 0)
 		*aux2 = ft_substr(r->tree->file, 0, *a);
 	free(n);
