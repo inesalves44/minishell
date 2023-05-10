@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 21:47:57 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/05/05 17:42:43 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/10 22:41:13 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 static int	has_error(char *key)
 {
-	//int		i;
-
-//	i = -1;
-	if (!key || ft_strlen(key) == 0 || key[0] == '$')
+	if (!key || ft_strlen(key) == 0)
+	{
+		ft_putstr_fd("minishell: export: `", STDERR);
+		ft_putstr_fd("=", STDERR);
+		ft_putstr_fd("\': not a valid identifier\n", STDERR);
+		return (TRUE);
+	}
+	if (!((key[0] >= 'a' && key[0] <= 'z') || (key[0] >= 'A' && key[0] <= 'Z')))
 	{
 		ft_putstr_fd("minishell: export: `", STDERR);
 		ft_putstr_fd("=", STDERR);

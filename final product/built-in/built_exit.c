@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 16:58:59 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/05/03 10:58:16 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/10 22:28:32 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,16 @@ int	ft_exit(t_root *root)
 	temp_exit = 0;
 	if (get_array_size(root->tree->command) == 1)
 		temp_exit = 0;
+	else if (root->tree->command[1] && !is_all_num(root->tree->command[1]))
+	{
+		ft_putstr_fd("exit\nminishell: exit: numeric argument required\n", \
+			STDERR);
+		temp_exit = 2;
+	}
 	else if (get_array_size(root->tree->command) > 2)
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR);
-		temp_exit = 1;
-	}
-	else
-	{
-		if (is_all_num(root->tree->command[1]))
-			temp_exit = ft_atoi(root->tree->command[1]);
-		else
-		{
-			ft_putstr_fd("minishell: exit: numeric argument required\n", STDERR);
-			temp_exit = 2;
-		}
+		ft_putstr_fd("exit\nbash: exit: too many arguments\n", STDERR);
+		return (1);
 	}
 	free_all(root, 0);
 	exit(temp_exit);
