@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:25:07 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 13:29:11 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:41:47 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	final_pipe(t_root *r, pid_t *pid, int i)
 	r->out = 1;
 	if (!checking_redirects_pipes(r, i, r->num_pipes + 1))
 	{
+		if (r->tree->type == pipem)
+			r->tree = r->tree->rigth;
 		if (r->tree->command && r->tree->command[0] != NULL \
 		&& is_built(r->tree->command, 1))
 			built_in_router(r);
