@@ -37,15 +37,17 @@ int	ft_exit(t_root *root)
 		temp_exit = 0;
 	else if (root->tree->command[1] && !is_all_num(root->tree->command[1]))
 	{
-		ft_putstr_fd("exit\nminishell: exit: numeric argument required\n", \
+		ft_putstr_fd("minishell: exit: numeric argument required\n", \
 			STDERR);
 		temp_exit = 2;
 	}
 	else if (get_array_size(root->tree->command) > 2)
 	{
-		ft_putstr_fd("exit\nbash: exit: too many arguments\n", STDERR);
+		ft_putstr_fd("bash: exit: too many arguments\n", STDERR);
 		return (1);
 	}
+	else
+		temp_exit = ft_atoi(root->tree->command[1]);
 	free_all(root, 0);
 	exit(temp_exit);
 }
