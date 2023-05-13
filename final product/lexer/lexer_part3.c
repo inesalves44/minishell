@@ -6,7 +6,7 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:46:37 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 10:22:58 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/13 10:04:46 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*create_aux(char *str, int *i, int len)
 	while (!endofstring(str[*i]) && !endofquotes(str[*i]))
 		(*i)++;
 	aux = ft_substr(str, a + 1, len - *i - 1);
+	*i = len;
 	return (aux);
 }
 
@@ -62,6 +63,7 @@ char	*test2(char *str, int *i, char *test, char s)
 		while (str[len] != s)
 			len--;
 		aux = ft_substr(str, *i, len - *i);
+		*i = len +1;
 	}
 	else
 		aux = create_aux(str, i, len);
@@ -71,7 +73,6 @@ char	*test2(char *str, int *i, char *test, char s)
 			test = lexer_strjoin(test, aux);
 		free(aux);
 	}
-	(*i) = len;
 	return (test);
 }
 
