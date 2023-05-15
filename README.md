@@ -55,10 +55,11 @@ Next, we distinguish between builtin commands, which are handled internally, and
 
 Throughout the execution process, we meticulously check for errors at various stages. This includes verifying the correctness of the command structure, detecting any issues with input/output redirection, and ensuring the proper handling of errors in both builtin and external commands.
 
-## 4. Have fun :D 
-To run our minishell you just need to run make and then ./minishell. And there we go!!
+## 4. Execution
+To run our minishell you just need to run make! 
+Then ./minishell. And there we go!!
 
-//IMAGEM
+![mini](https://github.com/inesalves44/minishell/assets/105734074/730d48fe-9a60-4d2d-831b-861386798bc4)
 
 ## Make Commands
 ```
