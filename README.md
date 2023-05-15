@@ -34,6 +34,13 @@ The lexer plays a crucial role in parsing the received string by separating it i
 
 It's important to note that before the separation process, we clean the string by handling quotes. Our approach involves identifying the first quote encountered and searching for its closing counterpart from the end of the string to the beginning. This ensures proper handling of quoted sections within the input.
 
+Token  | Lexer
+-------|--------
+STRING | ls
+PIPE   | | 
+STRING | grep
+STRING | mini
+
 ### 3.2 The Parser
 With the lexer in place, we can now proceed to build the parser, which is a crucial component for executing commands in a shell.
 
@@ -42,6 +49,14 @@ Our parser constructs an Abstract Syntax Tree (AST) to represent the structure o
 1. Parsing Pipes and Redirections: Initially, we focus on parsing pipes (|) and redirections (<, >, >>). These elements define how command output flows or is redirected to files. By identifying and capturing these constructs, we establish the connections between commands in the AST.
 
 2. Node Interpretation: Once we have parsed the pipes and redirections, we proceed to interpret the content of each node in the AST. This step involves understanding the specific details of the command within each node. Notably, in the case of redirections, we recognize that the files are always specified on the right side of the redirection indicators.
+
+Example of a parsing tree for the command: cat file | wc -l > out
+
+              PIPE
+            /     \
+     cat; file     REDIRECT
+                   /     \
+                 out    wc; -l
 
 ### 3.3 The Expander
 Before processing the commands, it is important to handle the expansion of the "$" character. In bash, the "$" symbol is used to expand environment variables. In our implementation, we manage environment variables using a linked list, which is derived from the bash environment variables.
@@ -59,7 +74,7 @@ Throughout the execution process, we meticulously check for errors at various st
 To run our minishell you just need to run make! 
 Then ./minishell. And there we go!!
 
-![Untitled design](https://github.com/inesalves44/minishell/assets/105734074/364553f0-3b60-440a-844f-359dde5b0850)
+![Untitled design(1)](https://github.com/inesalves44/minishell/assets/105734074/efcbdfe6-75df-42ed-ba07-39acb4f42105)
 
 ## Make Commands
 ```
