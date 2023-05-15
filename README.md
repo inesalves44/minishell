@@ -1,6 +1,6 @@
 # Minishell (42 - lvl 3)
 
-## 1.Overview
+## 1. Overview
 
 Minishell is a project of the common core in school 42. This project was made in collaboration with [Heitor](https://github.com/HeitorMP).
 
@@ -27,7 +27,7 @@ These are the features needed to implement in the minishell process:
 8. Error Handling: Implement error handling to display appropriate error messages for invalid commands or other errors that may occur during execution.
 
 ## 3. The Project
-To implement this project well we needed to create a few key elements: a lexer, a parser, an expander, a treatement for redirection and for commands.
+To implement this project well we needed to create a few key elements: a lexer, a parser, an expander, a treatement for redirection and for commands/pipes.
 
 ### 3.1 The Lexer
 The lexer plays a crucial role in parsing the received string by separating it into tokens for future use. In our implementation, we utilize a doubly linked list as our lexer, effectively dividing the string into tokens.
@@ -35,12 +35,27 @@ The lexer plays a crucial role in parsing the received string by separating it i
 It's important to note that before the separation process, we clean the string by handling quotes. Our approach involves identifying the first quote encountered and searching for its closing counterpart from the end of the string to the beginning. This ensures proper handling of quoted sections within the input.
 
 ### 3.2 The Parser
-With the lexer we can finally create the parser. The parser is very important for the execution of the commands in shell! 
+With the lexer in place, we can now proceed to build the parser, which is a crucial component for executing commands in a shell.
 
-Our parser is an Abstract Syntax tree, being created this way:
-EXEMPLO COM IMAGEM
+Our parser constructs an Abstract Syntax Tree (AST) to represent the structure of the commands. Here's the general process we follow:
+
+1. Parsing Pipes and Redirections: Initially, we focus on parsing pipes (|) and redirections (<, >, >>). These elements define how command output flows or is redirected to files. By identifying and capturing these constructs, we establish the connections between commands in the AST.
+
+2. Node Interpretation: Once we have parsed the pipes and redirections, we proceed to interpret the content of each node in the AST. This step involves understanding the specific details of the command within each node. Notably, in the case of redirections, we recognize that the files are always specified on the right side of the redirection indicators.
 
 ### 3.3 The Expander
+Before processing the commands, it is important to handle the expansion of the "$" character. In bash, the "$" symbol is used to expand environment variables. In our implementation, we manage environment variables using a linked list, which is derived from the bash environment variables.
+
+To accomplish this, our expander searches for variables and updates their values accordingly. If a variable's value does not exist, the expander returns NULL. By performing this expansion step, we ensure that when the execution of commands and redirections takes place, all relevant components have been replaced with their corresponding environment variable values.
+
+### 3.4 Redirections, Commands and Pipes
+In this stage, we begin the actual execution of the command string. For each command or segment of the pipe, we start by examining the redirections to determine the appropriate input and output for the command.
+
+Next, we distinguish between builtin commands, which are handled internally, and external commands that require the use of the `execve` system call for execution.
+
+Throughout the execution process, we meticulously check for errors at various stages. This includes verifying the correctness of the command structure, detecting any issues with input/output redirection, and ensuring the proper handling of errors in both builtin and external commands.
+
+## 4. Have fun :D 
 
 
 ## Make Commands
