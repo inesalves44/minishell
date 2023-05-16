@@ -86,8 +86,11 @@ make re - runs clean and fclean and then runs all to create the executable
  
  ## Links
  [42 Docs](https://harm-smits.github.io/42docs/projects/minishell)
+ 
  [Parsing tree](https://www.geeksforgeeks.org/parse-tree-and-syntax-tree/)
+ 
  [Shell Language](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
+ 
  [Writing a shell example](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
  
  Feel free to slack me: idias-al.
