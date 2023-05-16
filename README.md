@@ -83,3 +83,8 @@ make clean - cleans the objects
 make fclean - clean executable and any library, also runs clean
 make re - runs clean and fclean and then runs all to create the executable
  ```
+ 
+ ## Links
+ 
+ 
+ Feel free to slack me: idias-al.
