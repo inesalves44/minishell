@@ -6,11 +6,21 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:03:32 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/04 10:27:22 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/24 11:29:45 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/**
+
+    Creates a new string by analyzing the input line and performing various processing steps.
+    It extracts substrings and combines them to construct the final string.
+    @param line The input line to be processed.
+    @param i A pointer to the current index in the line.
+    @param len The length of the input line.
+    @return Returns a pointer to the newly created string.
+    */
 
 char	*create_string3(char *line, int *i, int len)
 {
@@ -41,6 +51,23 @@ char	*create_string3(char *line, int *i, int len)
 	return (str2);
 }
 
+/**
+
+    Treats the end of the input line by examining the characters at the end of the line,
+
+    starting from the given index (i).
+
+    It checks for quote characters (single quote or double quote) and creates a substring accordingly.
+
+    @param line The input line to be processed.
+
+    @param len The length of the input line.
+
+    @param i The starting index to begin examining the line.
+
+    @return Returns a pointer to the newly created substring if the conditions are met, or NULL otherwise.
+    */
+
 char	*treat_end(char *line, int len, int i)
 {
 	int		a;
@@ -54,6 +81,19 @@ char	*treat_end(char *line, int len, int i)
 		str = ft_strdup(&line[a]);
 	return (str);
 }
+
+/**
+
+    Treats the beginning of the input line by examining the characters at the start of the line.
+
+    It checks for quote characters (single quote or double quote) and creates a substring accordingly.
+
+    @param line The input line to be processed.
+
+    @param len The length of the input line.
+
+    @return Returns a pointer to the newly created substring if the conditions are met, or NULL otherwise.
+    */
 
 char	*treat_begin(char *line, int len)
 {
@@ -74,6 +114,19 @@ char	*treat_begin(char *line, int len)
 	}
 	return (NULL);
 }
+
+/**
+
+ 	It extracts a substring from the beginning of the line until the first occurrence of a quote character (either single or double quote).
+	If no quote characters are found, it returns a duplicate of the entire line. 
+	The remaining portion of the line, after the quote character, is processed further by the final_aux function to construct the final string.
+
+    @param line The input line to be processed.
+
+    @param len The length of the input line.
+
+    @return Returns a pointer to the newly created string.
+    */
 
 char	*create_string2(char *line, int len)
 {
@@ -98,6 +151,15 @@ char	*create_string2(char *line, int len)
 		free(aux);
 	return (str1);
 }
+
+/**
+
+    Creates a new string, by calling other functions that treat the single and double quotes.
+
+    @param line The input line to be copied.
+
+    @return Returns a pointer to the newly created string, or NULL if there is an error or if the line is empty.
+    */
 
 char	*create_string(char *line)
 {

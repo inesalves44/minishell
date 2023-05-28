@@ -6,11 +6,19 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:40:42 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/03 13:16:15 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/24 11:38:44 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/**
+    Helper function: find_string2
+    Updates the indices len1 and i to find the end and start positions of a repeated character sequence.
+    @param line The input line to be processed.
+    @param i A pointer to the current index in the line.
+    @param len1 A pointer to the length of the line.
+    */
 
 void	find_string2(char *line, int *i, int *len1)
 {
@@ -29,6 +37,15 @@ void	find_string2(char *line, int *i, int *len1)
 		(*len1)--;
 	}
 }
+
+/**
+
+    Finds a string enclosed in quotes (single or double) starting from the current index (i) in the line.
+    @param line The input line to be processed.
+    @param i A pointer to the current index in the line.
+    @param len The length of the input line.
+    @return Returns a pointer to the found string.
+    */
 
 char	*find_string(char *line, int *i, int len)
 {
@@ -50,6 +67,16 @@ char	*find_string(char *line, int *i, int len)
 	*i = test + 1;
 	return (aux);
 }
+
+/**
+
+    Processes the found string and performs further operations based on its content and quotes.
+    @param line The input line to be processed.
+    @param i A pointer to the current index in the line.
+    @param len The length of the input line.
+    @param s The quote character.
+    @return Returns a pointer to the processed string.
+    */
 
 char	*auxquotes2(char *line, int *i, int len, char s)
 {
@@ -75,6 +102,16 @@ char	*auxquotes2(char *line, int *i, int len, char s)
 	return (aux1);
 }
 
+/**
+
+    Processes the string enclosed in quotes, handling different cases based on its content and quotes.
+    @param line The input line to be processed.
+    @param i A pointer to the current index in the line.
+    @param len The length of the input line.
+    @param s The quote character.
+    @return Returns a pointer to the processed string.
+    */
+
 char	*aux_quotes(char *line, int *i, int len, char s)
 {
 	char	*aux;
@@ -93,6 +130,14 @@ char	*aux_quotes(char *line, int *i, int len, char s)
 	}
 	return (aux);
 }
+
+/**
+
+    Adds quotes around the given string that were previosly deleted to examine the string.
+    @param s The quote character to add.
+    @param aux The string to which the quotes should be added.
+    @return Returns a pointer to the modified string with added quotes.
+    */
 
 char	*add_quotes(char s, char *aux)
 {
