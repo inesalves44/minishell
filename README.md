@@ -72,9 +72,9 @@ Throughout the execution process, we meticulously check for errors at various st
 
 ## 4. Execution
 To run our minishell you just need to run make! 
-Then ./minishell. And there we go!!
+Then ./minishell. And there we go!
 
-![Untitled design(1)](https://github.com/inesalves44/minishell/assets/105734074/efcbdfe6-75df-42ed-ba07-39acb4f42105)
+[design](https://github.com/inesalves44/minishell/assets/105734074/2358c978-6f9d-4df7-bb5d-cf568453167f)
 
 ## Make Commands
 ```
@@ -94,3 +94,4 @@ make re - runs clean and fclean and then runs all to create the executable
  [Writing a shell example](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
  
  Feel free to slack me: idias-al.
+
