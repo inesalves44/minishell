@@ -6,11 +6,22 @@
 /*   By: idias-al <idias-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:47:21 by idias-al          #+#    #+#             */
-/*   Updated: 2023/05/24 11:49:56 by idias-al         ###   ########.fr       */
+/*   Updated: 2023/05/29 10:40:33 by idias-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/**
+ * Extracts a substring from the 'line' starting from index '*i' until the first occurrence
+ * of a single or double quote (34 or 39) or until reaching 'len'.
+ * Returns the extracted substring or NULL if no quote is found.
+ *
+ * @param line The input line to extract the substring from.
+ * @param i    A pointer to the current index in the line.
+ * @param len  The length of the line.
+ * @return     Returns the extracted substring or NULL if no quote is found.
+ */
 
 char	*start_str(char *line, int *i, int len)
 {
@@ -31,6 +42,13 @@ char	*start_str(char *line, int *i, int len)
 	return (str);
 }
 
+/**
+ * Swaps the given character 's' between single and double quotes (34 and 39).
+ *
+ * @param s The character to swap quotes for.
+ * @return  Returns the character with swapped quotes.
+ */
+
 char	change_q(char s)
 {
 	if (s == 34)
@@ -39,6 +57,18 @@ char	change_q(char s)
 		s = 34;
 	return (s);
 }
+
+/**
+ * Extracts a substring from the 'line' starting from index '*i' until the first occurrence
+ * of a single or double quote (34 or 39) or until reaching 'len'.
+ * Concatenates the extracted substring 'aux' with the given 'str'.
+ *
+ * @param line The input line to extract the substring from.
+ * @param i    A pointer to the current index in the line.
+ * @param str  The string to concatenate with the extracted substring.
+ * @param len  The length of the line.
+ * @return     Returns the resulting string after concatenation.
+ */
 
 char	*mid_str(char *line, int *i, char *str, int len)
 {
@@ -67,6 +97,15 @@ char	*mid_str(char *line, int *i, char *str, int len)
 	return (str1);
 }
 
+/**
+ * Concatenates the given strings 'str' and 'aux' using 'ft_strjoin' function.
+ * If either 'str' or 'aux' is NULL, duplicates the non-NULL string using 'ft_strdup'.
+ *
+ * @param str The first string to concatenate.
+ * @param aux The second string to concatenate.
+ * @return    Returns the resulting concatenated or duplicated string.
+ */
+
 char	*complete_strlexer(char *str, char *aux)
 {
 	char	*str2;
@@ -80,6 +119,14 @@ char	*complete_strlexer(char *str, char *aux)
 		str2 = ft_strdup(str);
 	return (str2);
 }
+
+/**
+ * Counts the number of non-space characters in the given string 'aux'.
+ * Auxiliary function!
+ *
+ * @param aux The input string to count non-space characters.
+ * @return    Returns the count of non-space characters.
+ */
 
 int	aux_space(char *aux)
 {
