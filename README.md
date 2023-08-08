@@ -74,7 +74,7 @@ Throughout the execution process, we meticulously check for errors at various st
 To run our minishell you just need to run make! 
 Then ./minishell. And there we go!
 
-[design]([https://github.com/inesalves44/minishell/blob/main/Untitled%20design.gif?raw=true])
+[design]([https://github.com/inesalves44/minishell/blob/main/Untitled%20design.gif])
 
 ## Make Commands
 ```
